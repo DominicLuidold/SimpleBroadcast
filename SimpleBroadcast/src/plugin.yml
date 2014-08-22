@@ -1,0 +1,62 @@
+name: SimpleBroadcast
+main: net.simplebroadcast.Main
+version: 1.8
+author: KingDome24
+softdepend: [BarAPI]
+description: Sends automatically defined messages to the ingame chat.
+website: http://www.SimpleBroadcast.net
+
+commands:
+  simplebroadcast: 
+    description: Main command for SimpleBroadcast.
+    aliases: [sb]
+    
+permissions:
+    simplebroadcast.*:
+        description: Gives access to all SimpleBroadcast commands.
+        children:
+            simplebroadcast.info: true
+            simplebroadcast.start: true
+            simplebroadcast.stop: true
+            simplebroadcast.reload: true
+            simplebroadcast.bossbar.start: true
+            simplebroadcast.bossbar.stop: true
+            simplebroadcast.list: true
+            simplebroadcast.now: true
+            simplebroadcast.add: true
+            simplebroadcast.remove: true
+            simplebroadcast.broadcast: true
+            simplebroadcast.ignore: true
+            simplebroadcast.update: true
+            simplebroadcast.update.toggle: true
+            simplebroadcast.help: true
+    simplebroadcast.info:
+        description: Allows you to see information about the plugin.
+    simplebroadcast.start:
+        description: Allows you to start the broadcast.
+    simplebroadcast.stop:
+        description: Allows you to stop the broadcast.
+    simplebroadcast.reload:
+        description: Allows you to reload the broadcast.
+    simplebroadcast.bossbar.start:
+        description: Allows you to start the boss bar broadcasting.
+    simplebroadcast.bossbar.stop:
+        description: Allows you to stop the boss bar broadcasting.
+    simplebroadcast.list:
+        description: Allows you to see all messages.
+    simplebroadcast.now:
+        description: Allows you to broadcast a already defined message.
+    simplebroadcast.add:
+        description: Allows you to add a new message( to the config).
+    simplebroadcast.remove:
+        description: Allows you to remove a message.
+    simplebroadcast.broadcast:
+        description: Allows you to broadcast the entered message.
+    simplebroadcast.ignore:
+        description: Allows you to add/remove a player from the ignoring list.
+    simplebroadcast.update:
+        description: Allows you to see the update info when you join.
+    simplebroadcast.update.toggle:
+        description: Allows you to activate/deactivate the update check function.
+    simplebroadcast.help:
+        description: Allows you to see the help pages.
