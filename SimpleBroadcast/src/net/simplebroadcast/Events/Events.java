@@ -26,23 +26,22 @@ public class Events implements Listener {
 		/*
 		 * Checks if any updates are available and notifies the player.
 		 */
-		if (!Main.plugin.getConfig().getBoolean("checkforupdates")) {
-			return;
-		}
-		final Player p = event.getPlayer();
-		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
-			@Override
-			public void run() {
-				try {
-					if ((p.isOp() && um.updateB()) || (p.hasPermission("simplebroadcast.update") && um.updateB())) {	
-						p.sendMessage("[Simple§cBroadcast]§r An update is available: " + um.updateN());
-						p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
+		if (Main.plugin.getConfig().getBoolean("checkforupdates")) {
+			final Player p = event.getPlayer();
+			Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if ((p.isOp() && um.updateB()) || (p.hasPermission("simplebroadcast.update") && um.updateB())) {	
+							p.sendMessage("[Simple§cBroadcast]§r An update is available: " + um.updateN());
+							p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
+						}
+					} catch (NullPointerException npe) {
+						Main.plugin.logW("Couldn't check for updates.");
 					}
-				} catch (NullPointerException npe) {
-					Main.plugin.logW("Couldn't check for updates.");
 				}
-			}
-		});
+			});
+		}
 		/*
 		 * Checks if server was empty before the player joined and starts the broadcast if it's not running yet.
 		 */
