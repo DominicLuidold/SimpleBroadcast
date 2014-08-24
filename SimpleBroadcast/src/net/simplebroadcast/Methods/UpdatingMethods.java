@@ -1,8 +1,9 @@
-package net.simplebroadcast.Utils;
+package net.simplebroadcast.Methods;
 
 import java.io.File;
 
 import net.simplebroadcast.Main;
+import net.simplebroadcast.Utils.Updater;
 
 public class UpdatingMethods {
 	
