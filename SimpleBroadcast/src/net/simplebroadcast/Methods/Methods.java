@@ -26,18 +26,8 @@ import org.bukkit.entity.Player;
 public class Methods {
 	
 	private int msg;
-	private String permission;
 	public static String uuid;
 	private int previousMessage;
-	
-	public void Test(String permission) {
-		this.permission = permission;
-	}
-	
-	public String getPermission() {
-		return permission;
-	}
-	
 	
 	/**
 	 * Executes a command.
