@@ -25,6 +25,7 @@ public class Events implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		/*
 		 * Checks if any updates are available and notifies the player.
+		 * (Asynchronous task)
 		 */
 		if (Main.plugin.getConfig().getBoolean("checkforupdates")) {
 			final Player p = event.getPlayer();
@@ -32,7 +33,7 @@ public class Events implements Listener {
 				@Override
 				public void run() {
 					try {
-						if ((p.isOp() && um.updateB()) || (p.hasPermission("simplebroadcast.update") && um.updateB())) {	
+						if ((p.isOp() || (p.hasPermission("simplebroadcast.update")) && um.updateB())) {	
 							p.sendMessage("[Simple§cBroadcast]§r An update is available: " + um.updateN());
 							p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
 						}
