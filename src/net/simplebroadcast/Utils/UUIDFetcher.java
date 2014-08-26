@@ -1,3 +1,7 @@
+/*
+ * UUID Fetcher by evilmidget38.
+ * Downloadable at: https://gist.github.com/evilmidget38/26d70114b834f71fb3b4
+ */
 package net.simplebroadcast.Utils;
 
 import com.google.common.collect.ImmutableList;
