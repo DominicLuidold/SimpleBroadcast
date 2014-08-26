@@ -10,10 +10,10 @@ import java.util.UUID;
 import net.simplebroadcast.Events.Events;
 import net.simplebroadcast.Methods.BossBarMethods;
 import net.simplebroadcast.Methods.Methods;
+import net.simplebroadcast.Methods.UpdatingMethods;
 import net.simplebroadcast.Utils.Metrics;
 import net.simplebroadcast.Utils.Metrics.Graph;
 import net.simplebroadcast.Utils.UUIDFetcher;
-import net.simplebroadcast.Utils.UpdatingMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -2,7 +2,7 @@ package net.simplebroadcast.Events;
 
 import net.simplebroadcast.Main;
 import net.simplebroadcast.Methods.Methods;
-import net.simplebroadcast.Utils.UpdatingMethods;
+import net.simplebroadcast.Methods.UpdatingMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

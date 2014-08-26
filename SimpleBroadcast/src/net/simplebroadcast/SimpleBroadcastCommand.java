@@ -10,8 +10,8 @@ import java.util.UUID;
 import me.confuser.barapi.BarAPI;
 import net.simplebroadcast.Methods.BossBarMethods;
 import net.simplebroadcast.Methods.Methods;
+import net.simplebroadcast.Methods.UpdatingMethods;
 import net.simplebroadcast.Utils.UUIDFetcher;
-import net.simplebroadcast.Utils.UpdatingMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,7 +55,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				return true;
 			}
 			cs.sendMessage("§e--------- §fInfo: SimpleBroadcast §e------------");
-			cs.sendMessage("§6Author:§f KingDome24");
+			cs.sendMessage("§6Author:§f KingDome24 and yonascode");
 			cs.sendMessage("§6Version:§f " + plugin.getDescription().getVersion());
 			cs.sendMessage("§6Website:§f " + plugin.getDescription().getWebsite());
 			if (plugin.getConfig().getBoolean("checkforupdates")) {
