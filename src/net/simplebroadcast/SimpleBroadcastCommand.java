@@ -235,7 +235,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				FileConfiguration main_cfg = YamlConfiguration.loadConfiguration(config);				
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e-------------");
 				for (String msg : main_cfg.getStringList("messages")) {
-					cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
+					if (cs instanceof Player) {
+						Player p = (Player) cs;
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
+					} else {
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
+					}
 					message_number++;
 				}
 			/*
