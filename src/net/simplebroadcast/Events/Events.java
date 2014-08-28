@@ -55,11 +55,14 @@ public class Events implements Listener {
 	}
 	
 	/*
-	 * Checks if server is empty after the player left and stops the broadcast if it's running.
+	 * PlayerQuitEvent
 	 */
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
+		/*
+		 * Checks if server is empty after the player left and stops the broadcast if it's running.
+		 */
 		if (Main.plugin.getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().length == 1) {
 			Bukkit.getServer().getScheduler().cancelTask(Main.messageTask);
 			Main.running = 0;
@@ -67,10 +70,13 @@ public class Events implements Listener {
 	}
 	
 	/*
-	 * Broadcasts the easter egg message to every player if someone types "SimpleBroadcast" in the chat.
+	 * AsyncPlayerChatEvent
 	 */
 	@EventHandler
 	public void onEasteregg(AsyncPlayerChatEvent event) {
+		/*
+		 * Broadcasts the easter egg message to every player if someone types "SimpleBroadcast" in the chat.
+		 */
 		if (event.getMessage().toLowerCase().contains("simplebroadcast")) {
 			Bukkit.broadcastMessage("[Simple§cBroadcast]§r He, he.. Thank you for using SimpleBroadcast! :D");
 		}
