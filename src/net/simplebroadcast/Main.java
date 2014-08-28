@@ -149,14 +149,14 @@ public class Main extends JavaPlugin {
 		}
 		
 		/*
-		 * Register the events.
+		 * Registers the events.
 		 */		
 		if (plugin.getConfig().getBoolean("enabled")) {
 			getServer().getPluginManager().registerEvents(new Events(), plugin);
 		}			
 		
 	    /*
-	     * Save all configs and the readme
+	     * Saves all configs and the readme
 	     */		
 		plugin.saveDefaultConfig();
 		final File file = new File("plugins/SimpleBroadcast", "ignore.yml");
