@@ -99,8 +99,7 @@ public class BossBarMethods {
 		/*
 		 * Broadcasts the messages.
 		 */
-		Player[] onlinePlayers = Bukkit.getServer().getOnlinePlayers();
-		for (Player p : onlinePlayers) {
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
 				BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', mt.addVariablesP(messages.get(counter), p)));
 			} else {
