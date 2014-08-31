@@ -3,6 +3,7 @@ package net.simplebroadcast;
 import net.simplebroadcast.Methods.Methods;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -14,16 +15,29 @@ import org.bukkit.entity.Player;
 
 public class MessageRunnable implements Runnable {
 
+	private int permsize;
 	private int counter = 0;
+	private int permcounter = 0;
 	private Methods mt = new Methods();
-	private List<String> messages = Main.plugin.getConfig().getStringList("messages");
+	private List<String> permIssions = new ArrayList<String>();
+	private List<String> permMessages = new ArrayList<String>();
+	private List<String> messages = Main.plugin.getConfig().getStringList("messages.default");
 	private boolean prefix_bool = Main.plugin.getConfig().getBoolean("prefix.enabled");
 	private boolean suffix_bool = Main.plugin.getConfig().getBoolean("suffix.enabled");
 	private String prefix = mt.addVariables(Main.plugin.getConfig().getString("prefix.prefix"));
-	private String suffix = mt.addVariables(Main.plugin.getConfig().getString("suffix.suffix"));	
-	
+	private String suffix = mt.addVariables(Main.plugin.getConfig().getString("suffix.suffix"));
+
 	@Override
 	public void run() {
+		if (Main.plugin.getConfig().getBoolean("useperms")) {
+			if (permcounter < permsize) {
+				broadCast();
+			} else {
+				permcounter = 0;
+				broadCast();
+			}
+			return;
+		}
 		if (counter < messages.size()) {
 			broadCast();
 		} else {
@@ -56,6 +70,33 @@ public class MessageRunnable implements Runnable {
 				counter++;
 			}
 		} else {
+			/*
+			 * EXPERIMENTAL
+			 * Checks if the user has to have the permission to receive the message.
+			 * (Still in development - don't use this!)
+			 */
+			if (Main.plugin.getConfig().getBoolean("useperms")) {
+				for (String permission : Main.plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
+					for (String message : Main.plugin.getConfig().getStringList("messages." + permission)) {
+						permMessages.add(message);
+						permIssions.add(permission);
+					}
+				}
+				permsize = permMessages.size();
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
+						if (p.hasPermission(permIssions.get(permcounter)) ||  permIssions.get(permcounter).equalsIgnoreCase("default")) {					
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(permMessages.get(permcounter), p) + (suffix_bool ? " " + suffix : "")));
+						} else {
+							//TODO
+						}
+					}
+				}
+				permcounter++;
+				permMessages.clear();
+				permIssions.clear();
+				return;
+			}
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
 					p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(messages.get(counter), p) + (suffix_bool ? " " + suffix : "")));
