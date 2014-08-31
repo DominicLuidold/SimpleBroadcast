@@ -83,9 +83,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 			}
 			File bossbar = new File("plugins/SimpleBroadcast", "bossbar.yml");
 			FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
-			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") == true && BossBarMethods.bar_running == 1) {
+			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.bar_running == 1) {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled and broadcasts.");
-			} else if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") == true && BossBarMethods.bar_running == 0) {
+			} else if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.bar_running == 0) {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled.");
 			} else {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is disabled.");
