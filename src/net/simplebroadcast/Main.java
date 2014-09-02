@@ -26,10 +26,10 @@ public class Main extends JavaPlugin {
 	public static Main plugin;
 	public static int running = 1;
 	public static int messageTask;
-	public static MultiMap<Integer, String, String> globalMessages = new MultiMap<Integer, String, String>();
 	private Methods mt = new Methods();
 	private BossBarMethods bmt = new BossBarMethods();
 	private UpdatingMethods um = new UpdatingMethods();
+	public static MultiMap<Integer, String, String> globalMessages = new MultiMap<Integer, String, String>();
 	
 	@Override
 	public void onDisable() {
@@ -90,6 +90,14 @@ public class Main extends JavaPlugin {
 			            }
 			    	});
 			    }
+//			    if (plugin.getConfig().getBoolean("usepermissions")) {
+//			    	enabledFeatures.addPlotter(new Metrics.Plotter("Permission messages") {
+//			    		@Override
+//			            public int getValue() {
+//			    			return 1;
+//			            }
+//			    	});
+//			    }
 			    if (plugin.getConfig().getBoolean("checkforupdates")) {
 			    	enabledFeatures.addPlotter(new Metrics.Plotter("Update checker") {
 			    		@Override
@@ -257,18 +265,10 @@ public class Main extends JavaPlugin {
 	 * Loads all the messages into a globally available MultiMap.
 	 */
 	public void loadMessages() {
-		if (plugin.getConfig().getBoolean("usepermissions")) {
-			int messageIndex = 1;
-			for (String permission : Main.plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
-				for (String message : Main.plugin.getConfig().getStringList("messages." + permission)) {
-					globalMessages.put(messageIndex, message, permission);
-					messageIndex++;
-				}
-			}
-		} else {
-			int messageIndex = 1;
-			for (String message : plugin.getConfig().getStringList("messages.default")) {
-				globalMessages.put(messageIndex, message, null);
+		int messageIndex = 1;
+		for (String permission : Main.plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
+			for (String message : Main.plugin.getConfig().getStringList("messages." + permission)) {
+				globalMessages.put(messageIndex, message, (plugin.getConfig().getBoolean("usepermissions") ? permission : null));
 				messageIndex++;
 			}
 		}
