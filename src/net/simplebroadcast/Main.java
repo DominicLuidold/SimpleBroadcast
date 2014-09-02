@@ -11,6 +11,7 @@ import net.simplebroadcast.Events.Events;
 import net.simplebroadcast.Methods.BossBarMethods;
 import net.simplebroadcast.Methods.Methods;
 import net.simplebroadcast.Methods.UpdatingMethods;
+import net.simplebroadcast.MultiMap.MultiMap;
 import net.simplebroadcast.Utils.Metrics;
 import net.simplebroadcast.Utils.Metrics.Graph;
 import net.simplebroadcast.Utils.UUIDFetcher;
@@ -25,6 +26,7 @@ public class Main extends JavaPlugin {
 	public static Main plugin;
 	public static int running = 1;
 	public static int messageTask;
+	public static MultiMap<Integer, String, String> globalMessages = new MultiMap<Integer, String, String>();
 	private Methods mt = new Methods();
 	private BossBarMethods bmt = new BossBarMethods();
 	private UpdatingMethods um = new UpdatingMethods();
@@ -182,6 +184,7 @@ public class Main extends JavaPlugin {
 		 * Starts the chat broadcast task.
 		 */
 		if (plugin.getConfig().getBoolean("enabled")) {
+			loadMessages();
 			if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 				mt.broadcast();
 			} else {
@@ -247,6 +250,27 @@ public class Main extends JavaPlugin {
 					}
 				}
 			});
+		}
+	}
+	
+	/**
+	 * Loads all the messages into a globally available MultiMap.
+	 */
+	public void loadMessages() {
+		if (plugin.getConfig().getBoolean("usepermissions")) {
+			int messageIndex = 1;
+			for (String permission : Main.plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
+				for (String message : Main.plugin.getConfig().getStringList("messages." + permission)) {
+					globalMessages.put(messageIndex, message, permission);
+					messageIndex++;
+				}
+			}
+		} else {
+			int messageIndex = 1;
+			for (String message : plugin.getConfig().getStringList("messages.default")) {
+				globalMessages.put(messageIndex, message, null);
+				messageIndex++;
+			}
 		}
 	}
 	
