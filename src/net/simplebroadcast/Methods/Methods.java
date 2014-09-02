@@ -250,4 +250,5 @@ public class Methods {
 			}
 		}, 0L, Main.plugin.getConfig().getInt("delay") * 20L);
 	}
+	
 }
