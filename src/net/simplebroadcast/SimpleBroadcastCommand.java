@@ -141,6 +141,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				
 				BossBarMethods.counter = 0;				
 				plugin.reloadConfig();
+				plugin.loadMessages();
 				BossBarMethods.bar_running = 1;
 				bmt.barBroadcast();
 				
