@@ -76,12 +76,11 @@ public class MessageRunnable implements Runnable {
 						}
 					}
 				}
-				counter++;
-				return;
-			}
-			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-				if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+			} else {
+				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
+						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+					}
 				}
 			}
 			/*
