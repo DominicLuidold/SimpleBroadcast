@@ -153,8 +153,7 @@ public class MultiMap<A, B, C> implements Cloneable, Iterable<A>, Serializable {
 	@Override
 	public boolean equals(Object o) {
 		return o.equals(this);
-	}
-	
+	}	
 	
 	String a() {
 		return this.name;
@@ -174,6 +173,5 @@ public class MultiMap<A, B, C> implements Cloneable, Iterable<A>, Serializable {
 			this.put(cc, (B)c.get(cc).get(0), (C) c.get(cc).get(1));
 		}
 	}
-
 
 }
