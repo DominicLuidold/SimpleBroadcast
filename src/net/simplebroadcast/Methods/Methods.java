@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import net.simplebroadcast.Main;
 import net.simplebroadcast.MessageRunnable;
+import net.simplebroadcast.MultiMap.MultiMapResource;
 import net.simplebroadcast.Utils.UUIDFetcher;
 
 import org.bukkit.Bukkit;
@@ -28,6 +29,7 @@ public class Methods {
 	private int msg;
 	public static String uuid;
 	private int previousMessage;
+	private String message;
 	
 	/**
 	 * Executes a command.
@@ -204,17 +206,18 @@ public class Methods {
 				/*
 				 * Gets and broadcasts the messages in a random order. 
 				 */
-				msg = new Random().nextInt(Main.plugin.getConfig().getStringList("messages").size());
+				msg = new Random().nextInt(Main.globalMessages.size());
 				if (msg != previousMessage) {
 	                previousMessage = msg;
 	            } else {
-	            	if (previousMessage < Main.plugin.getConfig().getStringList("messages").size()-1) {
+	            	if (previousMessage < Main.globalMessages.size()-1) {
 	            		msg++;
 	            	} else if (previousMessage > 1) {
 	            		msg--;
 	            	}
 	            }
-				String message  = ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getStringList("messages").get(msg));
+				MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(msg);
+				message = entry.getFirstValue();
 				msg = 0;
 				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("prefix.prefix")));
 				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("suffix.suffix")));
