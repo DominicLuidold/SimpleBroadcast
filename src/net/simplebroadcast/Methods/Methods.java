@@ -27,9 +27,10 @@ import org.bukkit.entity.Player;
 public class Methods {
 	
 	private int msg;
+	private String message;
+	private String permission;
 	public static String uuid;
 	private int previousMessage;
-	private String message;
 	
 	/**
 	 * Executes a command.
@@ -218,6 +219,7 @@ public class Methods {
 	            }
 				MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(msg);
 				message = entry.getFirstValue();
+				permission = entry.getSecondValue();
 				msg = 0;
 				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("prefix.prefix")));
 				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("suffix.suffix")));
@@ -236,10 +238,27 @@ public class Methods {
 						message = message.substring(1);
 						performCommand(message);
 					}
-				} else {
-					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if (!ignoredPlayers.contains(getUUID(p.getName()))) {
-							p.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
+				} else {			
+					/*
+					 * EXPERIMENTAL
+					 * Checks if the user has to have the permission to receive the message.
+					 * (Still in development - don't use this!)
+					 */
+					if (Main.plugin.getConfig().getBoolean("usepermissions")) {
+						for (Player p : Bukkit.getOnlinePlayers()) {
+							if (!ignoredPlayers.contains(getUUID(p.getName()))) {
+								if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {					
+									p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+								} else {
+									//TODO
+								}
+							}
+						}
+					} else {
+						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+							if (!ignoredPlayers.contains(getUUID(p.getName()))) {
+								p.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
+							}
 						}
 					}
 					/*
@@ -252,6 +271,5 @@ public class Methods {
 				}
 			}
 		}, 0L, Main.plugin.getConfig().getInt("delay") * 20L);
-	}
-	
+	}	
 }
