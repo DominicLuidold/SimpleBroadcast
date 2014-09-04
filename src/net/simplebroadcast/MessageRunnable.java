@@ -37,8 +37,8 @@ public class MessageRunnable implements Runnable {
 	@SuppressWarnings("deprecation")
 	private void broadCast() {
 		MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(counter);
-		message = entry.getFirstValue();
-		permission = entry.getSecondValue();
+		permission = entry.getFirstValue();
+		message = entry.getSecondValue();
 		/*
 		 * Loads the ignore.yml.
 		 */

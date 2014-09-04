@@ -218,8 +218,8 @@ public class Methods {
 	            	}
 	            }
 				MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(msg);
-				message = entry.getFirstValue();
-				permission = entry.getSecondValue();
+				permission = entry.getFirstValue();
+				message = entry.getSecondValue();
 				msg = 0;
 				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("prefix.prefix")));
 				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("suffix.suffix")));

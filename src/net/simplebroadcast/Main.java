@@ -268,7 +268,7 @@ public class Main extends JavaPlugin {
 		int messageIndex = 1;
 		for (String permission : Main.plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
 			for (String message : Main.plugin.getConfig().getStringList("messages." + permission)) {
-				globalMessages.put(messageIndex, message, (plugin.getConfig().getBoolean("usepermissions") ? permission : null));
+				globalMessages.put(messageIndex, (plugin.getConfig().getBoolean("usepermissions") ? permission : null), message);
 				messageIndex++;
 			}
 		}
