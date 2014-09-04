@@ -1,9 +1,9 @@
 # This is the default config.yml for SimpleBroadcast.
-# Plugin made by KingDome24.
-# If you need help, visit http://www.SimpleBroadcast.net
+# Plugin made by KingDome24 and yonascode.
+# If you need help visit http://www.SimpleBroadcast.net
 # Please be sure that all your messages are inside of single quotes!
-# The update checking requires an internet connection.
-# PluginMetrics also requires an internet connection.
+# The update checking requires an Internet connection.
+# PluginMetrics also requires an Internet connection.
 
 enabled: true
 
@@ -19,6 +19,8 @@ suffix:
   
 pluginmetrics: true
 
+usepermissions: false
+
 checkforupdates: true
 
 randomizemessages: false
@@ -28,7 +30,10 @@ requiresonlineplayers: false
 sendmessagestoconsole: false
 
 messages:
-- 'Thank you for using SimpleBroadcast!'
-- 'Plugin by &oKingDome24.'
-- 'If you have questions please visit the BukkitDev page!'
-- '%laquo%Many new and cool variables are now available%raquo%'
+  default:
+  - 'Thank you for using SimpleBroadcast!'
+  - 'Plugin by &oKingDome24 and yonascode.'
+  - 'If you have questions please visit the BukkitDev page!'
+  - '%laquo%Many new and cool variables are now available%raquo%'
+  your.permission.node:
+  - 'You can create any permission node you want.'
