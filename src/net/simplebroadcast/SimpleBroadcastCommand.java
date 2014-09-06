@@ -11,6 +11,7 @@ import me.confuser.barapi.BarAPI;
 import net.simplebroadcast.Methods.BossBarMethods;
 import net.simplebroadcast.Methods.Methods;
 import net.simplebroadcast.Methods.UpdatingMethods;
+import net.simplebroadcast.MultiMap.MultiMapResource;
 import net.simplebroadcast.Utils.UUIDFetcher;
 
 import org.bukkit.Bukkit;
@@ -235,14 +236,16 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				int message_number = 1;
 				FileConfiguration main_cfg = YamlConfiguration.loadConfiguration(config);				
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e-------------");
-				for (String msg : main_cfg.getStringList("messages")) {
-					if (cs instanceof Player) {
-						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
-					} else {
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
+				for (String permission : main_cfg.getConfigurationSection("messages").getKeys(true)) {
+					for (String msg : main_cfg.getStringList("messages." + permission)) {
+						if (cs instanceof Player) {
+							Player p = (Player) cs;
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
+						} else {
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
+						}
+						message_number++;
 					}
-					message_number++;
 				}
 			/*
 			 * NOW
@@ -253,17 +256,23 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
+				if (args.length == 1) {
+					cs.sendMessage("§cPlease enter a message number.");
+					return true;
+				}
 				try {
-					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < plugin.getConfig().getStringList("messages").size()) {
+					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < Main.globalMessages.size()) {
+						MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(Integer.parseInt(args[1])-1);
+						String message = entry.getSecondValue();
 						for (Player p : Bukkit.getOnlinePlayers()) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(plugin.getConfig().getStringList("messages").get(Integer.parseInt(args[1])-1), p) + (suffix_bool ? " " + suffix : "")));
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						}
 						if (plugin.getConfig().getBoolean("sendmessagestoconsole")) {
 							ConsoleCommandSender console = Bukkit.getConsoleSender();
-							console.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariables(plugin.getConfig().getStringList("messages").get(Integer.parseInt(args[1])-1)) + (suffix_bool ? " " + suffix : "")));
+							console.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 						}
 					} else {
-						cs.sendMessage("§cThere are only " + plugin.getConfig().getStringList("messages").size() + " messages available which you can broadcast.");
+						cs.sendMessage("§cThere are only " + Main.globalMessages.size() + " messages available which you can broadcast.");
 					}
 				} catch (NumberFormatException nfe) {
 					cs.sendMessage("§cPlease enter a valid number.");
@@ -271,6 +280,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 			/*
 			 * ADD
 			 * Adds a message to the (chat) config.
+			 * It automatically adds the message to the default messages list.
 			 */
 			} else if (args[0].equalsIgnoreCase("add")) {
 				if (!cs.hasPermission("simplebroadcast.add")) {
