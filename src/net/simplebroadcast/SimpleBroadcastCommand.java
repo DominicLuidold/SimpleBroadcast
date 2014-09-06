@@ -30,7 +30,6 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 	private Methods mt = new Methods();
 	private BossBarMethods bmt = new BossBarMethods();
 	private UpdatingMethods um = new UpdatingMethods();
-	File config = new File("plugins/SimpleBroadcast", "config.yml");
 	private String err_need_Perm = "§cYou do not have access to that command.";
 	
 	
@@ -234,10 +233,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				int message_number = 1;
-				FileConfiguration main_cfg = YamlConfiguration.loadConfiguration(config);				
+				plugin.reloadConfig();
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e-------------");
-				for (String permission : main_cfg.getConfigurationSection("messages").getKeys(true)) {
-					for (String msg : main_cfg.getStringList("messages." + permission)) {
+				for (String permission : plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
+					for (String msg : plugin.getConfig().getStringList("messages." + permission)) {
 						if (cs instanceof Player) {
 							Player p = (Player) cs;
 							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
@@ -291,21 +290,15 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("§cPlease enter a message which you want to add.");
 					return true;
 				}
-				FileConfiguration main_cfg = YamlConfiguration.loadConfiguration(config);
-				List<String> addMessage= plugin.getConfig().getStringList("messages");
+				List<String> addMessage= plugin.getConfig().getStringList("messages.default");
 				StringBuilder message = new StringBuilder();
 				for (int i = 1; i < args.length; i++) {
-					message.append(" ").append(ChatColor.translateAlternateColorCodes('&', args[i]));
+					message.append(" ").append(args[i]);
 				}
 				addMessage.add(message.substring(1).toString());
-				main_cfg.set("messages", addMessage);
-				try {
-					main_cfg.save(config);
-					cs.sendMessage("§2Successfully added message.");
-				} catch (IOException e) {
-					plugin.logW("Couldn't add message: ");
-					plugin.logW(e.getMessage());
-				}
+				plugin.getConfig().set("messages.default", addMessage);
+				plugin.saveConfig();
+				cs.sendMessage("§2Successfully added message.");
 			/*
 			 * REMOVE
 			 * Removes a message.
@@ -316,7 +309,6 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				plugin.reloadConfig();
-				FileConfiguration main_cfg = YamlConfiguration.loadConfiguration(config);
 				List<String> removeMessage= plugin.getConfig().getStringList("messages");
 				try {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < plugin.getConfig().getStringList("messages").size()) {
@@ -327,14 +319,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				} catch (NumberFormatException nfe) {
 					cs.sendMessage("§cPlease enter a valid number.");
 				}
-				main_cfg.set("messages", removeMessage);
-				try {
-					main_cfg.save(config);
-					cs.sendMessage("§2Successfully removed message.");
-				} catch (IOException e) {
-					plugin.logW("Couldn't remove message: ");
-					plugin.logW(e.getMessage());
-				}
+				plugin.getConfig().set("messages", removeMessage);
+				plugin.saveConfig();
+				cs.sendMessage("§2Successfully removed message.");
 			/*
 			 * BROADCAST
 			 * Broadcasts the entered text with the prefix.
@@ -577,27 +564,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				FileConfiguration main_cfg = YamlConfiguration.loadConfiguration(config);
-				if (plugin.getConfig().getBoolean("checkforupdates")) {
-					cs.sendMessage("[Simple§cBroadcast]§r The update check function is now disabled.");
-					main_cfg.set("checkforupdates", false);
-					try {
-						cs.sendMessage("[Simple§cBroadcast]§r The update check function is now enabled.");
-						main_cfg.save(config);
-					} catch (IOException e) {
-						plugin.logW("Couldn't change update status ");
-						plugin.logW(e.getMessage());
-					}
-				} else {
-					main_cfg.set("checkforupdates", false);
-					try {
-						cs.sendMessage("[Simple§cBroadcast]§r The update check function is now enabled.");
-						main_cfg.save(config);
-					} catch (IOException e) {
-						plugin.logW("Couldn't change update status ");
-						plugin.logW(e.getMessage());
-					}
-				}
+				plugin.getConfig().set("checkforupdates", !plugin.getConfig().getBoolean("checkforupdates"));
+				plugin.saveConfig();
+				plugin.reloadConfig();
+				cs.sendMessage("[Simple§cBroadcast]§r The update check function is now " + (plugin.getConfig().getBoolean("checkforupdates") ? "enabled." : "disabled."));
 			/*
 			 * HELP
 			 * Shows the help pages.
