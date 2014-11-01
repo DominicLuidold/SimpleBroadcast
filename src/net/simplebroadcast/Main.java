@@ -279,14 +279,14 @@ public class Main extends JavaPlugin {
 	 * @param str The message which shall be logged. 
 	 */
 	public void log(String str) {
-        getLogger().info(str);
-    }
+		getLogger().info(str);
+	}
 
 	/**
 	 * Logs the message with the status: warning
 	 * @param str The message which shall be logged. 
 	 */
 	public void logW(String str) {
-        getLogger().warning(str);
-    }
+		getLogger().warning(str);
+	}
 }
