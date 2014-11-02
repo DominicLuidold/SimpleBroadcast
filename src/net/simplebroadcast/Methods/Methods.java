@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 import net.simplebroadcast.Main;
@@ -62,9 +61,9 @@ public class Methods {
 	@SuppressWarnings("deprecation")
 	public String randomPlayer() {
 		if (Bukkit.getOnlinePlayers().length > 0) {
-			Random r = new Random();
-			String randomplayer = Bukkit.getServer().getOnlinePlayers()[r.nextInt(Bukkit.getServer().getOnlinePlayers().length)].getName();
-			return randomplayer;
+			int random = (int) (Math.random() * Bukkit.getOnlinePlayers().length);
+			String randomPlayer = Bukkit.getServer().getOnlinePlayers()[random].getName();
+			return randomPlayer;
 		} else {
 			String noPlayer = "UNKNOWN";
 			return noPlayer;
@@ -77,29 +76,29 @@ public class Methods {
 	 * @param cs CommandSender
 	 */
 	public void helpList(int i, CommandSender cs) {
-		cs.sendMessage("งe--------- งfHelp: SimpleBroadcast (" + i + "/2) งe---------");
+		cs.sendMessage("ยงe--------- ยงfHelp: SimpleBroadcast (" + i + "/2) ยงe---------");
 		switch (i) {
 			case 1: {
-				cs.sendMessage("ง6/simplebroadcast:งf Shows you information about the plugin.");
-				cs.sendMessage("ง6/simplebroadcast start:งf Starts the broadcast.");
-				cs.sendMessage("ง6/simplebroadcast stop:งf Stops the broadcast.");
-				cs.sendMessage("ง6/simplebroadcast reload:งf Reloads the config.");
-				cs.sendMessage("ง6/simplebroadcast bossbar:งf Toggles the boss bar status.");
-				cs.sendMessage("ง6/simplebroadcast list:งf Shows you all messages.");
-				cs.sendMessage("ง6/simplebroadcast now:งf Broadcasts already existing msg.");
+				cs.sendMessage("ยง6/simplebroadcast:ยงf Shows you information about the plugin.");
+				cs.sendMessage("ยง6/simplebroadcast start:ยงf Starts the broadcast.");
+				cs.sendMessage("ยง6/simplebroadcast stop:ยงf Stops the broadcast.");
+				cs.sendMessage("ยง6/simplebroadcast reload:ยงf Reloads the config.");
+				cs.sendMessage("ยง6/simplebroadcast bossbar:ยงf Toggles the boss bar status.");
+				cs.sendMessage("ยง6/simplebroadcast list:ยงf Shows you all messages.");
+				cs.sendMessage("ยง6/simplebroadcast now:ยงf Broadcasts already existing msg.");
 				break;
 			} case 2: {
-				cs.sendMessage("ง6/simplebroadcast add:งf Adds a msg to the config.");
-				cs.sendMessage("ง6/simplebroadcast remove:งf Removes a msg from the config.");
-				cs.sendMessage("ง6/simplebroadcast broadcast:งf Broadcasts the msg you enter.");
-				cs.sendMessage("ง6/simplebroadcast raw:งf Broadcasts the msg without formatting.");
-				cs.sendMessage("ง6/simplebroadcast ignore:งf Adds/removes the player from the ignore list.");
-				cs.sendMessage("ง6/simplebroadcast update:งf Toggles the update check function.");
-				cs.sendMessage("ง6/simplebroadcast help:งf Shows you the help pages.");
+				cs.sendMessage("ยง6/simplebroadcast add:ยงf Adds a msg to the config.");
+				cs.sendMessage("ยง6/simplebroadcast remove:ยงf Removes a msg from the config.");
+				cs.sendMessage("ยง6/simplebroadcast broadcast:ยงf Broadcasts the msg you enter.");
+				cs.sendMessage("ยง6/simplebroadcast raw:ยงf Broadcasts the msg without formatting.");
+				cs.sendMessage("ยง6/simplebroadcast ignore:ยงf Adds/removes the player from the ignore list.");
+				cs.sendMessage("ยง6/simplebroadcast update:ยงf Toggles the update check function.");
+				cs.sendMessage("ยง6/simplebroadcast help:ยงf Shows you the help pages.");
 				if (cs instanceof Player) {
-					cs.sendMessage("ง6Instead of \"/simplebroadcast\" you can use \"/sb <command>\".");
+					cs.sendMessage("ยง6Instead of \"/simplebroadcast\" you can use \"/sb <command>\".");
 				} else {
-					cs.sendMessage("ง6Instead of \"simplebroadcast\" you can use \"sb <command>\".");
+					cs.sendMessage("ยง6Instead of \"simplebroadcast\" you can use \"sb <command>\".");
 				}
 				break;
 			}
@@ -115,18 +114,17 @@ public class Methods {
 	public String getUUID(final String player) {
 		if (!Bukkit.getServer().getOnlineMode()) {
 			try {
-	            MessageDigest md = MessageDigest.getInstance("MD5");
-	            byte[] messageDigest = md.digest(player.getBytes());
-	            BigInteger number = new BigInteger(1, messageDigest);
-	            String hashedName = number.toString(16);
-	            while (hashedName.length() < 32) {
-	            	hashedName = "0" + hashedName;
-	            }
-	            return hashedName;
-	        }
-	        catch (NoSuchAlgorithmException e) {
-	        }
-		    
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				byte[] messageDigest = md.digest(player.getBytes());
+				BigInteger number = new BigInteger(1, messageDigest);
+				String hashedName = number.toString(16);
+				while (hashedName.length() < 32) {
+					hashedName = "0" + hashedName;
+				}
+				return hashedName;
+			} catch (NoSuchAlgorithmException e) {
+				// should not happen
+	        	}
 		}
 		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
 			@Override
@@ -136,6 +134,7 @@ public class Methods {
 				try {
 					response = fetcher.call();
 				} catch (Exception e) {
+					
 				}
 				
 				try {
@@ -144,6 +143,7 @@ public class Methods {
 					    uuid = UUID.toString();
 					}
 				} catch (NullPointerException npe) {
+					// TODO never chatch a npe
 				}
 			}
 		});
@@ -158,14 +158,14 @@ public class Methods {
 	@SuppressWarnings("deprecation")
 	public String addVariables(String message) {
 		message = message.replace("%sq%", "'").
-				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
-				replace("%unique%", Bukkit.getServer().getOfflinePlayers().length + "").replace("%year%", Calendar.getInstance().get(Calendar.YEAR) + "").
-				replace("%month%", Calendar.getInstance().get(Calendar.MONTH) + 1 + "").replace("%day%", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "").
-				replace("%hour_of_day%", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "").replace("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "").
-				replace("%minute%", Calendar.getInstance().get(Calendar.MINUTE) + "").replace("%second%", Calendar.getInstance().get(Calendar.SECOND) + "").
-				replace("%motd%", Bukkit.getServer().getMotd()).replace("%player%", "UNKNOWN").replace("%biome%", "UNKNOWN").
-				replace("%world%", "UNKNOWN").replace("%online_ops%", opList() + "").replace("%randomplayer%", randomPlayer()).
-				replace("%raquo%", "\u00BB").replace("%laquo%", "\u00AB").replace("%bullet%", "\u2219");
+			replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
+			replace("%unique%", Bukkit.getServer().getOfflinePlayers().length + "").replace("%year%", Calendar.getInstance().get(Calendar.YEAR) + "").
+			replace("%month%", Calendar.getInstance().get(Calendar.MONTH) + 1 + "").replace("%day%", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "").
+			replace("%hour_of_day%", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "").replace("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "").
+			replace("%minute%", Calendar.getInstance().get(Calendar.MINUTE) + "").replace("%second%", Calendar.getInstance().get(Calendar.SECOND) + "").
+			replace("%motd%", Bukkit.getServer().getMotd()).replace("%player%", "UNKNOWN").replace("%biome%", "UNKNOWN").
+			replace("%world%", "UNKNOWN").replace("%online_ops%", opList() + "").replace("%randomplayer%", randomPlayer()).
+			replace("%raquo%", "\u00BB").replace("%laquo%", "\u00AB").replace("%bullet%", "\u2219");
 		return message;
 	}
 	
@@ -207,16 +207,12 @@ public class Methods {
 				/*
 				 * Gets and broadcasts the messages in a random order. 
 				 */
-				msg = new Random().nextInt(Main.globalMessages.size());
+				msg = (int) (Math.random() * Main.globalMessages.size());
 				if (msg != previousMessage) {
-	                previousMessage = msg;
-	            } else {
-	            	if (previousMessage < Main.globalMessages.size()-1) {
-	            		msg++;
-	            	} else if (previousMessage > 1) {
-	            		msg--;
-	            	}
-	            }
+	                		previousMessage = msg;
+	            		} else {
+	            			msg += (previousMessage < Main.globalMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
+	            		}
 				MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(msg);
 				permission = entry.getFirstValue();
 				message = entry.getSecondValue();
@@ -238,36 +234,39 @@ public class Methods {
 						message = message.substring(1);
 						performCommand(message);
 					}
-				} else {			
-					/*
-					 * EXPERIMENTAL
-					 * Checks if the user has to have the permission to receive the message.
-					 * (Still in development - don't use this!)
-					 */
-					if (Main.plugin.getConfig().getBoolean("usepermissions")) {
-						for (Player p : Bukkit.getOnlinePlayers()) {
-							if (!ignoredPlayers.contains(getUUID(p.getName()))) {
-								if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {					
-									p.sendMessage(ChatColor.translateAlternateColorCodes('&', "งf" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
-								} else {
-									//TODO
-								}
-							}
+					return;
+				}
+				
+				/*
+				 * EXPERIMENTAL
+				 * Checks if the user has to have the permission to receive the message.
+				 * (Still in development - don't use this!)
+				 */
+				if (Main.plugin.getConfig().getBoolean("usepermissions")) {
+					for (Player p : Bukkit.getOnlinePlayers()) {
+						if (ignoredPlayers.contains(getUUID(p.getName()))) {
+							continue;
 						}
-					} else {
-						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-							if (!ignoredPlayers.contains(getUUID(p.getName()))) {
-								p.sendMessage("งf" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
-							}
+						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {					
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "ยงf" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+						} else {
+							//TODO
 						}
 					}
-					/*
-					 * Checks if messages shall be broadcasted in the console.
-					 */
-					if (Main.plugin.getConfig().getBoolean("sendmessagestoconsole")) {
-						ConsoleCommandSender console = Bukkit.getConsoleSender();
-						console.sendMessage("งf" + (prefix_bool ? prefix + " " : "") + addVariables(message) + (suffix_bool ? " " + suffix : ""));
+				} else {
+					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+						if (ignoredPlayers.contains(getUUID(p.getName()))) {
+							continue;
+						}
+						p.sendMessage("ยงf" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
 					}
+				}
+				/*
+				 * Checks if messages shall be broadcasted in the console.
+				 */
+				if (Main.plugin.getConfig().getBoolean("sendmessagestoconsole")) {
+					ConsoleCommandSender console = Bukkit.getConsoleSender();
+					console.sendMessage("ยงf" + (prefix_bool ? prefix + " " : "") + addVariables(message) + (suffix_bool ? " " + suffix : ""));
 				}
 			}
 		}, 0L, Main.plugin.getConfig().getInt("delay") * 20L);
