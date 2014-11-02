@@ -259,17 +259,32 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("§cPlease enter a message number.");
 					return true;
 				}
+				/*
+				 * Loads the ignore.yml.
+				 */
+				File file = new File("plugins/SimpleBroadcast", "ignore.yml");
+				FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+				List<String> ignoredPlayers = cfg.getStringList("players");
+				/*
+				 * Broadcasts the message.
+				 */
 				try {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < Main.globalMessages.size()) {
 						MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(Integer.parseInt(args[1])-1);
+						String permission = entry.getFirstValue();
 						String message = entry.getSecondValue();
 						for (Player p : Bukkit.getOnlinePlayers()) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+							if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
+								if (Main.plugin.getConfig().getBoolean("usepermissions") && (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default"))) {
+									p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+								}
+							}
 						}
 						if (plugin.getConfig().getBoolean("sendmessagestoconsole")) {
 							ConsoleCommandSender console = Bukkit.getConsoleSender();
 							console.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 						}
+						cs.sendMessage("§2Successfully broadcasted message.");
 					} else {
 						cs.sendMessage("§cThere are only " + Main.globalMessages.size() + " messages available which you can broadcast.");
 					}
