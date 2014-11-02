@@ -274,11 +274,16 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						String permission = entry.getFirstValue();
 						String message = entry.getSecondValue();
 						for (Player p : Bukkit.getOnlinePlayers()) {
-							if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-								if (Main.plugin.getConfig().getBoolean("usepermissions") && (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default"))) {
+							if (ignoredPlayers.contains(mt.getUUID(p.getName()))) {
+								continue;
+							}
+							if (Main.plugin.getConfig().getBoolean("usepermissions")) {
+								if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
 									p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 								}
+								return true;
 							}
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						}
 						if (plugin.getConfig().getBoolean("sendmessagestoconsole")) {
 							ConsoleCommandSender console = Bukkit.getConsoleSender();
@@ -317,6 +322,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 			/*
 			 * REMOVE
 			 * Removes a message.
+			 * !!Warning: currently broken!!
 			 */
 			} else if (args[0].equalsIgnoreCase("remove")) {
 				if (!cs.hasPermission("simplebroadcast.remove")) {
