@@ -70,7 +70,7 @@ public class MessageRunnable implements Runnable {
 				for (Player p : Bukkit.getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
 						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {					
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "Â§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						} else {
 							//TODO
 						}
@@ -79,7 +79,7 @@ public class MessageRunnable implements Runnable {
 			} else {
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "Â§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 					}
 				}
 			}
@@ -88,7 +88,7 @@ public class MessageRunnable implements Runnable {
 			 */
 			if (Main.plugin.getConfig().getBoolean("sendmessagestoconsole")) {
 				ConsoleCommandSender console = Bukkit.getConsoleSender();
-				console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
+				console.sendMessage(ChatColor.translateAlternateColorCodes('&', "Â§f" + (prefix_bool ? prefix + " " : "") + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 			}
 			counter++;
 		}

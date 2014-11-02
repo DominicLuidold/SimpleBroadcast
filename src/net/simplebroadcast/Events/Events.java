@@ -34,8 +34,8 @@ public class Events implements Listener {
 				public void run() {
 					try {
 						if ((p.isOp() || p.hasPermission("simplebroadcast.update")) && um.updateB()) {
-							p.sendMessage("[Simple§cBroadcast]§r An update is available: " + um.updateN());
-							p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
+							p.sendMessage("[SimpleÂ§cBroadcast]Â§r An update is available: " + um.updateN());
+							p.sendMessage("[SimpleÂ§cBroadcast]Â§r Please download it from the BukkitDev page.");
 						}
 					} catch (NullPointerException npe) {
 						Main.plugin.logW("Couldn't check for updates.");
@@ -78,7 +78,7 @@ public class Events implements Listener {
 		 * Broadcasts the easter egg message to every player if someone types "SimpleBroadcast" in the chat.
 		 */
 		if (event.getMessage().toLowerCase().contains("simplebroadcast")) {
-			Bukkit.broadcastMessage("[Simple§cBroadcast]§r He, he.. Thank you for using SimpleBroadcast! :D");
+			Bukkit.broadcastMessage("[SimpleÂ§cBroadcast]Â§r He, he.. Thank you for using SimpleBroadcast! :D");
 		}
 	}
 

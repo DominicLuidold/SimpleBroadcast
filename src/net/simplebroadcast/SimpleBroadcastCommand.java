@@ -30,7 +30,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 	private Methods mt = new Methods();
 	private BossBarMethods bmt = new BossBarMethods();
 	private UpdatingMethods um = new UpdatingMethods();
-	private String err_need_Perm = "§cYou do not have access to that command.";
+	private String err_need_Perm = "Â§cYou do not have access to that command.";
 	
 	
 	public SimpleBroadcastCommand(Main plugin) {
@@ -54,41 +54,41 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				cs.sendMessage(err_need_Perm);
 				return true;
 			}
-			cs.sendMessage("§e--------- §fInfo: SimpleBroadcast §e------------");
-			cs.sendMessage("§6Author:§f KingDome24");
-			cs.sendMessage("§6Version:§f " + plugin.getDescription().getVersion());
-			cs.sendMessage("§6Website:§f " + plugin.getDescription().getWebsite());
+			cs.sendMessage("Â§e--------- Â§fInfo: SimpleBroadcast Â§e------------");
+			cs.sendMessage("Â§6Author:Â§f KingDome24");
+			cs.sendMessage("Â§6Version:Â§f " + plugin.getDescription().getVersion());
+			cs.sendMessage("Â§6Website:Â§f " + plugin.getDescription().getWebsite());
 			if (plugin.getConfig().getBoolean("checkforupdates")) {
 				Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 					@Override
 					public void run() {
 						try {
 							if (um.updateB()) {
-								cs.sendMessage("§6Upate:§f An update is available: " + um.updateN());
+								cs.sendMessage("Â§6Upate:Â§f An update is available: " + um.updateN());
 							} else {
-								cs.sendMessage("§6Upate:§f There are no updates available.");
+								cs.sendMessage("Â§6Upate:Â§f There are no updates available.");
 							}
 						} catch (NullPointerException npe) {
-							cs.sendMessage("§6Upate:§f Couldn't check for updates.");
+							cs.sendMessage("Â§6Upate:Â§f Couldn't check for updates.");
 						}
 					}
 				});				    
 			} else {
-				cs.sendMessage("§6Update:§f You disabled the update check function.");
+				cs.sendMessage("Â§6Update:Â§f You disabled the update check function.");
 			}
 			if (plugin.getConfig().getBoolean("pluginmetrics")) {
-				cs.sendMessage("§6PluginMetrics:§f PluginMetrics is enabled and sends data.");
+				cs.sendMessage("Â§6PluginMetrics:Â§f PluginMetrics is enabled and sends data.");
 			} else {
-				cs.sendMessage("§6PluginMetrics:§f PluginMetrics is disabled and sends no data.");
+				cs.sendMessage("Â§6PluginMetrics:Â§f PluginMetrics is disabled and sends no data.");
 			}
 			File bossbar = new File("plugins/SimpleBroadcast", "bossbar.yml");
 			FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.bar_running == 1) {
-				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled and broadcasts.");
+				cs.sendMessage("Â§6Boss bar broadcast:Â§f The boss bar integration is enabled and broadcasts.");
 			} else if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.bar_running == 0) {
-				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled.");
+				cs.sendMessage("Â§6Boss bar broadcast:Â§f The boss bar integration is enabled.");
 			} else {
-				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is disabled.");
+				cs.sendMessage("Â§6Boss bar broadcast:Â§f The boss bar integration is disabled.");
 			}
 		} else if (args.length >= 1) {
 			/*
@@ -102,12 +102,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 				if (Main.running == 0) {
 					mt.broadcast();
-					cs.sendMessage("[Simple§cBroadcast]§r Started broadcast.");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Started broadcast.");
 					Main.running = 1;
 				} else if (Main.running == 3) {
-					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is disabled as set in the config.");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Broadcast is disabled as set in the config.");
 				} else {
-					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already started!");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Broadcast is already started!");
 				}
 			/*
 			 * STOP
@@ -120,12 +120,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 				if (Main.running == 1) {
 					Bukkit.getServer().getScheduler().cancelTask(Main.messageTask);
-					cs.sendMessage("[Simple§cBroadcast]§r Cancelled broadcast.");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Cancelled broadcast.");
 					Main.running = 0;
 				} else if (Main.running == 3) {
-					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already disabled (as set in the config)!");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Broadcast is already disabled (as set in the config)!");
 				} else {
-					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already cancelled!");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Broadcast is already cancelled!");
 				}
 			/*
 			 * RELOAD
@@ -147,11 +147,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				
 				if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 					mt.broadcast();
-					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Reloaded the config(s) successfully.");
 					if (!(Main.running == 3)) 
 						Main.running = 1;
 				} else {
-					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
+					cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Reloaded the config(s) successfully.");
 					if (Bukkit.getOnlinePlayers().length >= 1) {
 						mt.broadcast();
 						if (!(Main.running == 3)) 
@@ -171,8 +171,8 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						cs.sendMessage(err_need_Perm);
 						return true;
 					}
-					cs.sendMessage("§cTo use the boss bar, please download the BarAPI.");
-					cs.sendMessage("§chttp://dev.bukkit.org/bukkit-plugins/bar-api");
+					cs.sendMessage("Â§cTo use the boss bar, please download the BarAPI.");
+					cs.sendMessage("Â§chttp://dev.bukkit.org/bukkit-plugins/bar-api");
 					return true;
 				}
 				/*
@@ -186,11 +186,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					if (BossBarMethods.bar_running == 0) {
 						BossBarMethods.bar_running = 1;
 						bmt.barBroadcast();
-						cs.sendMessage("[Simple§cBroadcast]§r Started (boss bar) broadcast.");
+						cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Started (boss bar) broadcast.");
 					} else if (BossBarMethods.bar_running == 3) {
-						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is disabled (as set in the bossbar.yml)!");
+						cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Boss bar broadcast is disabled (as set in the bossbar.yml)!");
 					} else {
-						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already started!");
+						cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Boss bar broadcast is already started!");
 					}
 				/*
 				 * Stops the boss bar broadcast.
@@ -206,11 +206,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 							BarAPI.removeBar(p);
 						}
-						cs.sendMessage("[Simple§cBroadcast]§r Cancelled boss bar broadcast.");
+						cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Cancelled boss bar broadcast.");
 					} else if (BossBarMethods.bar_running == 3) {
-						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already disabled (as set in the bossbar.yml)!");
+						cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Boss bar broadcast is already disabled (as set in the bossbar.yml)!");
 					} else {
-						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already cancelled!");
+						cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Boss bar broadcast is already cancelled!");
 					}
 				} else {
 					if (!cs.hasPermission("simplebroadcast.bossbar.start") && !cs.hasPermission("simplebroadcast.bossbar.stop")) {
@@ -218,9 +218,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						return true;
 					}
 					if (cs instanceof Player) {
-						cs.sendMessage("§cPlease use either \"/sb bossbar start\" or \"/sb bossbar stop\".");
+						cs.sendMessage("Â§cPlease use either \"/sb bossbar start\" or \"/sb bossbar stop\".");
 					} else {
-						cs.sendMessage("§cPlease use either \"sb bossbar start\" or \"sb bossbar stop\".");
+						cs.sendMessage("Â§cPlease use either \"sb bossbar start\" or \"sb bossbar stop\".");
 					}
 				}
 			/*
@@ -234,14 +234,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 				int message_number = 1;
 				plugin.reloadConfig();
-				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e-------------");
+				cs.sendMessage("Â§e--------- Â§fMessages: SimpleBroadcast Â§e-------------");
 				for (String permission : plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
 					for (String msg : plugin.getConfig().getStringList("messages." + permission)) {
 						if (cs instanceof Player) {
 							Player p = (Player) cs;
-							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "Â§6" + message_number + ".Â§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
 						} else {
-							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "Â§6" + message_number + ".Â§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
 						}
 						message_number++;
 					}
@@ -256,7 +256,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				if (args.length == 1) {
-					cs.sendMessage("§cPlease enter a message number.");
+					cs.sendMessage("Â§cPlease enter a message number.");
 					return true;
 				}
 				/*
@@ -284,12 +284,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 							ConsoleCommandSender console = Bukkit.getConsoleSender();
 							console.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 						}
-						cs.sendMessage("§2Successfully broadcasted message.");
+						cs.sendMessage("Â§2Successfully broadcasted message.");
 					} else {
-						cs.sendMessage("§cThere are only " + Main.globalMessages.size() + " messages available which you can broadcast.");
+						cs.sendMessage("Â§cThere are only " + Main.globalMessages.size() + " messages available which you can broadcast.");
 					}
 				} catch (NumberFormatException nfe) {
-					cs.sendMessage("§cPlease enter a valid number.");
+					cs.sendMessage("Â§cPlease enter a valid number.");
 				}
 			/*
 			 * ADD
@@ -302,7 +302,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				if (!(args.length > 1)) {
-					cs.sendMessage("§cPlease enter a message which you want to add.");
+					cs.sendMessage("Â§cPlease enter a message which you want to add.");
 					return true;
 				}
 				List<String> addMessage= plugin.getConfig().getStringList("messages.default");
@@ -313,7 +313,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				addMessage.add(message.substring(1).toString());
 				plugin.getConfig().set("messages.default", addMessage);
 				plugin.saveConfig();
-				cs.sendMessage("§2Successfully added message.");
+				cs.sendMessage("Â§2Successfully added message.");
 			/*
 			 * REMOVE
 			 * Removes a message.
@@ -329,14 +329,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < plugin.getConfig().getStringList("messages").size()) {
 						removeMessage.remove(Integer.parseInt(args[1])-1);
 					} else {
-						cs.sendMessage("§cPlease choose a number between 1 and " + plugin.getConfig().getStringList("messages").size() + ".");
+						cs.sendMessage("Â§cPlease choose a number between 1 and " + plugin.getConfig().getStringList("messages").size() + ".");
 					}
 				} catch (NumberFormatException nfe) {
-					cs.sendMessage("§cPlease enter a valid number.");
+					cs.sendMessage("Â§cPlease enter a valid number.");
 				}
 				plugin.getConfig().set("messages", removeMessage);
 				plugin.saveConfig();
-				cs.sendMessage("§2Successfully removed message.");
+				cs.sendMessage("Â§2Successfully removed message.");
 			/*
 			 * BROADCAST
 			 * Broadcasts the entered text with the prefix.
@@ -348,14 +348,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 				if (!plugin.getConfig().getBoolean("prefix.enabled")) {
 					if (cs instanceof Player) {
-						cs.sendMessage("§cPlease use \"/simplebroadcast raw\" instead.");
+						cs.sendMessage("Â§cPlease use \"/simplebroadcast raw\" instead.");
 					} else {
-						cs.sendMessage("§cPlease use \"simplebroadcast raw\" instead.");
+						cs.sendMessage("Â§cPlease use \"simplebroadcast raw\" instead.");
 					}
 					return true;
 				}
 				if (!(args.length > 1)) {
-					cs.sendMessage("§cPlease enter a message which you want to broadcast.");
+					cs.sendMessage("Â§cPlease enter a message which you want to broadcast.");
 					return true;
 				}
 				StringBuilder message = new StringBuilder();
@@ -382,7 +382,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				if (!(args.length > 1)) {
-					cs.sendMessage("§cPlease enter a message which you want to broadcast.");
+					cs.sendMessage("Â§cPlease enter a message which you want to broadcast.");
 					return true;
 				}
 				StringBuilder message = new StringBuilder();
@@ -406,11 +406,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				if (args.length == 1) {
-					cs.sendMessage("§cPlease enter a name.");
+					cs.sendMessage("Â§cPlease enter a name.");
 					return true;
 				}
 				if (args.length > 2) {
-					cs.sendMessage("§cPlease enter only one name.");
+					cs.sendMessage("Â§cPlease enter only one name.");
 					return true;
 				}
 				/*
@@ -440,29 +440,29 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 								if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 									BarAPI.removeBar(p);
 								}
-								cs.sendMessage("[Simple§cBroadcast]§r Now you don't receive any messages.");
+								cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Now you don't receive any messages.");
 							} else {
-								cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
+								cs.sendMessage("Â§cPlease use the option in the config to turn off the messages in the console.");
 							}
 						} else {
 							ignorePlayers.add(mt.getUUID(args[1]));
 							if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 								BarAPI.removeBar(Bukkit.getServer().getPlayer(args[1]));
 							}
-							cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now doesn't receive any messages.");
+							cs.sendMessage("[SimpleÂ§cBroadcast]Â§r The player Â§7" + args[1] + "Â§f now doesn't receive any messages.");
 						}
 					} else {
 						if (args[1].equalsIgnoreCase("me")) {
 							if (cs instanceof Player) {
 								Player p = (Player) cs;
 								ignorePlayers.remove(mt.getUUID(p.getName()));
-								cs.sendMessage("[Simple§cBroadcast]§r Now you receive the messages again.");
+								cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Now you receive the messages again.");
 							} else {
-								cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
+								cs.sendMessage("Â§cPlease use the option in the config to turn off the messages in the console.");
 							}
 						} else {
 							ignorePlayers.remove(mt.getUUID(args[1]));
-							cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now receives the messages again.");
+							cs.sendMessage("[SimpleÂ§cBroadcast]Â§r The player Â§7" + args[1] + "Â§f now receives the messages again.");
 						}
 					}
 					cfg.set("players", ignorePlayers);
@@ -495,7 +495,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						 */
 						try {
 							if (response.isEmpty() && !args[1].equalsIgnoreCase("me")) 
-								cs.sendMessage("§cThe player, who you have entered, doesn't exist!");
+								cs.sendMessage("Â§cThe player, who you have entered, doesn't exist!");
 							/* 
 							 *(ADDEN)
 							 * Checks if the player entered "me".
@@ -505,7 +505,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 									Player p = (Player) cs;
 									response.put(p.getName(), p.getUniqueId());
 								} else {
-									cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
+									cs.sendMessage("Â§cPlease use the option in the config to turn off the messages in the console.");
 								}
 							}						
 							for (Map.Entry<String, UUID> entry : response.entrySet()) {
@@ -521,14 +521,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 										if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 											BarAPI.removeBar(p);
 										}
-										cs.sendMessage("[Simple§cBroadcast]§r Now you don't receive any messages.");
+										cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Now you don't receive any messages.");
 									} else {
 										String add_uuid = uuid.toString();						        
 										ignorePlayers.add(add_uuid);
 										if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 											BarAPI.removeBar(Bukkit.getServer().getPlayer(args[1]));
 										}
-										cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now doesn't receive any messages.");
+										cs.sendMessage("[SimpleÂ§cBroadcast]Â§r The player Â§7" + args[1] + "Â§f now doesn't receive any messages.");
 									}
 								/*
 								 * Removes the UUID of the player.
@@ -538,14 +538,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 										if (cs instanceof Player) {
 											Player p = (Player) cs;
 											ignorePlayers.remove(mt.getUUID(p.getName()));
-											cs.sendMessage("[Simple§cBroadcast]§r Now you receive the messages again.");
+											cs.sendMessage("[SimpleÂ§cBroadcast]Â§r Now you receive the messages again.");
 										} else {
-											cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
+											cs.sendMessage("Â§cPlease use the option in the config to turn off the messages in the console.");
 										}
 									} else {
 										String rem_uuid = uuid.toString();						        
 										ignorePlayers.remove(rem_uuid);
-										cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now receives the messages again.");
+										cs.sendMessage("[SimpleÂ§cBroadcast]Â§r The player Â§7" + args[1] + "Â§f now receives the messages again.");
 									}
 								}
 								/*
@@ -562,10 +562,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						} catch (NullPointerException npe) {
 							if (args[1].equalsIgnoreCase("me")) {
 								plugin.logW("Couldn't check UUID for player \"" + cs.getName() + "\".");
-								cs.sendMessage("§cCouldn't check UUID for player \"" + cs.getName() + "\", please try again later or check spelling.");
+								cs.sendMessage("Â§cCouldn't check UUID for player \"" + cs.getName() + "\", please try again later or check spelling.");
 							} else {
 								plugin.logW("Couldn't check UUID for player \"" + args[1] + "\".");
-								cs.sendMessage("§cCouldn't check UUID for player \"" + args[1] + "\", please try again later or check spelling.");
+								cs.sendMessage("Â§cCouldn't check UUID for player \"" + args[1] + "\", please try again later or check spelling.");
 							}
 						}
 					}
@@ -582,7 +582,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				plugin.getConfig().set("checkforupdates", !plugin.getConfig().getBoolean("checkforupdates"));
 				plugin.saveConfig();
 				plugin.reloadConfig();
-				cs.sendMessage("[Simple§cBroadcast]§r The update check function is now " + (plugin.getConfig().getBoolean("checkforupdates") ? "enabled." : "disabled."));
+				cs.sendMessage("[SimpleÂ§cBroadcast]Â§r The update check function is now " + (plugin.getConfig().getBoolean("checkforupdates") ? "enabled." : "disabled."));
 			/*
 			 * HELP
 			 * Shows the help pages.
@@ -599,10 +599,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						if (Integer.parseInt(args[1]) > 0 && Integer.parseInt(args[1]) <= 2) {
 							mt.helpList(Integer.parseInt(args[1]), cs);
 						} else {
-							cs.sendMessage("§cThere are only 2 pages available.");
+							cs.sendMessage("Â§cThere are only 2 pages available.");
 						}
 					} catch (NumberFormatException nfe) {
-						cs.sendMessage("§cPlease enter a valid number.");
+						cs.sendMessage("Â§cPlease enter a valid number.");
 					}
 				}
 			/*
@@ -615,9 +615,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				if (cs instanceof Player) {
-					cs.sendMessage("§cUnknown command. Type \"/simplebroadcast help\" for help.");
+					cs.sendMessage("Â§cUnknown command. Type \"/simplebroadcast help\" for help.");
 				} else {
-					cs.sendMessage("§cUnknown command. Type \"simplebroadcast help\" for help.");
+					cs.sendMessage("Â§cUnknown command. Type \"simplebroadcast help\" for help.");
 				}
 			}
 		}
