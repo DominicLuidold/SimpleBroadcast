@@ -13,10 +13,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Events implements Listener {
-	
+
 	private Methods mt = new Methods();
 	private UpdatingMethods um = new UpdatingMethods();
-		
+
 	/*
 	 * PlayerJoinEvent
 	 */
@@ -53,7 +53,7 @@ public class Events implements Listener {
 			}
 		}
 	}
-	
+
 	/*
 	 * PlayerQuitEvent
 	 */
@@ -68,7 +68,7 @@ public class Events implements Listener {
 			Main.running = 0;
 		}
 	}
-	
+
 	/*
 	 * AsyncPlayerChatEvent
 	 */

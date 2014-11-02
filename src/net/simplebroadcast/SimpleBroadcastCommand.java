@@ -25,23 +25,23 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class SimpleBroadcastCommand implements CommandExecutor {
-	
+
 	private Main plugin;
 	private Methods mt = new Methods();
 	private BossBarMethods bmt = new BossBarMethods();
 	private UpdatingMethods um = new UpdatingMethods();
 	private String err_need_Perm = "§cYou do not have access to that command.";
-	
-	
+
+
 	public SimpleBroadcastCommand(Main plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	boolean prefix_bool = Main.plugin.getConfig().getBoolean("prefix.enabled");
 	boolean suffix_bool = Main.plugin.getConfig().getBoolean("suffix.enabled");
 	String prefix = mt.addVariables(Main.plugin.getConfig().getString("prefix.prefix"));
 	String suffix = mt.addVariables(Main.plugin.getConfig().getString("suffix.suffix"));
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(final CommandSender cs, Command cmd, String label, final String[] args) {
@@ -72,7 +72,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 							cs.sendMessage("§6Upate:§f Couldn't check for updates.");
 						}
 					}
-				});				    
+				});
 			} else {
 				cs.sendMessage("§6Update:§f You disabled the update check function.");
 			}
@@ -138,26 +138,26 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 				Bukkit.getServer().getScheduler().cancelTask(Main.messageTask);
 				Bukkit.getServer().getScheduler().cancelTask(BossBarMethods.barTask);
-				
-				BossBarMethods.counter = 0;				
+
+				BossBarMethods.counter = 0;
 				plugin.reloadConfig();
 				plugin.loadMessages();
 				BossBarMethods.bar_running = 1;
 				bmt.barBroadcast();
-				
+
 				if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 					mt.broadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
-					if (!(Main.running == 3)) 
+					if (!(Main.running == 3))
 						Main.running = 1;
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
 					if (Bukkit.getOnlinePlayers().length >= 1) {
 						mt.broadcast();
-						if (!(Main.running == 3)) 
+						if (!(Main.running == 3))
 							Main.running = 1;
 					} else {
-						if (!(Main.running == 3)) 
+						if (!(Main.running == 3))
 							Main.running = 0;
 					}
 				}
@@ -191,7 +191,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is disabled (as set in the bossbar.yml)!");
 					} else {
 						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already started!");
-					}
+				}
 				/*
 				 * Stops the boss bar broadcast.
 				 */
@@ -370,7 +370,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 				for (int i = 1; i < args.length; i++) {
 					message.append(" ").append(ChatColor.translateAlternateColorCodes('&', args[i]));
-				}			
+				}
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					p.sendMessage(mt.addVariablesP(message.toString(), p));
 				}
@@ -435,13 +435,13 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					 * Checks if the player already doesn't receive any messages.
 					 */
 					if (!ignorePlayers.contains(mt.getUUID(args[1]))) {
-						/* 
+						/*
 						 *(ADDEN)
 						 * Checks if the player entered "me" or a player name.
 						 */
 						if (args[1].equalsIgnoreCase("me")) {
 							if (cs instanceof Player) {
-								Player p = (Player) cs;							
+								Player p = (Player) cs;
 								ignorePlayers.add(mt.getUUID(p.getName()));
 								if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 									BarAPI.removeBar(p);
@@ -500,9 +500,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						 * Checks if entered player exists.
 						 */
 						try {
-							if (response.isEmpty() && !args[1].equalsIgnoreCase("me")) 
+							if (response.isEmpty() && !args[1].equalsIgnoreCase("me"))
 								cs.sendMessage("§cThe player, who you have entered, doesn't exist!");
-							/* 
+							/*
 							 *(ADDEN)
 							 * Checks if the player entered "me".
 							 */
@@ -513,13 +513,13 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 								} else {
 									cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
 								}
-							}						
+							}
 							for (Map.Entry<String, UUID> entry : response.entrySet()) {
-								UUID uuid = entry.getValue();										
-							    check_uuid = uuid.toString();
-							    /*
-							     * Checks if ignore.yml already contains the uuid of the player.
-							     */
+								UUID uuid = entry.getValue();
+								check_uuid = uuid.toString();
+								/*
+								 * Checks if ignore.yml already contains the uuid of the player.
+								 */
 								if (!ignorePlayers.contains(check_uuid) && !ignorePlayers.contains(mt.getUUID(cs.getName()))) {
 									if (args[1].equalsIgnoreCase("me")) {
 										Player p = (Player) cs;
@@ -529,7 +529,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 										}
 										cs.sendMessage("[Simple§cBroadcast]§r Now you don't receive any messages.");
 									} else {
-										String add_uuid = uuid.toString();						        
+										String add_uuid = uuid.toString();
 										ignorePlayers.add(add_uuid);
 										if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 											BarAPI.removeBar(Bukkit.getServer().getPlayer(args[1]));
@@ -549,7 +549,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 											cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
 										}
 									} else {
-										String rem_uuid = uuid.toString();						        
+										String rem_uuid = uuid.toString();
 										ignorePlayers.remove(rem_uuid);
 										cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now receives the messages again.");
 									}

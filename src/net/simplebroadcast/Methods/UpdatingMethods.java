@@ -6,7 +6,7 @@ import net.simplebroadcast.Main;
 import net.simplebroadcast.Utils.Updater;
 
 public class UpdatingMethods {
-	
+
 	/**
 	 * Gets the plugin version of the update.
 	 * @return (Integer) Returns the plugin version of the update (removed points for comparison).
@@ -23,7 +23,7 @@ public class UpdatingMethods {
 			return 1;
 		}
 	}
-		
+
 	/**
 	 * Gets the plugin version.
 	 * @return (Integer) Returns the plugin version (removed points for comparison).
@@ -44,7 +44,7 @@ public class UpdatingMethods {
 	 * Notifies the player if updates are available.
 	 */
 	public void update() {
-		try {			
+		try {
 			if (updateB()) {
 				Main.plugin.log("An update is available: " + updateN());
 				Main.plugin.log("Please download it from the BukkitDev page.");
@@ -53,19 +53,19 @@ public class UpdatingMethods {
 			Main.plugin.logW("Couldn't check for updates.");
 		}
 	}
-	
+
 	/**
 	 * Checks for updates.
 	 * @return (Boolean) Return either true if updates are available or false if no updates are available.
 	 */
-	public boolean updateB() {				
+	public boolean updateB() {
 		if (pVersion() >= uVersion()) {
 			return false;
 		} else {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Gets the latest version number.
 	 * @return (String) Returns the latest version number.

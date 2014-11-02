@@ -24,13 +24,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Methods {
-	
+
 	private int msg;
 	private String message;
 	private String permission;
 	public static String uuid;
 	private int previousMessage;
-	
+
 	/**
 	 * Executes a command.
 	 * @param command The command which shall be executed.
@@ -38,7 +38,7 @@ public class Methods {
 	public void performCommand(String command) {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 	}
-		
+
 	/**
 	 * Counts the amount of operators who are online.
 	 * @return (Integer) Amount of online operators.
@@ -53,7 +53,7 @@ public class Methods {
 		}
 		return ops;
 	}
-	
+
 	/**
 	 * Gets a random player name.
 	 * @return (String) Name of player.
@@ -69,7 +69,7 @@ public class Methods {
 			return noPlayer;
 		}
 	}
-	
+
 	/**
 	 * Shows an overview of all available commands.
 	 * @param i Page site.
@@ -104,7 +104,7 @@ public class Methods {
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the UUID of the player.
 	 * If server runs in "online-mode=false" it returns an an MD5 hash of the player name.
@@ -124,7 +124,7 @@ public class Methods {
 				return hashedName;
 			} catch (NoSuchAlgorithmException e) {
 				// should not happen
-	        	}
+			}
 		}
 		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
 			@Override
@@ -134,13 +134,13 @@ public class Methods {
 				try {
 					response = fetcher.call();
 				} catch (Exception e) {
-					
+
 				}
-				
+
 				try {
 					for (Map.Entry<String, UUID> entry : response.entrySet()) {
-					    UUID UUID = entry.getValue();
-					    uuid = UUID.toString();
+						UUID UUID = entry.getValue();
+						uuid = UUID.toString();
 					}
 				} catch (NullPointerException npe) {
 					// TODO never chatch a npe
@@ -149,7 +149,7 @@ public class Methods {
 		});
 		return uuid;
 	}
-	
+
 	/**
 	 * Replaces the variables in the messages.
 	 * @param message The message which the variables shall be replaced.
@@ -158,17 +158,17 @@ public class Methods {
 	@SuppressWarnings("deprecation")
 	public String addVariables(String message) {
 		message = message.replace("%sq%", "'").
-			replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
-			replace("%unique%", Bukkit.getServer().getOfflinePlayers().length + "").replace("%year%", Calendar.getInstance().get(Calendar.YEAR) + "").
-			replace("%month%", Calendar.getInstance().get(Calendar.MONTH) + 1 + "").replace("%day%", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "").
-			replace("%hour_of_day%", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "").replace("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "").
-			replace("%minute%", Calendar.getInstance().get(Calendar.MINUTE) + "").replace("%second%", Calendar.getInstance().get(Calendar.SECOND) + "").
-			replace("%motd%", Bukkit.getServer().getMotd()).replace("%player%", "UNKNOWN").replace("%biome%", "UNKNOWN").
-			replace("%world%", "UNKNOWN").replace("%online_ops%", opList() + "").replace("%randomplayer%", randomPlayer()).
-			replace("%raquo%", "\u00BB").replace("%laquo%", "\u00AB").replace("%bullet%", "\u2219");
+				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
+				replace("%unique%", Bukkit.getServer().getOfflinePlayers().length + "").replace("%year%", Calendar.getInstance().get(Calendar.YEAR) + "").
+				replace("%month%", Calendar.getInstance().get(Calendar.MONTH) + 1 + "").replace("%day%", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "").
+				replace("%hour_of_day%", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "").replace("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "").
+				replace("%minute%", Calendar.getInstance().get(Calendar.MINUTE) + "").replace("%second%", Calendar.getInstance().get(Calendar.SECOND) + "").
+				replace("%motd%", Bukkit.getServer().getMotd()).replace("%player%", "UNKNOWN").replace("%biome%", "UNKNOWN").
+				replace("%world%", "UNKNOWN").replace("%online_ops%", opList() + "").replace("%randomplayer%", randomPlayer()).
+				replace("%raquo%", "\u00BB").replace("%laquo%", "\u00AB").replace("%bullet%", "\u2219");
 		return message;
 	}
-	
+
 	/**
 	 * Replaces the variables in the messages.
 	 * @param message The message which the variables shall be replaced.
@@ -179,7 +179,7 @@ public class Methods {
 		message = addVariables(message.replace("%player%", p.getName()).replace("%biome%", p.getLocation().getBlock().getBiome().toString()).replace("%world%", p.getWorld().getName()));
 		return message;
 	}
-	
+
 	/*
 	 * The global broadcast function.
 	 */
@@ -205,14 +205,14 @@ public class Methods {
 				FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 				List<String> ignoredPlayers = cfg.getStringList("players");
 				/*
-				 * Gets and broadcasts the messages in a random order. 
+				 * Gets and broadcasts the messages in a random order.
 				 */
 				msg = (int) (Math.random() * Main.globalMessages.size());
 				if (msg != previousMessage) {
-	                		previousMessage = msg;
-	            		} else {
-	            			msg += (previousMessage < Main.globalMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
-	            		}
+					previousMessage = msg;
+				} else {
+					msg += (previousMessage < Main.globalMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
+				}
 				MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(msg);
 				permission = entry.getFirstValue();
 				message = entry.getSecondValue();
@@ -236,7 +236,7 @@ public class Methods {
 					}
 					return;
 				}
-				
+
 				/*
 				 * EXPERIMENTAL
 				 * Checks if the user has to have the permission to receive the message.
@@ -247,7 +247,7 @@ public class Methods {
 						if (ignoredPlayers.contains(getUUID(p.getName()))) {
 							continue;
 						}
-						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {					
+						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
 							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						} else {
 							//TODO
@@ -270,5 +270,5 @@ public class Methods {
 				}
 			}
 		}, 0L, Main.plugin.getConfig().getInt("delay") * 20L);
-	}	
+	}
 }
