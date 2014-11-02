@@ -33,7 +33,7 @@ public class MessageRunnable implements Runnable {
 			broadCast();
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	private void broadCast() {
 		MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(counter);
@@ -69,7 +69,7 @@ public class MessageRunnable implements Runnable {
 			if (Main.plugin.getConfig().getBoolean("usepermissions")) {
 				for (Player p : Bukkit.getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {					
+						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
 							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						} else {
 							//TODO
