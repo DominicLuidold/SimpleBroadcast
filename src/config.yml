@@ -1,5 +1,5 @@
 # This is the default config.yml for SimpleBroadcast.
-# Plugin made by KingDome24 and yonascode.
+# Plugin made by KingDome24.
 # If you need help visit http://www.SimpleBroadcast.net
 # Please be sure that all your messages are inside of single quotes!
 # The update checking requires an Internet connection.
@@ -32,7 +32,7 @@ sendmessagestoconsole: false
 messages:
   default:
   - 'Thank you for using SimpleBroadcast!'
-  - 'Plugin by &oKingDome24 and yonascode.'
+  - 'Plugin by &oKingDome24.'
   - 'If you have questions please visit the BukkitDev page!'
   - '%laquo%Many new and cool variables are now available%raquo%'
   your.permission.node:
