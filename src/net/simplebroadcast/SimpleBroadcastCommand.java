@@ -318,6 +318,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				addMessage.add(message.substring(1).toString());
 				plugin.getConfig().set("messages.default", addMessage);
 				plugin.saveConfig();
+				plugin.loadMessages();
 				cs.sendMessage("§2Successfully added message.");
 			/*
 			 * REMOVE
@@ -329,20 +330,25 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
+				if (!(args.length > 1)) {
+					cs.sendMessage("§cPlease enter a message number.");
+					return true;
+				}
 				plugin.reloadConfig();
-				List<String> removeMessage= plugin.getConfig().getStringList("messages");
+				List<String> removeMessage = plugin.getConfig().getStringList("messages.default");
 				try {
-					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < plugin.getConfig().getStringList("messages").size()) {
+					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < removeMessage.size()) {
 						removeMessage.remove(Integer.parseInt(args[1])-1);
+						plugin.getConfig().set("messages.default", removeMessage);
+						plugin.saveConfig();
+						plugin.loadMessages();
+						cs.sendMessage("§2Successfully removed message.");
 					} else {
-						cs.sendMessage("§cPlease choose a number between 1 and " + plugin.getConfig().getStringList("messages").size() + ".");
+						cs.sendMessage("§cPlease choose a number between 1 and " + removeMessage.size() + ".");
 					}
 				} catch (NumberFormatException nfe) {
 					cs.sendMessage("§cPlease enter a valid number.");
 				}
-				plugin.getConfig().set("messages", removeMessage);
-				plugin.saveConfig();
-				cs.sendMessage("§2Successfully removed message.");
 			/*
 			 * BROADCAST
 			 * Broadcasts the entered text with the prefix.
