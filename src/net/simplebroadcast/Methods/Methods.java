@@ -204,6 +204,7 @@ public class Methods {
 					previousMessage = msg;
 				} else {
 					msg += (previousMessage < Main.globalMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
+					previousMessage = msg;
 				}
 				MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(msg);
 				permission = entry.getFirstValue();
