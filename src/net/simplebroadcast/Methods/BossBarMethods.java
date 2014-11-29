@@ -17,34 +17,33 @@ public class BossBarMethods {
 
 	private int msg;
 	private int previousMessage;
-	public static int counter = 0;
-	public static int bar_running = 1;
-	public static int barTask;
+	private static int counter = 0;
+	private static int barRunning = 1; //TODO: Maybe make this class a singleton instead of using static variables etc.
+	private static int barTask;
 	private Methods mt = new Methods();
 
-	@SuppressWarnings("deprecation")
 	public void barBroadcast() {
-		final File bossbar = new File("plugins/SimpleBroadcast", "bossbar.yml");
+		final File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 		FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 		if (!Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 			return;
 		}
-		if (!cfg_boss.getBoolean("enabled") && bar_running == 1) {
-			bar_running = 3;
+		if (!cfg_boss.getBoolean("enabled") && barRunning == 1) {
+			barRunning = 3;
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				BarAPI.removeBar(p);
 			}
 			return;
 		}
 		if (cfg_boss.getBoolean("randomizemessages")) {
-			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() {
+			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
 					FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 					/*
 					 * Loads the ignore.yml file.
 					 */
-					File ignore = new File("plugins/SimpleBroadcast", "ignore.yml");
+					File ignore = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 					FileConfiguration cfg_ignore = YamlConfiguration.loadConfiguration(ignore);
 					List<String> ignoredPlayers = cfg_ignore.getStringList("players");
 					/*
@@ -69,31 +68,30 @@ public class BossBarMethods {
 				}
 			}, 0L, cfg_boss.getInt("delay") * 20L);
 		} else {
-			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() {
+			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
 					FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 					List<String> messages = cfg_boss.getStringList("messages");
 					if (counter < messages.size()) {
-						broadCast();
+						broadcast();
 					} else {
 						counter = 0;
-						broadCast();
+						broadcast();
 					}
 				}
 			}, 0L, cfg_boss.getInt("delay") * 20L);
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	private void broadCast() {
-		File bossbar = new File("plugins/SimpleBroadcast", "bossbar.yml");
+	private void broadcast() {
+		File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 		FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 		List<String> messages = cfg_boss.getStringList("messages");
 		/*
 		 * Loads the ignore.yml.
 		 */
-		File ignore = new File("plugins/SimpleBroadcast", "ignore.yml");
+		File ignore = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 		FileConfiguration cfg_ignore = YamlConfiguration.loadConfiguration(ignore);
 		List<String> ignoredPlayers = cfg_ignore.getStringList("players");
 		/*
@@ -108,4 +106,29 @@ public class BossBarMethods {
 		}
 		counter++;
 	}
+
+	public static int getCounter() {
+		return counter;
+	}
+
+	public static int getBarRunning() {
+		return barRunning;
+	}
+
+	public static int getBarTask() {
+		return barTask;
+	}
+
+	public static void setCounter(int counter) {
+		BossBarMethods.counter = counter;
+	}
+
+	public static void setBarRunning(int barRunning) {
+		BossBarMethods.barRunning = barRunning;
+	}
+
+	public void setBarTask(int barTask) {
+		BossBarMethods.barTask = barTask;
+	}
+	
 }

@@ -1,7 +1,5 @@
 package net.simplebroadcast.Methods;
 
-import java.io.File;
-
 import net.simplebroadcast.Main;
 import net.simplebroadcast.Utils.Updater;
 
@@ -12,7 +10,7 @@ public class UpdatingMethods {
 	 * @return (Integer) Returns the plugin version of the update (removed points for comparison).
 	 */
 	public int uVersion() {
-		Updater updater = new Updater(Main.plugin, 54358, new File("plugins/SimpleBroadcast"), Updater.UpdateType.NO_DOWNLOAD, false);
+		Updater updater = new Updater(Main.getPlugin(), 54358, Main.getPlugin().getDataFolder(), Updater.UpdateType.NO_DOWNLOAD, false);
 		if (updater.getLatestName().substring(17).length() == 3) {
 			int uVersion = Integer.parseInt(updater.getLatestName().substring(17).replace(".", "") + "0");
 			return uVersion;
@@ -29,28 +27,28 @@ public class UpdatingMethods {
 	 * @return (Integer) Returns the plugin version (removed points for comparison).
 	 */
 	public int pVersion() {
-		if (Main.plugin.getDescription().getVersion().length() == 3) {
-			int pVersion = Integer.parseInt(Main.plugin.getDescription().getVersion().replace(".", "") + "0");
+		if (Main.getPlugin().getDescription().getVersion().length() == 3) {
+			int pVersion = Integer.parseInt(Main.getPlugin().getDescription().getVersion().replace(".", "") + "0");
 			return pVersion;
-		} else if (Main.plugin.getDescription().getVersion().length() == 5) {
-			int pVersion = Integer.parseInt(Main.plugin.getDescription().getVersion().replace(".", ""));
+		} else if (Main.getPlugin().getDescription().getVersion().length() == 5) {
+			int pVersion = Integer.parseInt(Main.getPlugin().getDescription().getVersion().replace(".", ""));
 			return pVersion;
 		} else {
 			return 0;
 		}
 	}
 
-	/*
+	/**
 	 * Notifies the player if updates are available.
 	 */
 	public void update() {
 		try {
 			if (updateB()) {
-				Main.plugin.log("An update is available: " + updateN());
-				Main.plugin.log("Please download it from the BukkitDev page.");
+				Main.getPlugin().log("An update is available: " + updateN());
+				Main.getPlugin().log("Please download it from the BukkitDev page.");
 			}
 		} catch (NullPointerException npe) {
-			Main.plugin.logW("Couldn't check for updates.");
+			Main.getPlugin().logW("Couldn't check for updates.");
 		}
 	}
 
@@ -71,10 +69,10 @@ public class UpdatingMethods {
 	 * @return (String) Returns the latest version number.
 	 */
 	public String updateN() {
-		if (Main.plugin.getConfig().getBoolean("checkforupdates")) {
-			Updater updater = new Updater(Main.plugin, 54358, new File("plugins/SimpleBroadcast"), Updater.UpdateType.NO_DOWNLOAD, false);
-			String UNumber = updater.getLatestName().substring(17);
-			return UNumber;
+		if (Main.getPlugin().getConfig().getBoolean("checkforupdates")) {
+			Updater updater = new Updater(Main.getPlugin(), 54358, Main.getPlugin().getDataFolder(), Updater.UpdateType.NO_DOWNLOAD, false);
+			String uNumber = updater.getLatestName().substring(17);
+			return uNumber;
 		} else {
 			return "UNKNOWN";
 		}
