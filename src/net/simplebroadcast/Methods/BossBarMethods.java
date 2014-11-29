@@ -53,11 +53,8 @@ public class BossBarMethods {
 					if (msg != previousMessage) {
 						previousMessage = msg;
 					} else {
-						if (previousMessage < cfg_boss.getStringList("messages").size()-1) {
-							msg++;
-						} else if (previousMessage > 1) {
-							msg--;
-						}
+						msg += (previousMessage < cfg_boss.getStringList("messages").size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
+						previousMessage = msg;
 					}
 					String message = ChatColor.translateAlternateColorCodes('&', cfg_boss.getStringList("messages").get(msg));
 					msg = 0;
