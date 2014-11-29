@@ -20,16 +20,15 @@ public class Events implements Listener {
 	/*
 	 * PlayerJoinEvent
 	 */
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		/*
 		 * Checks if any updates are available and notifies the player.
 		 * (Asynchronous task)
 		 */
-		if (Main.plugin.getConfig().getBoolean("checkforupdates")) {
+		if (Main.getPlugin().getConfig().getBoolean("checkforupdates")) {
 			final Player p = event.getPlayer();
-			Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
 					try {
@@ -38,7 +37,7 @@ public class Events implements Listener {
 							p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
 						}
 					} catch (NullPointerException npe) {
-						Main.plugin.logW("Couldn't check for updates.");
+						Main.getPlugin().logW("Couldn't check for updates.");
 					}
 				}
 			});
@@ -46,10 +45,10 @@ public class Events implements Listener {
 		/*
 		 * Checks if server was empty before the player joined and starts the broadcast if it's not running yet.
 		 */
-		if (Main.plugin.getConfig().getBoolean("requiresonlineplayers")) {
-			if (Bukkit.getOnlinePlayers().length == 1 && Main.running == 0) {
+		if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers")) {
+			if (Bukkit.getOnlinePlayers().length == 1 && Main.getPlugin().getRunning() == 0) {
 				mt.broadcast();
-				Main.running = 1;
+				Main.getPlugin().setRunning(1);
 			}
 		}
 	}
@@ -57,15 +56,14 @@ public class Events implements Listener {
 	/*
 	 * PlayerQuitEvent
 	 */
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		/*
 		 * Checks if server is empty after the player left and stops the broadcast if it's running.
 		 */
-		if (Main.plugin.getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().length == 1) {
-			Bukkit.getServer().getScheduler().cancelTask(Main.messageTask);
-			Main.running = 0;
+		if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().length == 1) {
+			Bukkit.getServer().getScheduler().cancelTask(Main.getPlugin().getMessageTask());
+			Main.getPlugin().setRunning(0);
 		}
 	}
 

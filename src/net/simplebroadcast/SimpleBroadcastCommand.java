@@ -31,18 +31,20 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 	private BossBarMethods bmt = new BossBarMethods();
 	private UpdatingMethods um = new UpdatingMethods();
 	private String err_need_Perm = "§cYou do not have access to that command.";
+	boolean prefix_bool;
+	boolean suffix_bool;
+	String prefix;
+	String suffix;
 
 
 	public SimpleBroadcastCommand(Main plugin) {
 		this.plugin = plugin;
+		prefix_bool = plugin.getConfig().getBoolean("prefix.enabled");
+		suffix_bool = plugin.getConfig().getBoolean("suffix.enabled");
+		prefix = mt.addVariables(plugin.getConfig().getString("prefix.prefix"));
+		suffix = mt.addVariables(plugin.getConfig().getString("suffix.suffix"));
 	}
 
-	boolean prefix_bool = Main.plugin.getConfig().getBoolean("prefix.enabled");
-	boolean suffix_bool = Main.plugin.getConfig().getBoolean("suffix.enabled");
-	String prefix = mt.addVariables(Main.plugin.getConfig().getString("prefix.prefix"));
-	String suffix = mt.addVariables(Main.plugin.getConfig().getString("suffix.suffix"));
-
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(final CommandSender cs, Command cmd, String label, final String[] args) {
 		if (args.length == 0) {
@@ -64,9 +66,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					public void run() {
 						try {
 							if (um.updateB()) {
-								cs.sendMessage("§6Upate:§f An update is available: " + um.updateN());
+								cs.sendMessage("§6Update:§f An update is available: " + um.updateN());
 							} else {
-								cs.sendMessage("§6Upate:§f There are no updates available.");
+								cs.sendMessage("§6Update:§f There are no updates available.");
 							}
 						} catch (NullPointerException npe) {
 							cs.sendMessage("§6Upate:§f Couldn't check for updates.");
@@ -81,11 +83,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 			} else {
 				cs.sendMessage("§6PluginMetrics:§f PluginMetrics is disabled and sends no data.");
 			}
-			File bossbar = new File("plugins/SimpleBroadcast", "bossbar.yml");
+			File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 			FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
-			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.bar_running == 1) {
+			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.getBarRunning() == 1) {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled and broadcasts.");
-			} else if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.bar_running == 0) {
+			} else if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.getBarRunning() == 0) {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled.");
 			} else {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is disabled.");
@@ -100,11 +102,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (Main.running == 0) {
+				if (plugin.getRunning() == 0) {
 					mt.broadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Started broadcast.");
-					Main.running = 1;
-				} else if (Main.running == 3) {
+					plugin.setRunning(1);
+				} else if (plugin.getRunning() == 3) {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is disabled as set in the config.");
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already started!");
@@ -118,11 +120,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (Main.running == 1) {
-					Bukkit.getServer().getScheduler().cancelTask(Main.messageTask);
+				if (plugin.getRunning() == 1) {
+					Bukkit.getServer().getScheduler().cancelTask(plugin.getMessageTask());
 					cs.sendMessage("[Simple§cBroadcast]§r Cancelled broadcast.");
-					Main.running = 0;
-				} else if (Main.running == 3) {
+					plugin.setRunning(0);
+				} else if (plugin.getRunning() == 3) {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already disabled (as set in the config)!");
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already cancelled!");
@@ -136,29 +138,29 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				Bukkit.getServer().getScheduler().cancelTask(Main.messageTask);
-				Bukkit.getServer().getScheduler().cancelTask(BossBarMethods.barTask);
+				Bukkit.getServer().getScheduler().cancelTask(plugin.getMessageTask());
+				Bukkit.getServer().getScheduler().cancelTask(BossBarMethods.getBarTask());
 
-				BossBarMethods.counter = 0;
+				BossBarMethods.setCounter(0);
 				plugin.reloadConfig();
 				plugin.loadMessages();
-				BossBarMethods.bar_running = 1;
+				BossBarMethods.setBarRunning(1);
 				bmt.barBroadcast();
 
 				if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 					mt.broadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
-					if (!(Main.running == 3))
-						Main.running = 1;
+					if (plugin.getRunning() != 3)
+						plugin.setRunning(1);
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
 					if (Bukkit.getOnlinePlayers().length >= 1) {
 						mt.broadcast();
-						if (!(Main.running == 3))
-							Main.running = 1;
+						if (!(plugin.getRunning() == 3))
+							plugin.setRunning(1);
 					} else {
-						if (!(Main.running == 3))
-							Main.running = 0;
+						if (plugin.getRunning() != 3)
+							plugin.setRunning(0);
 					}
 				}
 			/*
@@ -183,11 +185,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						cs.sendMessage(err_need_Perm);
 						return true;
 					}
-					if (BossBarMethods.bar_running == 0) {
-						BossBarMethods.bar_running = 1;
+					if (BossBarMethods.getBarRunning() == 0) {
+						BossBarMethods.setBarRunning(1);
 						bmt.barBroadcast();
 						cs.sendMessage("[Simple§cBroadcast]§r Started (boss bar) broadcast.");
-					} else if (BossBarMethods.bar_running == 3) {
+					} else if (BossBarMethods.getBarRunning() == 3) {
 						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is disabled (as set in the bossbar.yml)!");
 					} else {
 						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already started!");
@@ -200,14 +202,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						cs.sendMessage(err_need_Perm);
 						return true;
 					}
-					if (BossBarMethods.bar_running == 1) {
-						Bukkit.getScheduler().cancelTask(BossBarMethods.barTask);
-						BossBarMethods.bar_running = 0;
+					if (BossBarMethods.getBarRunning() == 1) {
+						Bukkit.getScheduler().cancelTask(BossBarMethods.getBarTask());
+						BossBarMethods.setBarRunning(0);
 						for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 							BarAPI.removeBar(p);
 						}
 						cs.sendMessage("[Simple§cBroadcast]§r Cancelled boss bar broadcast.");
-					} else if (BossBarMethods.bar_running == 3) {
+					} else if (BossBarMethods.getBarRunning() == 3) {
 						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already disabled (as set in the bossbar.yml)!");
 					} else {
 						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already cancelled!");
@@ -262,7 +264,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				/*
 				 * Loads the ignore.yml.
 				 */
-				File file = new File("plugins/SimpleBroadcast", "ignore.yml");
+				File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 				FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 				List<String> ignoredPlayers = cfg.getStringList("players");
 				/*
@@ -277,7 +279,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 							if (ignoredPlayers.contains(mt.getUUID(p.getName()))) {
 								continue;
 							}
-							if (Main.plugin.getConfig().getBoolean("usepermissions")) {
+							if (plugin.getConfig().getBoolean("usepermissions")) {
 								if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
 									p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 								}
@@ -428,10 +430,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				/*
 				 * Loads the ignore.yml file.
 				 */
-				final File file = new File("plugins/SimpleBroadcast", "ignore.yml");
+				final File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 				final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 				final List<String> ignorePlayers = cfg.getStringList("players");
-				File bossbar = new File("plugins/SimpleBroadcast", "bossbar.yml");
+				File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 				final FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 				/*
 				 * Checks if the server runs in "online-mode=false".

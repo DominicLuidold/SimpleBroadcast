@@ -19,10 +19,10 @@ public class MessageRunnable implements Runnable {
 	private String message;
 	private String permission;
 	private Methods mt = new Methods();
-	private boolean prefix_bool = Main.plugin.getConfig().getBoolean("prefix.enabled");
-	private boolean suffix_bool = Main.plugin.getConfig().getBoolean("suffix.enabled");
-	private String prefix = mt.addVariables(Main.plugin.getConfig().getString("prefix.prefix"));
-	private String suffix = mt.addVariables(Main.plugin.getConfig().getString("suffix.suffix"));
+	private boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
+	private boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
+	private String prefix = mt.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
+	private String suffix = mt.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 
 	@Override
 	public void run() {
@@ -34,7 +34,6 @@ public class MessageRunnable implements Runnable {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private void broadCast() {
 		MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(counter);
 		permission = entry.getFirstValue();
@@ -42,7 +41,7 @@ public class MessageRunnable implements Runnable {
 		/*
 		 * Loads the ignore.yml.
 		 */
-		File file = new File("plugins/SimpleBroadcast", "ignore.yml");
+		File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 		FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 		List<String> ignoredPlayers = cfg.getStringList("players");
 		/*
@@ -66,7 +65,7 @@ public class MessageRunnable implements Runnable {
 			 * Checks if the user has to have the permission to receive the message.
 			 * (Still in development - don't use this!)
 			 */
-			if (Main.plugin.getConfig().getBoolean("usepermissions")) {
+			if (Main.getPlugin().getConfig().getBoolean("usepermissions")) {
 				for (Player p : Bukkit.getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
 						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
@@ -86,7 +85,7 @@ public class MessageRunnable implements Runnable {
 			/*
 			 * Checks if messages shall be broadcasted in the console.
 			 */
-			if (Main.plugin.getConfig().getBoolean("sendmessagestoconsole")) {
+			if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
 				ConsoleCommandSender console = Bukkit.getConsoleSender();
 				console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 			}

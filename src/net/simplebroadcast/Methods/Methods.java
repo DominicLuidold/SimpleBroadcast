@@ -28,7 +28,7 @@ public class Methods {
 	private int msg;
 	private String message;
 	private String permission;
-	public static String uuid;
+	private String uuid;
 	private int previousMessage;
 
 	/**
@@ -43,7 +43,6 @@ public class Methods {
 	 * Counts the amount of operators who are online.
 	 * @return (Integer) Amount of online operators.
 	 */
-	@SuppressWarnings("deprecation")
 	public int opList() {
 		int ops = 0;
 		for (Player p : Bukkit.getOnlinePlayers()) {
@@ -58,7 +57,6 @@ public class Methods {
 	 * Gets a random player name.
 	 * @return (String) Name of player.
 	 */
-	@SuppressWarnings("deprecation")
 	public String randomPlayer() {
 		if (Bukkit.getOnlinePlayers().length > 0) {
 			int random = (int) (Math.random() * Bukkit.getOnlinePlayers().length);
@@ -126,24 +124,20 @@ public class Methods {
 				// should not happen
 			}
 		}
-		Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, new Runnable() {
+		Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
 				UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(player));
 				Map<String, UUID> response = null;
 				try {
 					response = fetcher.call();
-				} catch (Exception e) {
+				} catch (Exception e) { }
 
+				if (response == null || response.isEmpty()) {
+					return;
 				}
-
-				try {
-					for (Map.Entry<String, UUID> entry : response.entrySet()) {
-						UUID UUID = entry.getValue();
-						uuid = UUID.toString();
-					}
-				} catch (NullPointerException npe) {
-					// TODO never chatch a npe
+				for (UUID entry : response.values()) {
+					uuid = entry.toString(); //TODO: Should be changed so it's unique everytime this methods gets called
 				}
 			}
 		});
@@ -155,7 +149,6 @@ public class Methods {
 	 * @param message The message which the variables shall be replaced.
 	 * @return (String) The message with the replaced variables.
 	 */
-	@SuppressWarnings("deprecation")
 	public String addVariables(String message) {
 		message = message.replace("%sq%", "'").
 				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
@@ -184,24 +177,23 @@ public class Methods {
 	 * The global broadcast function.
 	 */
 	public void broadcast() {
-		if (Main.running == 3) {
+		if (Main.getPlugin().getRunning() == 3) {
 			return;
 		}
 		/*
 		 * Decides if the messages shall be broadcasted in a random order or not.
 		 */
-		if (!Main.plugin.getConfig().getBoolean("randomizemessages")) {
-			Main.messageTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.plugin, new MessageRunnable(), 0L, Main.plugin.getConfig().getInt("delay") * 20L);
+		if (!Main.getPlugin().getConfig().getBoolean("randomizemessages")) {
+			Main.getPlugin().setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new MessageRunnable(), 0L, Main.getPlugin().getConfig().getInt("delay") * 20L));
 			return;
 		}
-		Main.messageTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable() {
-			@SuppressWarnings("deprecation")
+		Main.getPlugin().setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
 				/*
 				 * Loads the ignore.yml file.
 				 */
-				File file = new File("plugins/SimpleBroadcast", "ignore.yml");
+				File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 				FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 				List<String> ignoredPlayers = cfg.getStringList("players");
 				/*
@@ -217,10 +209,10 @@ public class Methods {
 				permission = entry.getFirstValue();
 				message = entry.getSecondValue();
 				msg = 0;
-				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("prefix.prefix")));
-				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.plugin.getConfig().getString("suffix.suffix")));
-				boolean prefix_bool = Main.plugin.getConfig().getBoolean("prefix.enabled");
-				boolean suffix_bool = Main.plugin.getConfig().getBoolean("suffix.enabled");
+				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("prefix.prefix")));
+				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("suffix.suffix")));
+				boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
+				boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
 				/*
 				 * Starts broadcasting the messages.
 				 * If message starts with "/" it's handled as a command.
@@ -242,7 +234,7 @@ public class Methods {
 				 * Checks if the user has to have the permission to receive the message.
 				 * (Still in development - don't use this!)
 				 */
-				if (Main.plugin.getConfig().getBoolean("usepermissions")) {
+				if (Main.getPlugin().getConfig().getBoolean("usepermissions")) {
 					for (Player p : Bukkit.getOnlinePlayers()) {
 						if (ignoredPlayers.contains(getUUID(p.getName()))) {
 							continue;
@@ -264,11 +256,11 @@ public class Methods {
 				/*
 				 * Checks if messages shall be broadcasted in the console.
 				 */
-				if (Main.plugin.getConfig().getBoolean("sendmessagestoconsole")) {
+				if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
 					ConsoleCommandSender console = Bukkit.getConsoleSender();
 					console.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariables(message) + (suffix_bool ? " " + suffix : ""));
 				}
 			}
-		}, 0L, Main.plugin.getConfig().getInt("delay") * 20L);
+		}, 0L, Main.getPlugin().getConfig().getInt("delay") * 20L));
 	}
 }
