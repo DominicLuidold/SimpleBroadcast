@@ -20,6 +20,7 @@ public class Events implements Listener {
 	/*
 	 * PlayerJoinEvent
 	 */
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		/*
@@ -56,6 +57,7 @@ public class Events implements Listener {
 	/*
 	 * PlayerQuitEvent
 	 */
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		/*

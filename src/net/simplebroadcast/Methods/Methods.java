@@ -43,6 +43,7 @@ public class Methods {
 	 * Counts the amount of operators who are online.
 	 * @return (Integer) Amount of online operators.
 	 */
+	@SuppressWarnings("deprecation")
 	public int opList() {
 		int ops = 0;
 		for (Player p : Bukkit.getOnlinePlayers()) {
@@ -57,6 +58,7 @@ public class Methods {
 	 * Gets a random player name.
 	 * @return (String) Name of player.
 	 */
+	@SuppressWarnings("deprecation")
 	public String randomPlayer() {
 		if (Bukkit.getOnlinePlayers().length > 0) {
 			int random = (int) (Math.random() * Bukkit.getOnlinePlayers().length);
@@ -149,6 +151,7 @@ public class Methods {
 	 * @param message The message which the variables shall be replaced.
 	 * @return (String) The message with the replaced variables.
 	 */
+	@SuppressWarnings("deprecation")
 	public String addVariables(String message) {
 		message = message.replace("%sq%", "'").
 				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
@@ -188,6 +191,7 @@ public class Methods {
 			return;
 		}
 		Main.getPlugin().setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				/*

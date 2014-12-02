@@ -22,6 +22,7 @@ public class BossBarMethods {
 	private static int barTask;
 	private Methods mt = new Methods();
 
+	@SuppressWarnings("deprecation")
 	public void barBroadcast() {
 		final File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 		FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
@@ -81,6 +82,7 @@ public class BossBarMethods {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void broadcast() {
 		File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 		FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);

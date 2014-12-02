@@ -45,6 +45,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 		suffix = mt.addVariables(plugin.getConfig().getString("suffix.suffix"));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(final CommandSender cs, Command cmd, String label, final String[] args) {
 		if (args.length == 0) {

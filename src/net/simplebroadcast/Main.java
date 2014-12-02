@@ -36,6 +36,7 @@ public class Main extends JavaPlugin {
 		Bukkit.getScheduler().cancelTask(BossBarMethods.getBarTask());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onEnable() {
 

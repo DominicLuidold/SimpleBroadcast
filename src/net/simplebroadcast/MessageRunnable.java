@@ -34,6 +34,7 @@ public class MessageRunnable implements Runnable {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void broadCast() {
 		MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(counter);
 		permission = entry.getFirstValue();
