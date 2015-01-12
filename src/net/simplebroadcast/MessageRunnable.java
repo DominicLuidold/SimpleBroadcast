@@ -1,7 +1,6 @@
 package net.simplebroadcast;
 
 import net.simplebroadcast.Methods.Methods;
-import net.simplebroadcast.MultiMap.MultiMapResource;
 
 import java.io.File;
 import java.util.List;
@@ -15,9 +14,7 @@ import org.bukkit.entity.Player;
 
 public class MessageRunnable implements Runnable {
 
-	private int counter = 0;
-	private String message;
-	private String permission;
+	public static int counter = 0;
 	private Methods mt = new Methods();
 	private boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
 	private boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
@@ -36,9 +33,8 @@ public class MessageRunnable implements Runnable {
 
 	@SuppressWarnings("deprecation")
 	private void broadCast() {
-		MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(counter);
-		permission = entry.getFirstValue();
-		message = entry.getSecondValue();
+		String message = Main.globalMessages.get(counter);
+		System.out.println(counter);
 		/*
 		 * Loads the ignore.yml.
 		 */
@@ -61,26 +57,9 @@ public class MessageRunnable implements Runnable {
 				counter++;
 			}
 		} else {
-			/*
-			 * EXPERIMENTAL
-			 * Checks if the user has to have the permission to receive the message.
-			 * (Still in development - don't use this!)
-			 */
-			if (Main.getPlugin().getConfig().getBoolean("usepermissions")) {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
-						} else {
-							//TODO
-						}
-					}
-				}
-			} else {
-				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
-					}
+			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+				if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
+					p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 				}
 			}
 			/*
