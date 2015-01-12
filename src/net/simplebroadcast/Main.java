@@ -2,6 +2,7 @@ package net.simplebroadcast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +11,6 @@ import net.simplebroadcast.Events.Events;
 import net.simplebroadcast.Methods.BossBarMethods;
 import net.simplebroadcast.Methods.Methods;
 import net.simplebroadcast.Methods.UpdatingMethods;
-import net.simplebroadcast.MultiMap.MultiMap;
 import net.simplebroadcast.Utils.Metrics;
 import net.simplebroadcast.Utils.Metrics.Graph;
 import net.simplebroadcast.Utils.UUIDFetcher;
@@ -28,7 +28,7 @@ public class Main extends JavaPlugin {
 	private Methods mt = new Methods();
 	private BossBarMethods bmt = new BossBarMethods();
 	private UpdatingMethods um = new UpdatingMethods();
-	public static MultiMap<Integer, String, String> globalMessages = new MultiMap<Integer, String, String>();
+	public static HashMap<Integer, String> globalMessages = new HashMap<Integer, String>(); 
 
 	@Override
 	public void onDisable() {
@@ -101,14 +101,6 @@ public class Main extends JavaPlugin {
 						}
 					});
 				}
-//			    if (plugin.getConfig().getBoolean("usepermissions")) {
-//			    	enabledFeatures.addPlotter(new Metrics.Plotter("Permission messages") {
-//			    		@Override
-//			            public int getValue() {
-//			    			return 1;
-//			            }
-//			    	});
-//			    }
 				if (plugin.getConfig().getBoolean("checkforupdates")) {
 					enabledFeatures.addPlotter(new Metrics.Plotter("Update checker") {
 						@Override
@@ -257,16 +249,13 @@ public class Main extends JavaPlugin {
 	}
 
 	/**
-	 * Loads all the messages into a globally available MultiMap.
+	 * Loads all the messages into a globally available HashMap.
 	 */
 	public void loadMessages() {
-		int messageIndex = 1;
-		globalMessages.clear();
-		for (String permission : plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
-			for (String message : plugin.getConfig().getStringList("messages." + permission)) {
-				globalMessages.put(messageIndex, (plugin.getConfig().getBoolean("usepermissions") ? permission : null), message);
-				messageIndex++;
-			}
+		int messageIndex = 0;
+		for (String message : plugin.getConfig().getStringList("messages")) {
+			globalMessages.put(messageIndex, message);
+			messageIndex++;
 		}
 	}
 
