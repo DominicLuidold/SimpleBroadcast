@@ -11,7 +11,6 @@ import me.confuser.barapi.BarAPI;
 import net.simplebroadcast.Methods.BossBarMethods;
 import net.simplebroadcast.Methods.Methods;
 import net.simplebroadcast.Methods.UpdatingMethods;
-import net.simplebroadcast.MultiMap.MultiMapResource;
 import net.simplebroadcast.Utils.UUIDFetcher;
 
 import org.bukkit.Bukkit;
@@ -238,16 +237,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				int message_number = 1;
 				plugin.reloadConfig();
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e-------------");
-				for (String permission : plugin.getConfig().getConfigurationSection("messages").getKeys(true)) {
-					for (String msg : plugin.getConfig().getStringList("messages." + permission)) {
-						if (cs instanceof Player) {
-							Player p = (Player) cs;
-							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
-						} else {
-							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
-						}
-						message_number++;
+				for (String msg : plugin.getConfig().getStringList("messages")) {
+					if (cs instanceof Player) {
+						Player p = (Player) cs;
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
+					} else {
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
 					}
+					message_number++;
 				}
 			/*
 			 * NOW
@@ -273,18 +270,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				 */
 				try {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < Main.globalMessages.size()) {
-						MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(Integer.parseInt(args[1])-1);
-						String permission = entry.getFirstValue();
-						String message = entry.getSecondValue();
+						String message = Main.globalMessages.get(Integer.parseInt(args[1])-1);
 						for (Player p : Bukkit.getOnlinePlayers()) {
 							if (ignoredPlayers.contains(mt.getUUID(p.getName()))) {
 								continue;
-							}
-							if (plugin.getConfig().getBoolean("usepermissions")) {
-								if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
-									p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
-								}
-								return true;
 							}
 							p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						}
@@ -299,6 +288,18 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				} catch (NumberFormatException nfe) {
 					cs.sendMessage("§cPlease enter a valid number.");
 				}
+			/* 
+			 * NEXT
+			 * Skips the next message in the list.
+			 * Only applicable if "randomizemessages" is set to "false".
+			 */
+			} else if (args[0].equalsIgnoreCase("next")) {
+				if (!cs.hasPermission("simplebroadcast.next")) {
+					cs.sendMessage(err_need_Perm);
+					return true;
+				}
+				cs.sendMessage("§2Successfully skipped message " + (MessageRunnable.counter+1));
+				MessageRunnable.counter++;
 			/*
 			 * ADD
 			 * Adds a message to the (chat) config.
@@ -313,20 +314,19 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("§cPlease enter a message which you want to add.");
 					return true;
 				}
-				List<String> addMessage= plugin.getConfig().getStringList("messages.default");
+				List<String> addMessage= plugin.getConfig().getStringList("messages");
 				StringBuilder message = new StringBuilder();
 				for (int i = 1; i < args.length; i++) {
 					message.append(" ").append(args[i]);
 				}
 				addMessage.add(message.substring(1).toString());
-				plugin.getConfig().set("messages.default", addMessage);
+				plugin.getConfig().set("messages", addMessage);
 				plugin.saveConfig();
 				plugin.loadMessages();
 				cs.sendMessage("§2Successfully added message.");
 			/*
 			 * REMOVE
 			 * Removes a message.
-			 * !!Warning: currently broken!!
 			 */
 			} else if (args[0].equalsIgnoreCase("remove")) {
 				if (!cs.hasPermission("simplebroadcast.remove")) {
@@ -338,11 +338,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				plugin.reloadConfig();
-				List<String> removeMessage = plugin.getConfig().getStringList("messages.default");
+				List<String> removeMessage = plugin.getConfig().getStringList("messages");
 				try {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < removeMessage.size()) {
 						removeMessage.remove(Integer.parseInt(args[1])-1);
-						plugin.getConfig().set("messages.default", removeMessage);
+						plugin.getConfig().set("messages", removeMessage);
 						plugin.saveConfig();
 						plugin.loadMessages();
 						cs.sendMessage("§2Successfully removed message.");
