@@ -34,7 +34,6 @@ public class MessageRunnable implements Runnable {
 	@SuppressWarnings("deprecation")
 	private void broadCast() {
 		String message = Main.globalMessages.get(counter);
-		System.out.println(counter);
 		/*
 		 * Loads the ignore.yml.
 		 */
