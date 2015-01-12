@@ -19,8 +19,6 @@ suffix:
   
 pluginmetrics: true
 
-usepermissions: false
-
 checkforupdates: true
 
 randomizemessages: false
@@ -30,10 +28,7 @@ requiresonlineplayers: false
 sendmessagestoconsole: false
 
 messages:
-  default:
-  - 'Thank you for using SimpleBroadcast!'
-  - 'Plugin by &oKingDome24.'
-  - 'If you have questions please visit the BukkitDev page!'
-  - '%laquo%Many new and cool variables are now available%raquo%'
-  your.permission.node:
-  - 'You can create any permission node you want.'
+- 'Thank you for using SimpleBroadcast!'
+- 'Plugin by &oKingDome24.'
+- 'If you have questions please visit the BukkitDev page!'
+- '%laquo%Many new and cool variables are now available%raquo%'
