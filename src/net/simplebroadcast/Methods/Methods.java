@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import net.simplebroadcast.Main;
 import net.simplebroadcast.MessageRunnable;
-import net.simplebroadcast.MultiMap.MultiMapResource;
 import net.simplebroadcast.Utils.UUIDFetcher;
 
 import org.bukkit.Bukkit;
@@ -25,9 +24,6 @@ import org.bukkit.entity.Player;
 
 public class Methods {
 
-	private int msg;
-	private String message;
-	private String permission;
 	private String uuid;
 	private int previousMessage;
 
@@ -203,16 +199,14 @@ public class Methods {
 				/*
 				 * Gets and broadcasts the messages in a random order.
 				 */
-				msg = (int) (Math.random() * Main.globalMessages.size());
+				int msg = (int) (Math.random() * Main.globalMessages.size());
 				if (msg != previousMessage) {
 					previousMessage = msg;
 				} else {
 					msg += (previousMessage < Main.globalMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
 					previousMessage = msg;
 				}
-				MultiMapResource<Integer, String, String> entry = Main.globalMessages.getResource(msg);
-				permission = entry.getFirstValue();
-				message = entry.getSecondValue();
+				String message = Main.globalMessages.get(msg);
 				msg = 0;
 				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("prefix.prefix")));
 				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("suffix.suffix")));
@@ -239,24 +233,11 @@ public class Methods {
 				 * Checks if the user has to have the permission to receive the message.
 				 * (Still in development - don't use this!)
 				 */
-				if (Main.getPlugin().getConfig().getBoolean("usepermissions")) {
-					for (Player p : Bukkit.getOnlinePlayers()) {
-						if (ignoredPlayers.contains(getUUID(p.getName()))) {
-							continue;
-						}
-						if (p.hasPermission(permission) ||  permission.equalsIgnoreCase("default")) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
-						} else {
-							//TODO
-						}
+				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+					if (ignoredPlayers.contains(getUUID(p.getName()))) {
+						continue;
 					}
-				} else {
-					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if (ignoredPlayers.contains(getUUID(p.getName()))) {
-							continue;
-						}
-						p.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
-					}
+					p.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
 				}
 				/*
 				 * Checks if messages shall be broadcasted in the console.
