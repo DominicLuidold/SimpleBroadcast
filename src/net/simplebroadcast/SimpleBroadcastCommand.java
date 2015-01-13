@@ -2,16 +2,12 @@ package net.simplebroadcast;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import me.confuser.barapi.BarAPI;
 import net.simplebroadcast.Methods.BossBarMethods;
 import net.simplebroadcast.Methods.Methods;
 import net.simplebroadcast.Methods.UpdatingMethods;
-import net.simplebroadcast.Utils.UUIDFetcher;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -142,6 +138,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				Bukkit.getServer().getScheduler().cancelTask(BossBarMethods.getBarTask());
 
 				BossBarMethods.setCounter(0);
+				MessageRunnable.setCounter(0);
 				plugin.reloadConfig();
 				plugin.loadMessages();
 				BossBarMethods.setBarRunning(1);
@@ -219,11 +216,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						cs.sendMessage(err_need_Perm);
 						return true;
 					}
-					if (cs instanceof Player) {
-						cs.sendMessage("§cPlease use either \"/sb bossbar start\" or \"/sb bossbar stop\".");
-					} else {
-						cs.sendMessage("§cPlease use either \"sb bossbar start\" or \"sb bossbar stop\".");
-					}
+					cs.sendMessage("§cPlease use either \"" + (cs instanceof Player ? "/" : "") + "sb bossbar start\" or \"" + (cs instanceof Player ? "/" : "") + "sb bossbar stop\".");
 				}
 			/*
 			 * LIST
@@ -237,12 +230,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				int message_number = 1;
 				plugin.reloadConfig();
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e-------------");
-				for (String msg : plugin.getConfig().getStringList("messages")) {
+				for (String message : plugin.getConfig().getStringList("messages")) {
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(msg, p) + (suffix_bool ? " " + suffix : "")));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 					} else {
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(msg) + (suffix_bool ? " " + suffix : "")));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f" + (prefix_bool ? " " + prefix : "") + " " + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 					}
 					message_number++;
 				}
@@ -272,10 +265,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < Main.globalMessages.size()) {
 						String message = Main.globalMessages.get(Integer.parseInt(args[1])-1);
 						for (Player p : Bukkit.getOnlinePlayers()) {
-							if (ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-								continue;
+							if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 							}
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						}
 						if (plugin.getConfig().getBoolean("sendmessagestoconsole")) {
 							ConsoleCommandSender console = Bukkit.getConsoleSender();
@@ -298,7 +290,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				cs.sendMessage("§2Successfully skipped message " + (MessageRunnable.counter+1));
+				cs.sendMessage("§2Successfully skipped message " + (MessageRunnable.counter+1) + ".");
 				MessageRunnable.counter++;
 			/*
 			 * ADD
@@ -362,11 +354,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				if (!plugin.getConfig().getBoolean("prefix.enabled")) {
-					if (cs instanceof Player) {
-						cs.sendMessage("§cPlease use \"/simplebroadcast raw\" instead.");
-					} else {
-						cs.sendMessage("§cPlease use \"simplebroadcast raw\" instead.");
-					}
+					cs.sendMessage("§cPlease use \"" + (cs instanceof Player ? "/" : "") + "simplebroadcast raw\" instead.");
 					return true;
 				}
 				if (!(args.length > 1)) {
@@ -428,6 +416,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("§cPlease enter only one name.");
 					return true;
 				}
+				if (args[1].equalsIgnoreCase("me") && !(cs instanceof Player)) {
+					cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
+				}
 				/*
 				 * Loads the ignore.yml file.
 				 */
@@ -436,152 +427,53 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				final List<String> ignorePlayers = cfg.getStringList("players");
 				File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 				final FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
-				/*
-				 * Checks if the server runs in "online-mode=false".
-				 */
-				if (!Bukkit.getServer().getOnlineMode()) {
-					/*
-					 * Checks if the player already doesn't receive any messages.
-					 */
-					if (!ignorePlayers.contains(mt.getUUID(args[1]))) {
-						/*
-						 *(ADDEN)
-						 * Checks if the player entered "me" or a player name.
-						 */
+				Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+					@Override
+					public void run() {
+						String check_uuid = null;
 						if (args[1].equalsIgnoreCase("me")) {
-							if (cs instanceof Player) {
-								Player p = (Player) cs;
-								ignorePlayers.add(mt.getUUID(p.getName()));
+							Player p = (Player) cs;
+							check_uuid = mt.getUUID(p.getName());
+							if (check_uuid == null) {
+								cs.sendMessage("§cCouldn't check UUID for player \"" + cs.getName() + "\", please try again later or check spelling.");
+								return;
+							}
+							if (!ignorePlayers.contains(check_uuid)) {
+								ignorePlayers.add(check_uuid);
 								if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 									BarAPI.removeBar(p);
 								}
 								cs.sendMessage("[Simple§cBroadcast]§r Now you don't receive any messages.");
 							} else {
-								cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
-							}
-						} else {
-							ignorePlayers.add(mt.getUUID(args[1]));
-							if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-								BarAPI.removeBar(Bukkit.getServer().getPlayer(args[1]));
-							}
-							cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now doesn't receive any messages.");
-						}
-					} else {
-						if (args[1].equalsIgnoreCase("me")) {
-							if (cs instanceof Player) {
-								Player p = (Player) cs;
-								ignorePlayers.remove(mt.getUUID(p.getName()));
+								ignorePlayers.remove(check_uuid);
 								cs.sendMessage("[Simple§cBroadcast]§r Now you receive the messages again.");
-							} else {
-								cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
 							}
 						} else {
-							ignorePlayers.remove(mt.getUUID(args[1]));
-							cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now receives the messages again.");
-						}
-					}
-					cfg.set("players", ignorePlayers);
-					try {
-						cfg.save(file);
-					} catch (IOException e) {
-						plugin.logW("Couldn't save the ignore.yml. Error: ");
-						plugin.logW(e.getMessage());
-					}
-					return true;
-				}
-				/*
-				 * The following is only applicable for "online-mode=true"!
-				 */
-				Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-					@Override
-					public void run() {
-						/*
-						 * ADDEN
-						 */
-						String check_uuid;
-						UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(args[1]));
-						Map<String, UUID> response = null;
-						try {
-							response = fetcher.call();
-						} catch (Exception e) {
-						}
-						/*
-						 * Checks if entered player exists.
-						 */
-						try {
-							if (response.isEmpty() && !args[1].equalsIgnoreCase("me"))
-								cs.sendMessage("§cThe player, who you have entered, doesn't exist!");
-							/*
-							 *(ADDEN)
-							 * Checks if the player entered "me".
-							 */
-							if (response.isEmpty() && args[1].equalsIgnoreCase("me")) {
-								if (cs instanceof Player) {
-									Player p = (Player) cs;
-									response.put(p.getName(), p.getUniqueId());
-								} else {
-									cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
-								}
-							}
-							for (Map.Entry<String, UUID> entry : response.entrySet()) {
-								UUID uuid = entry.getValue();
-								check_uuid = uuid.toString();
-								/*
-								 * Checks if ignore.yml already contains the uuid of the player.
-								 */
-								if (!ignorePlayers.contains(check_uuid) && !ignorePlayers.contains(mt.getUUID(cs.getName()))) {
-									if (args[1].equalsIgnoreCase("me")) {
-										Player p = (Player) cs;
-										ignorePlayers.add(mt.getUUID(p.getName()));
-										if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-											BarAPI.removeBar(p);
-										}
-										cs.sendMessage("[Simple§cBroadcast]§r Now you don't receive any messages.");
-									} else {
-										String add_uuid = uuid.toString();
-										ignorePlayers.add(add_uuid);
-										if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-											BarAPI.removeBar(Bukkit.getServer().getPlayer(args[1]));
-										}
-										cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now doesn't receive any messages.");
-									}
-								/*
-								 * Removes the UUID of the player.
-								 */
-								} else {
-									if (args[1].equalsIgnoreCase("me")) {
-										if (cs instanceof Player) {
-											Player p = (Player) cs;
-											ignorePlayers.remove(mt.getUUID(p.getName()));
-											cs.sendMessage("[Simple§cBroadcast]§r Now you receive the messages again.");
-										} else {
-											cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
-										}
-									} else {
-										String rem_uuid = uuid.toString();
-										ignorePlayers.remove(rem_uuid);
-										cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now receives the messages again.");
-									}
-								}
-								/*
-								 * Saves the config.
-								 */
-								cfg.set("players", ignorePlayers);
-								try {
-									cfg.save(file);
-								} catch (IOException e) {
-									plugin.logW("Couldn't save the ignore.yml. Error: ");
-									plugin.logW(e.getMessage());
-								}
-							}
-						} catch (NullPointerException npe) {
-							if (args[1].equalsIgnoreCase("me")) {
-								plugin.logW("Couldn't check UUID for player \"" + cs.getName() + "\".");
-								cs.sendMessage("§cCouldn't check UUID for player \"" + cs.getName() + "\", please try again later or check spelling.");
-							} else {
-								plugin.logW("Couldn't check UUID for player \"" + args[1] + "\".");
+							check_uuid = mt.getUUID(args[1]);
+							if (check_uuid == null) {
 								cs.sendMessage("§cCouldn't check UUID for player \"" + args[1] + "\", please try again later or check spelling.");
+								return;
 							}
+							if (!ignorePlayers.contains(check_uuid)) {
+								ignorePlayers.add(check_uuid);
+								if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+									BarAPI.removeBar(Bukkit.getServer().getPlayer(args[1]));
+								}
+								cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now doesn't receive any messages.");
+							} else {
+								ignorePlayers.remove(check_uuid);
+								cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now receives the messages again.");
+							}
+						}
+						/*
+						 * Saves the config.
+						 */
+						cfg.set("players", ignorePlayers);
+						try {
+							cfg.save(file);
+						} catch (IOException e) {
+							plugin.logW("Couldn't save the ignore.yml. Error: ");
+							plugin.logW(e.getMessage());
 						}
 					}
 				});
@@ -629,11 +521,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (cs instanceof Player) {
-					cs.sendMessage("§cUnknown command. Type \"/simplebroadcast help\" for help.");
-				} else {
-					cs.sendMessage("§cUnknown command. Type \"simplebroadcast help\" for help.");
-				}
+				cs.sendMessage("§cUnknown command. Type \"" + (cs instanceof Player ? "/" : "") + "simplebroadcast help\" for help.");
 			}
 		}
 		return false;
