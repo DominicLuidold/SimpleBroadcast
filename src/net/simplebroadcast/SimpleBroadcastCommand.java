@@ -401,7 +401,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 			/*
 			 * IGNORE
-			 * Adds the player to the ignore.yml file.
+			 * Adds/removes the player to the ignore.yml file.
 			 */
 			} else if (args[0].equalsIgnoreCase("ignore")) {
 				if (!cs.hasPermission("simplebroadcast.ignore")) {
@@ -418,9 +418,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 				if (args[1].equalsIgnoreCase("me") && !(cs instanceof Player)) {
 					cs.sendMessage("§cPlease use the option in the config to turn off the messages in the console.");
+					return true;
 				}
 				/*
-				 * Loads the ignore.yml file.
+				 * Loads the config files.
 				 */
 				final File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 				final FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
@@ -431,6 +432,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					@Override
 					public void run() {
 						String check_uuid = null;
+						/*
+						 * Adds/removes the player from the list.
+						 * Only applicable for "/sb ignore me".  
+						 */
 						if (args[1].equalsIgnoreCase("me")) {
 							Player p = (Player) cs;
 							check_uuid = mt.getUUID(p.getName());
@@ -448,6 +453,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 								ignorePlayers.remove(check_uuid);
 								cs.sendMessage("[Simple§cBroadcast]§r Now you receive the messages again.");
 							}
+						/*
+						 * Adds/removes the player declared in the command from the list.
+						 * Only applicable for "/sb ignore PLAYER".  
+						 */
 						} else {
 							check_uuid = mt.getUUID(args[1]);
 							if (check_uuid == null) {
@@ -459,10 +468,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 								if (cfg_boss.getBoolean("enabled") && Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 									BarAPI.removeBar(Bukkit.getServer().getPlayer(args[1]));
 								}
-								cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now doesn't receive any messages.");
+								cs.sendMessage("[Simple§cBroadcast]§f The player §7" + args[1] + "§f now doesn't receive any messages.");
 							} else {
 								ignorePlayers.remove(check_uuid);
-								cs.sendMessage("[Simple§cBroadcast]§r The player §7" + args[1] + "§f now receives the messages again.");
+								cs.sendMessage("[Simple§cBroadcast]§f The player §7" + args[1] + "§f now receives the messages again.");
 							}
 						}
 						/*

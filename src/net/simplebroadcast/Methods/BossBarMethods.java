@@ -113,9 +113,9 @@ public class BossBarMethods {
 						BarAPI.removeBar(p);
 					}
 				}
+				counter++;
 			}
 		});
-		counter++;
 	}
 
 	public static int getCounter() {
