@@ -82,6 +82,7 @@ public class Methods {
 				cs.sendMessage("§6/simplebroadcast bossbar:§f Toggles the boss bar status.");
 				cs.sendMessage("§6/simplebroadcast list:§f Shows you all messages.");
 				cs.sendMessage("§6/simplebroadcast now:§f Broadcasts already existing msg.");
+				cs.sendMessage("§6/simplebroadcast next:§f Skips the next message.");
 				break;
 			} case 2: {
 				cs.sendMessage("§6/simplebroadcast add:§f Adds a msg to the config.");
@@ -91,11 +92,7 @@ public class Methods {
 				cs.sendMessage("§6/simplebroadcast ignore:§f Adds/removes the player from the ignore list.");
 				cs.sendMessage("§6/simplebroadcast update:§f Toggles the update check function.");
 				cs.sendMessage("§6/simplebroadcast help:§f Shows you the help pages.");
-				if (cs instanceof Player) {
-					cs.sendMessage("§6Instead of \"/simplebroadcast\" you can use \"/sb <command>\".");
-				} else {
-					cs.sendMessage("§6Instead of \"simplebroadcast\" you can use \"sb <command>\".");
-				}
+				cs.sendMessage("§6Instead of \"" + (cs instanceof Player ? "/" : "") + "simplebroadcast\" you can use \"/sb <command>\".");
 				break;
 			}
 		}
@@ -122,23 +119,18 @@ public class Methods {
 				// should not happen
 			}
 		}
-		Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(player));
-				Map<String, UUID> response = null;
-				try {
-					response = fetcher.call();
-				} catch (Exception e) { }
-
-				if (response == null || response.isEmpty()) {
-					return;
-				}
-				for (UUID entry : response.values()) {
-					uuid = entry.toString(); //TODO: Should be changed so it's unique everytime this methods gets called
-				}
-			}
-		});
+		UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(player));
+		Map<String, UUID> response = null;
+		try {
+			response = fetcher.call();
+		} catch (Exception e) {
+		}
+		if (response == null || response.isEmpty()) {
+			return null;
+		}
+		for (UUID entry : response.values()) {
+			uuid = entry.toString();
+		}
 		return uuid;
 	}
 
@@ -234,10 +226,9 @@ public class Methods {
 				 * (Still in development - don't use this!)
 				 */
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-					if (ignoredPlayers.contains(getUUID(p.getName()))) {
-						continue;
+					if (!ignoredPlayers.contains(getUUID(p.getName()))) {
+						p.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
 					}
-					p.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
 				}
 				/*
 				 * Checks if messages shall be broadcasted in the console.
