@@ -26,23 +26,37 @@ the BukkitDev page.
 Hallo lieber SimpleBroadcast User!
 
 Danke, dass du mein Plugin verwendest.
-In dieser Datei kannst du wahrscheinlich nützliche
+In dieser Datei kannst du wahrscheinlich nÃ¼tzliche
 Informationen finden, falls du Probleme haben solltest.
 
-Zu aller erst möchte ich dich bitten, dass der Präfix, der Suffix und
-die Messages alle innerhalb von einzelnen Anführungszeichen ('..') stehen,
-sodass die Farbcodes sowie die Variablen funktionieren können.
-Des Weiteren möchte ich dir ans Herz legen, dass wenn du ein einzelnes
-Anführungszeichen (') verwenden möchtest, dies nicht zu schreiben, sondern
-die Variable (%sq%) dafür zu verwenden.
+Zu aller erst mÃ¶chte ich dich bitten, dass der PrÃ¤fix, der Suffix und
+die Messages alle innerhalb von einzelnen AnfÃ¼hrungszeichen ('..') stehen,
+sodass die Farbcodes sowie die Variablen funktionieren kÃ¶nnen.
+Des Weiteren mÃ¶chte ich dir ans Herz legen, dass wenn du ein einzelnes
+AnfÃ¼hrungszeichen (') verwenden mÃ¶chtest, dies nicht zu schreiben, sondern
+die Variable (%sq%) dafÃ¼r zu verwenden.
 Zum Schluss empfehle ich dir noch, nicht die Update - Infos, welche im latest.log
-oder Ingame angezeigt werden, zu ignorieren. Updates sind immer gut, da möglichweise
-Features die du mögen könntest hinzugefügt werden oder auch nervige Bugs gefixed werden
-könnten.
+oder Ingame angezeigt werden, zu ignorieren. Updates sind immer gut, da mÃ¶glichweise
+Features die du mÃ¶gen kÃ¶nntest hinzugefÃ¼gt werden oder auch nervige Bugs gefixed werden
+kÃ¶nnten.
 
 Ja, das war auch schon alles, was ich sagen wollte. Danke, dass du diesen Text hier
 gelesen hast und falls du immer noch Probleme haben solltest, kannst du gerne
 auf der BukkitDev Seite nach Hilfe fragen.
+
+###################
+######EspaÃ±ol######
+###################
+
+Estimado usuario de SimpleBroadcast,
+
+muchas gracias por utilizar este plugin. En este "readme.txt" probablemente puedes encontrar ayuda si tienes algunos problemas o quieres configurarlo.
+Primero que todo, asegurese que los mensajes "prefix" y "suffix" esten entre apostrofes ('...') para que los colores y variables funcionen bien.
+Ademas quiero decirte que si quieres usar un apostrofe ('), no lo hagas. Para que el plugin funcione debes usar la variable (%sq%).
+Finalmente te recomiendo no ignorar los mensajes de actualizaciones si se muestran en la consola o dentro del juego.
+Las actualizaciones son buenas porque aÃ±aden cosas que probablemente te gusten, o simplemente, arreglar algunos errores.
+
+Y eso es todo lo que querÃ­a decirte. Gracias por leer este texto y si tienes problemas, no dudes en contactarme en la pagina "BukkitDev".
 
 ###################
 #######Dutch#######
@@ -67,5 +81,5 @@ te vragen op de BukkitDev pagina.
 ##################
 
 If you want to translate this into other languages, please contanct me on Bukkit.
-Wenn du das in andere Sprachen Übersetzen möchtest, kontaktiere mich bitte auf Bukkit!
+Wenn du das in andere Sprachen Ã¼bersetzen mÃ¶chtest, kontaktiere mich bitte auf Bukkit!
 Hvis du gerne vil oversÃ¦tte dette til andre sprog, kan du kontakte mig pÃ¥ Bukkit!
