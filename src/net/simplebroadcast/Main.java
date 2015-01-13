@@ -46,8 +46,8 @@ public class Main extends JavaPlugin {
 		 * Saves all configs and the readme
 		 */
 		plugin.saveDefaultConfig();
-		final File file = new File(getDataFolder(), "ignore.yml");
-		if (!(file.exists())) {
+		final File ignore = new File(getDataFolder(), "ignore.yml");
+		if (!(ignore.exists())) {
 			plugin.saveResource("ignore.yml", false);
 		}
 		File bossbar = new File(getDataFolder(), "bossbar.yml");
@@ -61,7 +61,7 @@ public class Main extends JavaPlugin {
 		 * Checks if the plugin shall be enabled and logs it if not.
 		 */
 		if (!plugin.getConfig().getBoolean("enabled")) {
-			log("Messages aren't broadcasted as set in the config.");
+			log("Messages don't get broadcasted as set in the config.");
 			Bukkit.getScheduler().cancelTask(messageTask);
 			running = 3;
 		}
@@ -206,17 +206,17 @@ public class Main extends JavaPlugin {
 		 * Converts the user names to UUID's (asynchronous task).
 		 */
 		File old = new File(getDataFolder(), "ignore.yml.OLD");
-		final FileConfiguration cfg_old = YamlConfiguration.loadConfiguration(file);
+		final FileConfiguration cfg_old = YamlConfiguration.loadConfiguration(ignore);
 		if (!old.exists() && cfg_old.get("format") == null) {
-			file.renameTo(old);
+			ignore.renameTo(old);
 
-			final FileConfiguration cfg_new = YamlConfiguration.loadConfiguration(file);
+			final FileConfiguration cfg_new = YamlConfiguration.loadConfiguration(ignore);
 			final List<String> ignorePlayers = cfg_new.getStringList("players");
 
 			final FileConfiguration cfg_converted = YamlConfiguration.loadConfiguration(old);
 
 			try {
-				cfg_new.save(file);
+				cfg_new.save(ignore);
 			} catch (IOException e) {
 				logW("Couldn't save new ignore.yml.");
 			}
@@ -239,7 +239,7 @@ public class Main extends JavaPlugin {
 					cfg_new.addDefault("format", "uuid");
 					cfg_new.options().copyDefaults(true);
 					try {
-						cfg_new.save(file);
+						cfg_new.save(ignore);
 					} catch (IOException e) {
 						logW("Couldn't save new ignore.yml.");
 					}
@@ -284,7 +284,7 @@ public class Main extends JavaPlugin {
 	}
 	
 	/**
-	 * Gets the running Integer (?)
+	 * Gets the running Integer
 	 * @return the Integer
 	 */
 	public int getRunning() {
@@ -300,7 +300,7 @@ public class Main extends JavaPlugin {
 	}
 	
 	/**
-	 * Sets the running Integer (?)
+	 * Sets the running Integer
 	 * @param running the new Integer
 	 */
 	public void setRunning(int running) {
