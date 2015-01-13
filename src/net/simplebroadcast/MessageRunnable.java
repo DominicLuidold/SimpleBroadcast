@@ -33,13 +33,13 @@ public class MessageRunnable implements Runnable {
 
 	@SuppressWarnings("deprecation")
 	private void broadCast() {
-		String message = Main.globalMessages.get(counter);
+		final String message = Main.globalMessages.get(counter);
 		/*
 		 * Loads the ignore.yml.
 		 */
 		File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
 		FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-		List<String> ignoredPlayers = cfg.getStringList("players");
+		final List<String> ignoredPlayers = cfg.getStringList("players");
 		/*
 		 * Starts broadcasting the messages.
 		 * If message starts with "/" it's handled as a command.
@@ -56,11 +56,16 @@ public class MessageRunnable implements Runnable {
 				counter++;
 			}
 		} else {
-			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-				if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-					p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
+				@Override
+				public void run() {
+					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+						if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+						}
+					}
 				}
-			}
+			});
 			/*
 			 * Checks if messages shall be broadcasted in the console.
 			 */
@@ -70,5 +75,9 @@ public class MessageRunnable implements Runnable {
 			}
 			counter++;
 		}
+	}
+
+	public static void setCounter(int counter) {
+		MessageRunnable.counter = counter;
 	}
 }
