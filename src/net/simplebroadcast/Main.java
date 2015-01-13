@@ -253,6 +253,7 @@ public class Main extends JavaPlugin {
 	 */
 	public void loadMessages() {
 		int messageIndex = 0;
+		globalMessages.clear();
 		for (String message : plugin.getConfig().getStringList("messages")) {
 			globalMessages.put(messageIndex, message);
 			messageIndex++;
