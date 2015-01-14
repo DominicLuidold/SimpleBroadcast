@@ -140,6 +140,14 @@ public class Main extends JavaPlugin {
 							return 1;
 						}
 					});
+					if (cfg_boss.getBoolean("reducehealthbar")) {
+						enabledFeatures.addPlotter(new Metrics.Plotter("Reduce health bar") {
+							@Override
+							public int getValue() {
+								return 1;
+							}
+						});
+					}
 				}
 
 				metrics.start();

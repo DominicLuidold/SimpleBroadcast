@@ -40,7 +40,7 @@ public class BossBarMethods {
 			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
-					FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
+					final FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 					/*
 					 * Loads the ignore.yml file.
 					 */
@@ -65,7 +65,11 @@ public class BossBarMethods {
 						public void run() {					
 							for (Player p : onlinePlayers) {
 								if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-									BarAPI.setMessage(p, mt.addVariablesP(message, p));
+									if (cfg_boss.getBoolean("reducehealthbar")) {
+										BarAPI.setMessage(p, mt.addVariablesP(message, p), cfg_boss.getInt("delay"));
+									} else {
+										BarAPI.setMessage(p, mt.addVariablesP(message, p));
+									}
 								}
 							}
 						}
@@ -92,7 +96,7 @@ public class BossBarMethods {
 	@SuppressWarnings("deprecation")
 	private void broadcast() {
 		File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
-		FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
+		final FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 		final List<String> messages = cfg_boss.getStringList("messages");
 		/*
 		 * Loads the ignore.yml.
@@ -108,7 +112,11 @@ public class BossBarMethods {
 			public void run() {
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-						BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', mt.addVariablesP(messages.get(counter), p)));
+						if (cfg_boss.getBoolean("reducehealthbar")) {
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', mt.addVariablesP(messages.get(counter), p)), cfg_boss.getInt("delay"));
+						} else {
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', mt.addVariablesP(messages.get(counter), p)));
+						}
 					} else {
 						BarAPI.removeBar(p);
 					}

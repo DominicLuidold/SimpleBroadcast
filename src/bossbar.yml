@@ -8,6 +8,8 @@ enabled: false
 
 delay: 60 # time in seconds
 
+reducehealthbar: false
+
 randomizemessages: false
 
 messages:
