@@ -50,7 +50,7 @@ permissions:
     simplebroadcast.next:
         description: Allows you to skip the next message.
     simplebroadcast.add:
-        description: Allows you to add a new message( to the config).
+        description: Allows you to add a new message(to the config).
     simplebroadcast.remove:
         description: Allows you to remove a message.
     simplebroadcast.broadcast:
