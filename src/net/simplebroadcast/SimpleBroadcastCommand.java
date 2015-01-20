@@ -290,8 +290,13 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				cs.sendMessage("§2Successfully skipped message " + (MessageRunnable.counter+1) + ".");
-				MessageRunnable.counter++;
+				if (MessageRunnable.counter < Main.globalMessages.size()) {
+					cs.sendMessage("§2Successfully skipped message " + (MessageRunnable.counter+1) + ".");
+					MessageRunnable.counter++;
+				} else {
+					MessageRunnable.counter = 1;
+					cs.sendMessage("§2Successfully skipped message 1.");
+				}
 			/*
 			 * ADD
 			 * Adds a message to the (chat) config.
