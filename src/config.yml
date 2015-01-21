@@ -31,4 +31,4 @@ messages:
 - 'Thank you for using SimpleBroadcast!'
 - 'Plugin by &oKingDome24.'
 - 'If you have questions please visit the BukkitDev page!'
-- '%laquo%Many new and cool variables are now available%raquo%'
+- 'You do not like to edit the config manually? Use "/sb add" or "/sb remove" instead!'

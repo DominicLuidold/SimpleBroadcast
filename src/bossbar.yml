@@ -15,4 +15,4 @@ randomizemessages: false
 messages:
 - 'Have fun with the new boss bar!'
 - 'Please do not forget that too long messages get cut!'
-- 'Hey %player%, the boss bar now also supports variables'
+- 'You%sq%re now able to reduce the health bar based on the delay.'
