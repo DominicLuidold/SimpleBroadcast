@@ -290,6 +290,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
+				if (plugin.getConfig().getBoolean("randomizemessages")) {
+					cs.sendMessage("§cSkipping messages only works if \"randomizemessages\" is set to \"false\" in the config.yml.");
+					return true;
+				}
 				if (MessageRunnable.counter < Main.globalMessages.size()) {
 					cs.sendMessage("§2Successfully skipped message " + (MessageRunnable.counter+1) + ".");
 					MessageRunnable.counter++;
