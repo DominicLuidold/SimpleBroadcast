@@ -9,7 +9,7 @@ public class UpdatingMethods {
 	 * Gets the plugin version of the update.
 	 * @return (Integer) Returns the plugin version of the update (removed points for comparison).
 	 */
-	public int uVersion() {
+	public int getUpdateVersion() {
 		Updater updater = new Updater(Main.getPlugin(), 54358, Main.getPlugin().getDataFolder(), Updater.UpdateType.NO_DOWNLOAD, false);
 		if (updater.getLatestName().substring(17).length() == 3) {
 			int uVersion = Integer.parseInt(updater.getLatestName().substring(17).replace(".", "") + "0");
@@ -26,7 +26,7 @@ public class UpdatingMethods {
 	 * Gets the plugin version.
 	 * @return (Integer) Returns the plugin version (removed points for comparison).
 	 */
-	public int pVersion() {
+	public int getPluginVersion() {
 		if (Main.getPlugin().getDescription().getVersion().length() == 3) {
 			int pVersion = Integer.parseInt(Main.getPlugin().getDescription().getVersion().replace(".", "") + "0");
 			return pVersion;
@@ -43,8 +43,8 @@ public class UpdatingMethods {
 	 */
 	public void update() {
 		try {
-			if (updateB()) {
-				Main.getPlugin().log("An update is available: " + updateN());
+			if (updateAvailable()) {
+				Main.getPlugin().log("An update is available: " + getUpdateNumber());
 				Main.getPlugin().log("Please download it from the BukkitDev page.");
 			}
 		} catch (NullPointerException npe) {
@@ -56,8 +56,8 @@ public class UpdatingMethods {
 	 * Checks for updates.
 	 * @return (Boolean) Return either true if updates are available or false if no updates are available.
 	 */
-	public boolean updateB() {
-		if (pVersion() >= uVersion()) {
+	public boolean updateAvailable() {
+		if (getPluginVersion() >= getUpdateVersion()) {
 			return false;
 		} else {
 			return true;
@@ -68,7 +68,7 @@ public class UpdatingMethods {
 	 * Gets the latest version number.
 	 * @return (String) Returns the latest version number.
 	 */
-	public String updateN() {
+	public String getUpdateNumber() {
 		if (Main.getPlugin().getConfig().getBoolean("checkforupdates")) {
 			Updater updater = new Updater(Main.getPlugin(), 54358, Main.getPlugin().getDataFolder(), Updater.UpdateType.NO_DOWNLOAD, false);
 			String uNumber = updater.getLatestName().substring(17);

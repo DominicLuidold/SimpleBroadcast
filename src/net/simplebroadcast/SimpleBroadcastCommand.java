@@ -61,8 +61,8 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					@Override
 					public void run() {
 						try {
-							if (um.updateB()) {
-								cs.sendMessage("§6Update:§f An update is available: " + um.updateN());
+							if (um.updateAvailable()) {
+								cs.sendMessage("§6Update:§f An update is available: " + um.getUpdateNumber());
 							} else {
 								cs.sendMessage("§6Update:§f There are no updates available.");
 							}

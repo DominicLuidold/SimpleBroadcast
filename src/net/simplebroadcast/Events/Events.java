@@ -33,8 +33,8 @@ public class Events implements Listener {
 				@Override
 				public void run() {
 					try {
-						if ((p.isOp() || p.hasPermission("simplebroadcast.update")) && um.updateB()) {
-							p.sendMessage("[Simple§cBroadcast]§r An update is available: " + um.updateN());
+						if ((p.isOp() || p.hasPermission("simplebroadcast.update")) && um.updateAvailable()) {
+							p.sendMessage("[Simple§cBroadcast]§r An update is available: " + um.getUpdateNumber());
 							p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
 						}
 					} catch (NullPointerException npe) {
