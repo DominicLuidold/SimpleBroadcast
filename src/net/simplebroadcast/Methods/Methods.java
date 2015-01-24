@@ -219,15 +219,9 @@ public class Methods {
 					}
 					return;
 				}
-
-				/*
-				 * EXPERIMENTAL
-				 * Checks if the user has to have the permission to receive the message.
-				 * (Still in development - don't use this!)
-				 */
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(getUUID(p.getName()))) {
-						p.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : ""));
+						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 					}
 				}
 				/*
@@ -235,7 +229,7 @@ public class Methods {
 				 */
 				if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
 					ConsoleCommandSender console = Bukkit.getConsoleSender();
-					console.sendMessage("§f" + (prefix_bool ? prefix + " " : "") + addVariables(message) + (suffix_bool ? " " + suffix : ""));
+					console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariables(message) + (suffix_bool ? " " + suffix : "")));
 				}
 			}
 		}, 0L, Main.getPlugin().getConfig().getInt("delay") * 20L));
