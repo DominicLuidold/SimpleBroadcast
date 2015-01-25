@@ -3,7 +3,7 @@ main: net.simplebroadcast.Main
 version: 1.8
 author: KingDome24
 softdepend: [BarAPI]
-description: Sends automatically defined messages to the ingame chat.
+description: Sends automatically defined messages to the ingame chat with various configuration options.
 website: http://www.SimpleBroadcast.net
 
 commands:
