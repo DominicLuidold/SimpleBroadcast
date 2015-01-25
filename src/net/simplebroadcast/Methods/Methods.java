@@ -115,9 +115,7 @@ public class Methods {
 					hashedName = "0" + hashedName;
 				}
 				return hashedName;
-			} catch (NoSuchAlgorithmException e) {
-				// should not happen
-			}
+			} catch (NoSuchAlgorithmException e) {}
 		}
 		UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(player));
 		Map<String, UUID> response = null;
