@@ -148,6 +148,5 @@ public class BossBarMethods {
 
 	public void setBarTask(int barTask) {
 		BossBarMethods.barTask = barTask;
-	}
-	
+	}	
 }
