@@ -63,7 +63,7 @@ public class Main extends JavaPlugin {
 		if (!plugin.getConfig().getBoolean("enabled")) {
 			log("Messages don't get broadcasted as set in the config.");
 			Bukkit.getScheduler().cancelTask(messageTask);
-			running = 3;
+			setRunning(3);
 		}
 
 		/*
@@ -77,7 +77,7 @@ public class Main extends JavaPlugin {
 		 * - Suffix
 		 * - Update checker
 		 * - Message randomizer
-		 * - Onlineplayers required
+		 * - Online players required
 		 * - Console messages
 		 * - Bossbar
 		 */
@@ -197,7 +197,7 @@ public class Main extends JavaPlugin {
 				if (Bukkit.getOnlinePlayers().length >= 1) {
 					mt.broadcast();
 				} else {
-					running = 0;
+					setRunning(0);
 				}
 			}
 		}
