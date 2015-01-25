@@ -34,7 +34,7 @@ public class Events implements Listener {
 				public void run() {
 					try {
 						if ((p.isOp() || p.hasPermission("simplebroadcast.update")) && um.updateAvailable()) {
-							p.sendMessage("[Simple§cBroadcast]§r An update is available: " + um.getUpdateNumber());
+							p.sendMessage("[Simple§cBroadcast]§r An update is available: v" + um.getUpdateNumber());
 							p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
 						}
 					} catch (NullPointerException npe) {
@@ -81,5 +81,4 @@ public class Events implements Listener {
 			Bukkit.broadcastMessage("[Simple§cBroadcast]§r He, he.. Thank you for using SimpleBroadcast! :D");
 		}
 	}
-
 }
