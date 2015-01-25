@@ -44,7 +44,7 @@ public class UpdatingMethods {
 	public void update() {
 		try {
 			if (updateAvailable()) {
-				Main.getPlugin().log("An update is available: " + getUpdateNumber());
+				Main.getPlugin().log("An update is available: v" + getUpdateNumber());
 				Main.getPlugin().log("Please download it from the BukkitDev page.");
 			}
 		} catch (NullPointerException npe) {
