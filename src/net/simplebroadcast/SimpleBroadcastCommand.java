@@ -62,12 +62,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					public void run() {
 						try {
 							if (um.updateAvailable()) {
-								cs.sendMessage("§6Update:§f An update is available: " + um.getUpdateNumber());
+								cs.sendMessage("§6Update:§f An update is available: v" + um.getUpdateNumber());
 							} else {
 								cs.sendMessage("§6Update:§f There are no updates available.");
 							}
 						} catch (NullPointerException npe) {
-							cs.sendMessage("§6Upate:§f Couldn't check for updates.");
+							cs.sendMessage("§6Update:§f Couldn't check for updates.");
 						}
 					}
 				});
@@ -103,7 +103,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("[Simple§cBroadcast]§r Started broadcast.");
 					plugin.setRunning(1);
 				} else if (plugin.getRunning() == 3) {
-					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is disabled as set in the config.");
+					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is disabled (as set in the config).");
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already started!");
 				}
@@ -185,7 +185,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					if (BossBarMethods.getBarRunning() == 0) {
 						BossBarMethods.setBarRunning(1);
 						bmt.barBroadcast();
-						cs.sendMessage("[Simple§cBroadcast]§r Started (boss bar) broadcast.");
+						cs.sendMessage("[Simple§cBroadcast]§r Started boss bar broadcast.");
 					} else if (BossBarMethods.getBarRunning() == 3) {
 						cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is disabled (as set in the bossbar.yml)!");
 					} else {
