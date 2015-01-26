@@ -72,7 +72,7 @@ public class Methods {
 	 * @param cs CommandSender
 	 */
 	public void helpList(int i, CommandSender cs) {
-		cs.sendMessage("§e--------- §fHelp: SimpleBroadcast (" + i + "/2) §e---------");
+		cs.sendMessage("§e--------- §fHelp: SimpleBroadcast (" + i + "/3) §e---------");
 		switch (i) {
 			case 1: {
 				cs.sendMessage("§6/simplebroadcast:§f Shows you information about the plugin.");
@@ -81,14 +81,16 @@ public class Methods {
 				cs.sendMessage("§6/simplebroadcast reload:§f Reloads the config.");
 				cs.sendMessage("§6/simplebroadcast bossbar:§f Toggles the boss bar status.");
 				cs.sendMessage("§6/simplebroadcast list:§f Shows you all messages.");
-				cs.sendMessage("§6/simplebroadcast now:§f Broadcasts already existing msg.");
-				cs.sendMessage("§6/simplebroadcast next:§f Skips the next message.");
 				break;
 			} case 2: {
+				cs.sendMessage("§6/simplebroadcast now:§f Broadcasts already existing msg.");
+				cs.sendMessage("§6/simplebroadcast next:§f Skips the next message.");
 				cs.sendMessage("§6/simplebroadcast add:§f Adds a msg to the config.");
 				cs.sendMessage("§6/simplebroadcast remove:§f Removes a msg from the config.");
 				cs.sendMessage("§6/simplebroadcast broadcast:§f Broadcasts the msg you enter.");
 				cs.sendMessage("§6/simplebroadcast raw:§f Broadcasts the msg without formatting.");
+				break;
+			} case 3: {
 				cs.sendMessage("§6/simplebroadcast ignore:§f Adds/removes the player from the ignore list.");
 				cs.sendMessage("§6/simplebroadcast update:§f Toggles the update check function.");
 				cs.sendMessage("§6/simplebroadcast help:§f Shows you the help pages.");

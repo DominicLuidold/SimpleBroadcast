@@ -521,10 +521,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					mt.helpList(1, cs);
 				} else {
 					try {
-						if (Integer.parseInt(args[1]) > 0 && Integer.parseInt(args[1]) <= 2) {
+						if (Integer.parseInt(args[1]) > 0 && Integer.parseInt(args[1]) <= 3) {
 							mt.helpList(Integer.parseInt(args[1]), cs);
 						} else {
-							cs.sendMessage("§cThere are only 2 pages available.");
+							cs.sendMessage("§cThere are only 3 pages available.");
 						}
 					} catch (NumberFormatException nfe) {
 						cs.sendMessage("§cPlease enter a valid number.");
