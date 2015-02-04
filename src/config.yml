@@ -16,8 +16,6 @@ prefix:
 suffix:
   enabled: false
   suffix: '&d[v1.8.1]'
-  
-pluginmetrics: true
 
 checkforupdates: true
 

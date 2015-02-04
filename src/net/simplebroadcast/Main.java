@@ -80,80 +80,78 @@ public class Main extends JavaPlugin {
 		 * - Online players required
 		 * - Console messages
 		 * - Bossbar
-		 */
-		if (plugin.getConfig().getBoolean("enabled") && plugin.getConfig().getBoolean("pluginmetrics")) {
-			try {
-				Metrics metrics = new Metrics(plugin);
-				Graph enabledFeatures = metrics.createGraph("Enabled Features");
-				if (plugin.getConfig().getBoolean("prefix.enabled")) {
-					enabledFeatures.addPlotter(new Metrics.Plotter("Prefix") {
-						@Override
-						public int getValue() {
-							return 1;
-						}
-					});
-				}
-				if (plugin.getConfig().getBoolean("suffix.enabled")) {
-					enabledFeatures.addPlotter(new Metrics.Plotter("Suffix") {
-						@Override
-						public int getValue() {
-							return 1;
-						}
-					});
-				}
-				if (plugin.getConfig().getBoolean("checkforupdates")) {
-					enabledFeatures.addPlotter(new Metrics.Plotter("Update checker") {
-						@Override
-						public int getValue() {
-							return 1;
-						}
-					});
-				}
-				if (plugin.getConfig().getBoolean("randomizemessages")) {
-					enabledFeatures.addPlotter(new Metrics.Plotter("Message randomizer") {
-						@Override
-						public int getValue() {
-							return 1;
-						}
-					});
-				}
-				if (plugin.getConfig().getBoolean("requiresonlineplayers")) {
-					enabledFeatures.addPlotter(new Metrics.Plotter("Onlineplayers required") {
-						@Override
-						public int getValue() {
-							return 1;
-						}
-					});
-				}
-				if (plugin.getConfig().getBoolean("sendmessagestoconsole")) {
-					enabledFeatures.addPlotter(new Metrics.Plotter("Console messages") {
-						@Override
-						public int getValue() {
-							return 1;
-						}
-					});
-				}
-				if (cfg_boss.getBoolean("enabled")) {
-					enabledFeatures.addPlotter(new Metrics.Plotter("Bossbar") {
-						@Override
-						public int getValue() {
-							return 1;
-						}
-					});
-					if (cfg_boss.getBoolean("reducehealthbar")) {
-						enabledFeatures.addPlotter(new Metrics.Plotter("Reduce health bar") {
-							@Override
-							public int getValue() {
-								return 1;
-							}
-						});
+		 */		
+		try {
+			Metrics metrics = new Metrics(plugin);
+			Graph enabledFeatures = metrics.createGraph("Enabled Features");
+			if (plugin.getConfig().getBoolean("prefix.enabled")) {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Prefix") {
+					@Override
+					public int getValue() {
+						return 1;
 					}
-				}
-
-				metrics.start();
-			} catch (IOException e) {
-				logW(e.getMessage());
+				});
 			}
+			if (plugin.getConfig().getBoolean("suffix.enabled")) {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Suffix") {
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
+			}
+			if (plugin.getConfig().getBoolean("checkforupdates")) {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Update checker") {
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
+			}
+			if (plugin.getConfig().getBoolean("randomizemessages")) {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Message randomizer") {
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
+			}
+			if (plugin.getConfig().getBoolean("requiresonlineplayers")) {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Onlineplayers required") {
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
+			}
+			if (plugin.getConfig().getBoolean("sendmessagestoconsole")) {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Console messages") {
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
+			}
+			if (cfg_boss.getBoolean("enabled")) {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Bossbar") {
+					@Override
+					public int getValue() {
+						return 1;
+					}
+				});
+				if (cfg_boss.getBoolean("reducehealthbar")) {
+					enabledFeatures.addPlotter(new Metrics.Plotter("Reduce health bar") {
+						@Override
+						public int getValue() {
+							return 1;
+						}
+					});
+				}
+			}
+
+			metrics.start();
+		} catch (IOException e) {
+			logW(e.getMessage());
 		}
 
 		/*

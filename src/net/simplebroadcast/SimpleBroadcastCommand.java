@@ -74,11 +74,6 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 			} else {
 				cs.sendMessage("§6Update:§f You disabled the update check function.");
 			}
-			if (plugin.getConfig().getBoolean("pluginmetrics")) {
-				cs.sendMessage("§6PluginMetrics:§f PluginMetrics is enabled and sends data.");
-			} else {
-				cs.sendMessage("§6PluginMetrics:§f PluginMetrics is disabled and sends no data.");
-			}
 			File bossbar = new File(Main.getPlugin().getDataFolder(), "bossbar.yml");
 			FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
 			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && cfg_boss.getBoolean("enabled") && BossBarMethods.getBarRunning() == 1) {
