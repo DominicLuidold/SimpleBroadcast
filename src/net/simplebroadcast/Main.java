@@ -117,7 +117,7 @@ public class Main extends JavaPlugin {
 				});
 			}
 			if (plugin.getConfig().getBoolean("requiresonlineplayers")) {
-				enabledFeatures.addPlotter(new Metrics.Plotter("Onlineplayers required") {
+				enabledFeatures.addPlotter(new Metrics.Plotter("Online players required") {
 					@Override
 					public int getValue() {
 						return 1;
