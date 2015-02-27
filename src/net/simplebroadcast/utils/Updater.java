@@ -1,4 +1,4 @@
-package net.simplebroadcast.Utils;
+package net.simplebroadcast.utils;
 
 import java.io.*;
 import java.net.MalformedURLException;

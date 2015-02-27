@@ -1,4 +1,4 @@
-package net.simplebroadcast.Methods;
+package net.simplebroadcast.methods;
 
 import java.io.File;
 import java.math.BigInteger;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import net.simplebroadcast.Main;
 import net.simplebroadcast.MessageRunnable;
-import net.simplebroadcast.Utils.UUIDFetcher;
+import net.simplebroadcast.utils.UUIDFetcher;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,21 +23,21 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Methods {
-
+	
 	private String uuid;
 	private int previousMessage;
 
 	/**
 	 * Executes a command.
-	 * @param command The command which shall be executed.
+	 * @param command which shall be executed.
 	 */
 	public void performCommand(String command) {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 	}
-
+	
 	/**
 	 * Counts the amount of operators who are online.
-	 * @return (Integer) Amount of online operators.
+	 * @return amount of online operators.
 	 */
 	@SuppressWarnings("deprecation")
 	public int opList() {
@@ -49,10 +49,10 @@ public class Methods {
 		}
 		return ops;
 	}
-
+	
 	/**
 	 * Gets a random player name.
-	 * @return (String) Name of player.
+	 * @return name of a random player.
 	 */
 	@SuppressWarnings("deprecation")
 	public String randomPlayer() {
@@ -65,10 +65,10 @@ public class Methods {
 			return noPlayer;
 		}
 	}
-
+	
 	/**
 	 * Shows an overview of all available commands.
-	 * @param i Page site.
+	 * @param i page site.
 	 * @param cs CommandSender
 	 */
 	public void helpList(int i, CommandSender cs) {
@@ -79,7 +79,7 @@ public class Methods {
 				cs.sendMessage("§6/simplebroadcast start:§f Starts the broadcast.");
 				cs.sendMessage("§6/simplebroadcast stop:§f Stops the broadcast.");
 				cs.sendMessage("§6/simplebroadcast reload:§f Reloads the config.");
-				cs.sendMessage("§6/simplebroadcast bossbar:§f Toggles the boss bar status.");
+				cs.sendMessage("§6/simplebroadcast bossbar help:§f Shows you the bossbar help pages.");
 				cs.sendMessage("§6/simplebroadcast list:§f Shows you all messages.");
 				break;
 			} case 2: {
@@ -99,12 +99,27 @@ public class Methods {
 			}
 		}
 	}
-
+	
+	/**
+	 * Shows an overview of all available boss bar commands.
+	 * @param i page site.
+	 * @param cs CommandSender
+	 */
+	public void bossBarHelpList(int i, CommandSender cs) {
+		cs.sendMessage("§e--------- §fHelp: SimpleBroadcast (" + i + "/3) §e---------");
+		switch (i) {
+			case 1: {
+				cs.sendMessage("§6Instead of \"" + (cs instanceof Player ? "/" : "") + "simplebroadcast\" you can use \"/sb <command>\".");
+				break;
+			}
+		}
+	}
+	
 	/**
 	 * Gets the UUID of the player.
 	 * If server runs in "online-mode=false" it returns an an MD5 hash of the player name.
-	 * @param player The player name.
-	 * @return (String) The UUID of the player.
+	 * @param player name.
+	 * @return UUID of the player.
 	 */
 	public String getUUID(final String player) {
 		if (!Bukkit.getServer().getOnlineMode()) {
@@ -133,13 +148,12 @@ public class Methods {
 		}
 		return uuid;
 	}
-
+	
 	/**
 	 * Replaces the variables in the messages.
-	 * @param message The message which the variables shall be replaced.
-	 * @return (String) The message with the replaced variables.
+	 * @param message where the variables shall be replaced.
+	 * @return message with the replaced variables.
 	 */
-	@SuppressWarnings("deprecation")
 	public String addVariables(String message) {
 		message = message.replace("%sq%", "'").
 				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
@@ -155,30 +169,30 @@ public class Methods {
 
 	/**
 	 * Replaces the variables in the messages.
-	 * @param message The message which the variables shall be replaced.
-	 * @param p The player object (for getting the current world/biome/..)
-	 * @return (String) The message with the replaced variables.
+	 * @param message where the variables shall be replaced.
+	 * @param p player object (for getting the current world/biome/..)
+	 * @return message with the replaced variables.
 	 */
 	public String addVariablesP(String message, Player p) {
 		message = addVariables(message.replace("%player%", p.getName()).replace("%biome%", p.getLocation().getBlock().getBiome().toString()).replace("%world%", p.getWorld().getName()));
 		return message;
 	}
-
+	
 	/*
 	 * The global broadcast function.
 	 */
 	public void broadcast() {
-		if (Main.getPlugin().getRunning() == 3) {
+		if (MessageRunnable.getRunning() == 3) {
 			return;
 		}
 		/*
 		 * Decides if the messages shall be broadcasted in a random order or not.
 		 */
 		if (!Main.getPlugin().getConfig().getBoolean("randomizemessages")) {
-			Main.getPlugin().setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new MessageRunnable(), 0L, Main.getPlugin().getConfig().getInt("delay") * 20L));
+			MessageRunnable.setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new MessageRunnable(), 0L, Main.getPlugin().getConfig().getInt("delay") * 20L));
 			return;
 		}
-		Main.getPlugin().setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+		MessageRunnable.setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
@@ -191,14 +205,14 @@ public class Methods {
 				/*
 				 * Gets and broadcasts the messages in a random order.
 				 */
-				int msg = (int) (Math.random() * Main.globalMessages.size());
+				int msg = (int) (Math.random() * Main.chatMessages.size());
 				if (msg != previousMessage) {
 					previousMessage = msg;
 				} else {
-					msg += (previousMessage < Main.globalMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
+					msg += (previousMessage < Main.chatMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
 					previousMessage = msg;
 				}
-				String message = Main.globalMessages.get(msg);
+				String message = Main.chatMessages.get(msg);
 				msg = 0;
 				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("prefix.prefix")));
 				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("suffix.suffix")));

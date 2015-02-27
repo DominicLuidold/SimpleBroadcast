@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.simplebroadcast.Events.Events;
-import net.simplebroadcast.Methods.BossBarMethods;
-import net.simplebroadcast.Methods.Methods;
-import net.simplebroadcast.Methods.UpdatingMethods;
-import net.simplebroadcast.Utils.Metrics;
-import net.simplebroadcast.Utils.Metrics.Graph;
-import net.simplebroadcast.Utils.UUIDFetcher;
+import net.simplebroadcast.utils.UUIDFetcher;
+import net.simplebroadcast.events.Events;
+import net.simplebroadcast.methods.BossBarMethods;
+import net.simplebroadcast.methods.Methods;
+import net.simplebroadcast.methods.UpdatingMethods;
+import net.simplebroadcast.utils.Metrics;
+import net.simplebroadcast.utils.Metrics.Graph;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,51 +21,45 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
-
-	private static Main plugin;
-	private int running = 1;
-	private int messageTask;
-	private Methods mt = new Methods();
-	private BossBarMethods bmt = new BossBarMethods();
-	private UpdatingMethods um = new UpdatingMethods();
-	public static HashMap<Integer, String> globalMessages = new HashMap<Integer, String>(); 
-
+	
+	public static Main plugin;
+	private Methods methods = new Methods();
+	private BossBarMethods bossBarMethods = new BossBarMethods();
+	private UpdatingMethods updatingMethods = new UpdatingMethods();
+	public static HashMap<Integer, String> chatMessages = new HashMap<Integer, String>();
+	public static HashMap<Integer, String> bossBarMessages = new HashMap<Integer, String>();
+	
 	@Override
 	public void onDisable() {
-		Bukkit.getScheduler().cancelTask(messageTask);
 		Bukkit.getScheduler().cancelTask(BossBarMethods.getBarTask());
+		Bukkit.getScheduler().cancelTask(MessageRunnable.getMessageTask());
 	}
-
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public void onEnable() {
-
 		plugin = this;
-
+		
 		/*
-		 * Saves all configs and the readme
+		 * Saves all config files and the readme
 		 */
 		plugin.saveDefaultConfig();
-		final File ignore = new File(getDataFolder(), "ignore.yml");
-		if (!(ignore.exists())) {
+		if (!new File(getDataFolder(), "ignore.yml").exists()) {
 			plugin.saveResource("ignore.yml", false);
 		}
-		File bossbar = new File(getDataFolder(), "bossbar.yml");
-		FileConfiguration cfg_boss = YamlConfiguration.loadConfiguration(bossbar);
-		if (!bossbar.exists()) {
+		if (!new File(getDataFolder(), "bossbar.yml").exists()) {
 			plugin.saveResource("bossbar.yml", false);
 		}
 		plugin.saveResource("readme.txt", true);
-
+		
 		/*
 		 * Checks if the plugin shall be enabled and logs it if not.
 		 */
 		if (!plugin.getConfig().getBoolean("enabled")) {
-			log("Messages don't get broadcasted as set in the config.");
-			Bukkit.getScheduler().cancelTask(messageTask);
-			setRunning(3);
+			logInfo("Messages don't get broadcasted as set in the config.");
+			Bukkit.getScheduler().cancelTask(MessageRunnable.getMessageTask());
+			MessageRunnable.setRunning(3);
 		}
-
+		
 		/*
 		 * Initializes the main command.
 		 */
@@ -82,7 +76,7 @@ public class Main extends JavaPlugin {
 		 * - Bossbar
 		 */		
 		try {
-			Metrics metrics = new Metrics(plugin);
+			Metrics metrics = new net.simplebroadcast.utils.Metrics(plugin);
 			Graph enabledFeatures = metrics.createGraph("Enabled Features");
 			if (plugin.getConfig().getBoolean("prefix.enabled")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Prefix") {
@@ -132,14 +126,14 @@ public class Main extends JavaPlugin {
 					}
 				});
 			}
-			if (cfg_boss.getBoolean("enabled")) {
+			if (getBossBarConfig().getBoolean("enabled")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Bossbar") {
 					@Override
 					public int getValue() {
 						return 1;
 					}
 				});
-				if (cfg_boss.getBoolean("reducehealthbar")) {
+				if (getBossBarConfig().getBoolean("reducehealthbar")) {
 					enabledFeatures.addPlotter(new Metrics.Plotter("Reduce health bar") {
 						@Override
 						public int getValue() {
@@ -148,21 +142,20 @@ public class Main extends JavaPlugin {
 					});
 				}
 			}
-
 			metrics.start();
 		} catch (IOException e) {
-			logW(e.getMessage());
+			logWarning(e.getMessage());
 		}
 
 		/*
-		 * Checks if updates are available.
+		 * Checks if any updates are available.
 		 * (Asynchronous task)
 		 */
 		if (plugin.getConfig().getBoolean("enabled") && plugin.getConfig().getBoolean("checkforupdates")) {
 			Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 				@Override
 				public void run() {
-					um.update();
+					updatingMethods.update();
 				}
 			});
 		}
@@ -173,12 +166,12 @@ public class Main extends JavaPlugin {
 		if (plugin.getConfig().getBoolean("enabled")) {
 			getServer().getPluginManager().registerEvents(new Events(), plugin);
 		}
-
+		
 		/*
 		 * Checks if the boss bar is enabled and BarAPI is installed.
 		 */
-		if (cfg_boss.getBoolean("enabled") && getServer().getPluginManager().isPluginEnabled("BarAPI")) {
-			log("BarAPI integration successfully enabled.");
+		if (getBossBarConfig().getBoolean("enabled") && getServer().getPluginManager().isPluginEnabled("BarAPI")) {
+			logInfo("BarAPI integration successfully enabled.");
 		} else {
 			getServer().getScheduler().cancelTask(BossBarMethods.getBarTask());
 			BossBarMethods.setBarRunning(3);
@@ -188,14 +181,14 @@ public class Main extends JavaPlugin {
 		 * Starts the chat broadcast task.
 		 */
 		if (plugin.getConfig().getBoolean("enabled")) {
-			loadMessages();
+			loadChatMessages();
 			if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
-				mt.broadcast();
+				methods.broadcast();
 			} else {
 				if (Bukkit.getOnlinePlayers().length >= 1) {
-					mt.broadcast();
+					methods.broadcast();
 				} else {
-					setRunning(0);
+					MessageRunnable.setRunning(0);
 				}
 			}
 		}
@@ -203,14 +196,15 @@ public class Main extends JavaPlugin {
 		/*
 		 * Starts the boss bar broadcast task.
 		 */
-		if (cfg_boss.getBoolean("enabled") && BossBarMethods.getBarRunning() != 0 && BossBarMethods.getBarRunning() != 3) {
-			bmt.barBroadcast();
+		if (getBossBarConfig().getBoolean("enabled") && BossBarMethods.getBarRunning() != 0 && BossBarMethods.getBarRunning() != 3) {
+			bossBarMethods.barBroadcast();
 		}
-
+		
 		/*
 		 * Converts the old ignore.yml to the new format if existing.
 		 * Converts the user names to UUID's (asynchronous task).
 		 */
+		final File ignore = new File(getDataFolder(), "ignore.yml");
 		File old = new File(getDataFolder(), "ignore.yml.OLD");
 		final FileConfiguration cfg_old = YamlConfiguration.loadConfiguration(ignore);
 		if (!old.exists() && cfg_old.get("format") == null) {
@@ -218,13 +212,12 @@ public class Main extends JavaPlugin {
 
 			final FileConfiguration cfg_new = YamlConfiguration.loadConfiguration(ignore);
 			final List<String> ignorePlayers = cfg_new.getStringList("players");
-
 			final FileConfiguration cfg_converted = YamlConfiguration.loadConfiguration(old);
 
 			try {
 				cfg_new.save(ignore);
 			} catch (IOException e) {
-				logW("Couldn't save new ignore.yml.");
+				logWarning("Couldn't save new ignore.yml.");
 			}
 			Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 				@Override
@@ -234,7 +227,7 @@ public class Main extends JavaPlugin {
 					try {
 						response = fetcher.call();
 					} catch (Exception e) {
-						logW("Couldn't convert ignore.yml.");
+						logWarning("Couldn't convert ignore.yml.");
 					}
 
 					for (UUID uuid : response.values()) {
@@ -247,78 +240,78 @@ public class Main extends JavaPlugin {
 					try {
 						cfg_new.save(ignore);
 					} catch (IOException e) {
-						logW("Couldn't save new ignore.yml.");
+						logWarning("Couldn't save new ignore.yml.");
 					}
 				}
 			});
 		}
 	}
-
-	/**
-	 * Loads all the messages into a globally available HashMap.
-	 */
-	public void loadMessages() {
-		int messageIndex = 0;
-		globalMessages.clear();
-		for (String message : plugin.getConfig().getStringList("messages")) {
-			globalMessages.put(messageIndex, message);
-			messageIndex++;
-		}
-	}
-
-	/**
-	 * Logs the message with the status: info
-	 * @param str The message which shall be logged.
-	 */
-	public void log(String str) {
-		getLogger().info(str);
-	}
-
-	/**
-	 * Logs the message with the status: warning
-	 * @param str The message which shall be logged.
-	 */
-	public void logW(String str) {
-		getLogger().warning(str);
-	}
 	
 	/**
-	 * Gets the instance of this Main class
-	 * @return the instance
+	 * Gets the instance of the Main class.
+	 * @return instance of the Main class.
 	 */
 	public static Main getPlugin() {
 		return plugin;
 	}
 	
 	/**
-	 * Gets the running Integer
-	 * @return the Integer
+	 * Logs the given message with the status "info".
+	 * @param message logged message
 	 */
-	public int getRunning() {
-		return running;
+	public static void logInfo(String message) {
+		Bukkit.getLogger().info(message);
 	}
 	
 	/**
-	 * Gets the task id of the {@link MessageRunnable}
-	 * @return the task id
+	 * Logs the given message with the status "warning".
+	 * @param message logged message
 	 */
-	public int getMessageTask() {
-		return messageTask;
+	public static void logWarning(String message) {
+		Bukkit.getLogger().warning(message);
 	}
 	
 	/**
-	 * Sets the running Integer
-	 * @param running the new Integer
+	 * Loads all messages of the chat broadcast into a HashMap.
 	 */
-	public void setRunning(int running) {
-		this.running = running;
+	public static void loadChatMessages() {
+		int messageID = 0;
+		chatMessages.clear();
+		for (String message : plugin.getConfig().getStringList("messages")) {
+			chatMessages.put(messageID, message);
+			messageID++;
+		}
 	}
 	
 	/**
-	 * Sets the task id of the {@link MessageRunnable}
-	 * @param messageTask the new task id
+	 * Loads all messages of the boss bar broadcast into a HashMap.
 	 */
-	public void setMessageTask(int messageTask) {
-		this.messageTask = messageTask;
+	public static void loadBossBarMessages() {
+		int messageID = 0;
+		bossBarMessages.clear();
+		for (String message : getBossBarConfig().getStringList("messages")) {
+			bossBarMessages.put(messageID, message);
+			messageID++;
+		}
+	}
+	
+	/**
+	 * Gets the boss bar configuration file.
+	 * @return boss bar configuration file
+	 */
+	public static FileConfiguration getBossBarConfig() {
+		File bossBar = new File(plugin.getDataFolder(), "bossbar.yml");
+		FileConfiguration bossBarConfig = YamlConfiguration.loadConfiguration(bossBar);
+		return bossBarConfig;
+	}
+	
+	/**
+	 * Gets the ignore configuration file.
+	 * @return ignore configuration file.
+	 */
+	public static FileConfiguration getIgnoreConfig() {
+		File ignore = new File (plugin.getDataFolder(), "ignore.yml");
+		FileConfiguration ignoreConfig = YamlConfiguration.loadConfiguration(ignore);
+		return ignoreConfig;
 	}
 }

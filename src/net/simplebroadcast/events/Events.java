@@ -1,8 +1,4 @@
-package net.simplebroadcast.Events;
-
-import net.simplebroadcast.Main;
-import net.simplebroadcast.Methods.Methods;
-import net.simplebroadcast.Methods.UpdatingMethods;
+package net.simplebroadcast.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,15 +8,19 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import net.simplebroadcast.Main;
+import net.simplebroadcast.MessageRunnable;
+import net.simplebroadcast.methods.Methods;
+import net.simplebroadcast.methods.UpdatingMethods;
+
 public class Events implements Listener {
-
-	private Methods mt = new Methods();
-	private UpdatingMethods um = new UpdatingMethods();
-
+	
+	private Methods methods = new Methods();
+	private UpdatingMethods updatingMethods = new UpdatingMethods();
+	
 	/*
 	 * PlayerJoinEvent
 	 */
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		/*
@@ -33,12 +33,12 @@ public class Events implements Listener {
 				@Override
 				public void run() {
 					try {
-						if ((p.isOp() || p.hasPermission("simplebroadcast.update")) && um.updateAvailable()) {
-							p.sendMessage("[Simple§cBroadcast]§r An update is available: v" + um.getUpdateNumber());
+						if ((p.isOp() || p.hasPermission("simplebroadcast.update")) && updatingMethods.updateAvailable()) {
+							p.sendMessage("[Simple§cBroadcast]§r An update is available: v" + updatingMethods.getUpdateNumber());
 							p.sendMessage("[Simple§cBroadcast]§r Please download it from the BukkitDev page.");
 						}
 					} catch (NullPointerException npe) {
-						Main.getPlugin().logW("Couldn't check for updates.");
+						Main.logWarning("Couldn't check for updates.");
 					}
 				}
 			});
@@ -47,25 +47,24 @@ public class Events implements Listener {
 		 * Checks if server was empty before the player joined and starts the broadcast if it's not running yet.
 		 */
 		if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers")) {
-			if (Bukkit.getOnlinePlayers().length == 1 && Main.getPlugin().getRunning() == 0) {
-				mt.broadcast();
-				Main.getPlugin().setRunning(1);
+			if (Bukkit.getOnlinePlayers().length == 1 && MessageRunnable.getRunning() == 0) {
+				methods.broadcast();
+				MessageRunnable.setRunning(1);
 			}
 		}
 	}
-
+	
 	/*
 	 * PlayerQuitEvent
 	 */
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		/*
 		 * Checks if server is empty after the player left and stops the broadcast if it's running.
 		 */
-		if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().length == 1) {
-			Bukkit.getServer().getScheduler().cancelTask(Main.getPlugin().getMessageTask());
-			Main.getPlugin().setRunning(0);
+	if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().length == 1) {
+			Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());
+			MessageRunnable.setRunning(0);
 		}
 	}
 

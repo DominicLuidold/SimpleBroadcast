@@ -1,45 +1,41 @@
 package net.simplebroadcast;
 
-import net.simplebroadcast.Methods.Methods;
-
-import java.io.File;
 import java.util.List;
+
+import net.simplebroadcast.methods.Methods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class MessageRunnable implements Runnable {
-
+	
+	private static int running = 1;
+	private static int messageTask;
 	public static int counter = 0;
-	private Methods mt = new Methods();
+	private Methods methods = new Methods();
 	private boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
 	private boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
-	private String prefix = mt.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
-	private String suffix = mt.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
+	private String prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
+	private String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 
 	@Override
 	public void run() {
-		if (counter < Main.globalMessages.size()) {
+		if (counter < Main.chatMessages.size()) {
 			broadCast();
 		} else {
 			counter = 0;
 			broadCast();
 		}
 	}
-
-	@SuppressWarnings("deprecation")
+	
 	private void broadCast() {
-		final String message = Main.globalMessages.get(counter);
+		final String message = Main.chatMessages.get(counter);
 		/*
 		 * Loads the ignore.yml.
 		 */
-		File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
-		FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-		final List<String> ignoredPlayers = cfg.getStringList("players");
+		final List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
 		/*
 		 * Starts broadcasting the messages.
 		 * If message starts with "/" it's handled as a command.
@@ -47,12 +43,12 @@ public class MessageRunnable implements Runnable {
 		if (message.startsWith("/")) {
 			if (message.contains("%n")) {
 				for (String msg : message.substring(1).split("%n/")) {
-					mt.performCommand(msg);
+					methods.performCommand(msg);
 				}
 				counter++;
 			} else {
 				String command = message.substring(1);
-				mt.performCommand(command);
+				methods.performCommand(command);
 				counter++;
 			}
 		} else {
@@ -60,8 +56,8 @@ public class MessageRunnable implements Runnable {
 				@Override
 				public void run() {
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if (!ignoredPlayers.contains(mt.getUUID(p.getName()))) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+						if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						}
 					}
 				}
@@ -71,13 +67,57 @@ public class MessageRunnable implements Runnable {
 			 */
 			if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
 				ConsoleCommandSender console = Bukkit.getConsoleSender();
-				console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + mt.addVariables(message) + (suffix_bool ? " " + suffix : "")));
+				console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 			}
 			counter++;
 		}
 	}
-
+	
+	/**
+	 * Gets the running Integer
+	 * @return the Integer
+	 */
+	public static int getRunning() {
+		return running;
+	}
+	
+	/**
+	 * Gets the task id of MessageRunnable
+	 * @return the task id
+	 */
+	public static int getMessageTask() {
+		return messageTask;
+	}
+	
+	/**
+	 * Gets the counter MessageRunnable
+	 * @return the counter
+	 */
+	public static int getCounter() {
+		return counter;
+	}
+	
+	/**
+	 * Sets the counter
+	 * @param counter new counter
+	 */
 	public static void setCounter(int counter) {
 		MessageRunnable.counter = counter;
+	}
+	
+	/**
+	 * Sets the running Integer
+	 * @param running the new Integer
+	 */
+	public static void setRunning(int running) {
+		MessageRunnable.running = running;
+	}
+
+	/**
+	 * Sets the task id of MessageRunnable
+	 * @param messageTask the new task id
+	 */
+	public static void setMessageTask(int messageTask) {
+		MessageRunnable.messageTask = messageTask;
 	}
 }
