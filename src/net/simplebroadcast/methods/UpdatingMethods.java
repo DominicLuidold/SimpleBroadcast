@@ -18,7 +18,7 @@ public class UpdatingMethods {
 			Main.logWarning("Couldn't check for updates.");
 		}
 	}
-	
+
 	/**
 	 * Returns if any updates are available.
 	 * @return if an update is available or not
@@ -30,7 +30,7 @@ public class UpdatingMethods {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Gets the version of the available update.
 	 * @return version of available update
@@ -47,7 +47,7 @@ public class UpdatingMethods {
 			return 1;
 		}
 	}
-	
+
 	/**
 	 * Gets the plugin version.
 	 * @return plugin version
@@ -63,7 +63,7 @@ public class UpdatingMethods {
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Gets the latest version number.
 	 * @return the latest version number.

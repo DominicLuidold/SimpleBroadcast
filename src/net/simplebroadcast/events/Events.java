@@ -17,7 +17,7 @@ public class Events implements Listener {
 	
 	private Methods methods = new Methods();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();
-	
+
 	/*
 	 * PlayerJoinEvent
 	 */
@@ -53,7 +53,7 @@ public class Events implements Listener {
 			}
 		}
 	}
-	
+
 	/*
 	 * PlayerQuitEvent
 	 */

@@ -118,7 +118,7 @@ public class BossBarMethods {
 	public static int getBarRunning() {
 		return barRunning;
 	}
-	
+
 	/**
 	 * Gets the task id of BossBarMethods
 	 * @return the task id
@@ -126,7 +126,7 @@ public class BossBarMethods {
 	public static int getBarTask() {
 		return barTask;
 	}
-	
+
 	/**
 	 * Gets the counter BossBarMethods
 	 * @return the counter
@@ -134,7 +134,7 @@ public class BossBarMethods {
 	public static int getBarCounter() {
 		return counter;
 	}
-	
+
 	/**
 	 * Sets the counter
 	 * @param counter new counter
@@ -142,7 +142,7 @@ public class BossBarMethods {
 	public static void setBarCounter(int counter) {
 		BossBarMethods.counter = counter;
 	}
-	
+
 	/**
 	 * Sets the running Integer
 	 * @param running the new Integer

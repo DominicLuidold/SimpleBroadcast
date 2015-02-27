@@ -29,7 +29,7 @@ public class MessageRunnable implements Runnable {
 			broadCast();
 		}
 	}
-	
+
 	private void broadCast() {
 		final String message = Main.chatMessages.get(counter);
 		/*
@@ -72,7 +72,7 @@ public class MessageRunnable implements Runnable {
 			counter++;
 		}
 	}
-	
+
 	/**
 	 * Gets the running Integer
 	 * @return the Integer
@@ -80,7 +80,7 @@ public class MessageRunnable implements Runnable {
 	public static int getRunning() {
 		return running;
 	}
-	
+
 	/**
 	 * Gets the task id of MessageRunnable
 	 * @return the task id
@@ -88,7 +88,7 @@ public class MessageRunnable implements Runnable {
 	public static int getMessageTask() {
 		return messageTask;
 	}
-	
+
 	/**
 	 * Gets the counter MessageRunnable
 	 * @return the counter
@@ -96,7 +96,7 @@ public class MessageRunnable implements Runnable {
 	public static int getCounter() {
 		return counter;
 	}
-	
+
 	/**
 	 * Sets the counter
 	 * @param counter new counter
@@ -104,7 +104,7 @@ public class MessageRunnable implements Runnable {
 	public static void setCounter(int counter) {
 		MessageRunnable.counter = counter;
 	}
-	
+
 	/**
 	 * Sets the running Integer
 	 * @param running the new Integer

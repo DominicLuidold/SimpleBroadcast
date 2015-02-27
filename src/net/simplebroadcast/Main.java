@@ -38,7 +38,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		plugin = this;
-		
+
 		/*
 		 * Saves all config files and the readme
 		 */
@@ -50,7 +50,7 @@ public class Main extends JavaPlugin {
 			plugin.saveResource("bossbar.yml", false);
 		}
 		plugin.saveResource("readme.txt", true);
-		
+
 		/*
 		 * Checks if the plugin shall be enabled and logs it if not.
 		 */
@@ -59,7 +59,7 @@ public class Main extends JavaPlugin {
 			Bukkit.getScheduler().cancelTask(MessageRunnable.getMessageTask());
 			MessageRunnable.setRunning(3);
 		}
-		
+
 		/*
 		 * Initializes the main command.
 		 */
@@ -166,7 +166,7 @@ public class Main extends JavaPlugin {
 		if (plugin.getConfig().getBoolean("enabled")) {
 			getServer().getPluginManager().registerEvents(new Events(), plugin);
 		}
-		
+
 		/*
 		 * Checks if the boss bar is enabled and BarAPI is installed.
 		 */
@@ -199,7 +199,7 @@ public class Main extends JavaPlugin {
 		if (getBossBarConfig().getBoolean("enabled") && BossBarMethods.getBarRunning() != 0 && BossBarMethods.getBarRunning() != 3) {
 			bossBarMethods.barBroadcast();
 		}
-		
+
 		/*
 		 * Converts the old ignore.yml to the new format if existing.
 		 * Converts the user names to UUID's (asynchronous task).
@@ -246,7 +246,7 @@ public class Main extends JavaPlugin {
 			});
 		}
 	}
-	
+
 	/**
 	 * Gets the instance of the Main class.
 	 * @return instance of the Main class.
@@ -254,7 +254,7 @@ public class Main extends JavaPlugin {
 	public static Main getPlugin() {
 		return plugin;
 	}
-	
+
 	/**
 	 * Logs the given message with the status "info".
 	 * @param message logged message
@@ -262,7 +262,7 @@ public class Main extends JavaPlugin {
 	public static void logInfo(String message) {
 		Bukkit.getLogger().info(message);
 	}
-	
+
 	/**
 	 * Logs the given message with the status "warning".
 	 * @param message logged message
@@ -270,7 +270,7 @@ public class Main extends JavaPlugin {
 	public static void logWarning(String message) {
 		Bukkit.getLogger().warning(message);
 	}
-	
+
 	/**
 	 * Loads all messages of the chat broadcast into a HashMap.
 	 */
@@ -282,7 +282,7 @@ public class Main extends JavaPlugin {
 			messageID++;
 		}
 	}
-	
+
 	/**
 	 * Loads all messages of the boss bar broadcast into a HashMap.
 	 */
@@ -294,7 +294,7 @@ public class Main extends JavaPlugin {
 			messageID++;
 		}
 	}
-	
+
 	/**
 	 * Gets the boss bar configuration file.
 	 * @return boss bar configuration file
@@ -304,7 +304,7 @@ public class Main extends JavaPlugin {
 		FileConfiguration bossBarConfig = YamlConfiguration.loadConfiguration(bossBar);
 		return bossBarConfig;
 	}
-	
+
 	/**
 	 * Gets the ignore configuration file.
 	 * @return ignore configuration file.

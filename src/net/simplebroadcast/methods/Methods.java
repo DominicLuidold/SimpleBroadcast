@@ -23,7 +23,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Methods {
-	
+
 	private String uuid;
 	private int previousMessage;
 
@@ -34,7 +34,7 @@ public class Methods {
 	public void performCommand(String command) {
 		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
 	}
-	
+
 	/**
 	 * Counts the amount of operators who are online.
 	 * @return amount of online operators.
@@ -49,7 +49,7 @@ public class Methods {
 		}
 		return ops;
 	}
-	
+
 	/**
 	 * Gets a random player name.
 	 * @return name of a random player.
@@ -65,7 +65,7 @@ public class Methods {
 			return noPlayer;
 		}
 	}
-	
+
 	/**
 	 * Shows an overview of all available commands.
 	 * @param i page site.
@@ -99,7 +99,7 @@ public class Methods {
 			}
 		}
 	}
-	
+
 	/**
 	 * Shows an overview of all available boss bar commands.
 	 * @param i page site.
@@ -114,7 +114,7 @@ public class Methods {
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the UUID of the player.
 	 * If server runs in "online-mode=false" it returns an an MD5 hash of the player name.
@@ -148,7 +148,7 @@ public class Methods {
 		}
 		return uuid;
 	}
-	
+
 	/**
 	 * Replaces the variables in the messages.
 	 * @param message where the variables shall be replaced.
@@ -177,7 +177,7 @@ public class Methods {
 		message = addVariables(message.replace("%player%", p.getName()).replace("%biome%", p.getLocation().getBlock().getBiome().toString()).replace("%world%", p.getWorld().getName()));
 		return message;
 	}
-	
+
 	/*
 	 * The global broadcast function.
 	 */
