@@ -109,6 +109,7 @@ public class Methods {
 		cs.sendMessage("§e--------- §fHelp: SimpleBroadcast (" + i + "/3) §e---------");
 		switch (i) {
 			case 1: {
+				//TODO: Add missing commands.
 				cs.sendMessage("§6Instead of \"" + (cs instanceof Player ? "/" : "") + "simplebroadcast\" you can use \"/sb <command>\".");
 				break;
 			}
@@ -178,8 +179,8 @@ public class Methods {
 		return message;
 	}
 
-	/*
-	 * The global broadcast function.
+	/**
+	 * Global broadcast function. 
 	 */
 	public void broadcast() {
 		if (MessageRunnable.getRunning() == 3) {
