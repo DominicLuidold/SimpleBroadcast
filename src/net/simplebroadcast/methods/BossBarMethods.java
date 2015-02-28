@@ -23,8 +23,8 @@ public class BossBarMethods {
 		if (!Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 			return;
 		}
-		if (!Main.getBossBarConfig().getBoolean("enabled") && barRunning == 1) {
-			barRunning = 3;
+		if (!Main.getBossBarConfig().getBoolean("enabled") && getBarRunning() == 1) {
+			setBarRunning(3);
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				BarAPI.removeBar(p);
 			}
@@ -34,9 +34,6 @@ public class BossBarMethods {
 			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
-					/*
-					 * Loads the ignore.yml file.
-					 */
 					final List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
 					/*
 					 * Gets and broadcasts the messages in a random order.
@@ -71,8 +68,7 @@ public class BossBarMethods {
 			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
-					List<String> messages = Main.getBossBarConfig().getStringList("messages");
-					if (counter < messages.size()) {
+					if (counter < Main.bossBarMessages.size()) {
 						broadcast();
 					} else {
 						counter = 0;
@@ -84,10 +80,6 @@ public class BossBarMethods {
 	}
 
 	private void broadcast() {
-		final List<String> messages = Main.getBossBarConfig().getStringList("messages");
-		/*
-		 * Loads the ignore.yml.
-		 */
 		final List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
 		/*
 		 * Broadcasts the messages.
@@ -98,9 +90,9 @@ public class BossBarMethods {
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 						if (Main.getBossBarConfig().getBoolean("reducehealthbar")) {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(messages.get(counter), p)), Main.getBossBarConfig().getInt("delay"));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(Main.chatMessages.get(counter), p)), Main.getBossBarConfig().getInt("delay"));
 						} else {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(messages.get(counter), p)));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(Main.chatMessages.get(counter), p)));
 						}
 					} else {
 						BarAPI.removeBar(p);
@@ -153,7 +145,7 @@ public class BossBarMethods {
 
 	/**
 	 * Sets the task id of MessageRunnable
-	 * @param messageTask the new task id
+	 * @param barTask the new task id
 	 */
 	public static void setBarTask(int barTask) {
 		BossBarMethods.barTask = barTask;
