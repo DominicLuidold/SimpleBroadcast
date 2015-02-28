@@ -157,6 +157,41 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					messageID++;
 				}
 			/*
+			 * NOW
+			 * Broadcasts the entered message (which already exists).
+			 */
+			} else if (args[0].equalsIgnoreCase("now")) {
+				if (!cs.hasPermission("simplebroadcast.now")) {
+					cs.sendMessage(err_need_Perm);
+					return true;
+				}
+				if (args.length == 1) {
+					cs.sendMessage("§cPlease enter a message number.");
+					return true;
+				}
+				List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
+				/*
+				 * Broadcasts the message.
+				 */
+				try {
+					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < Main.chatMessages.size()) {
+						String message = Main.chatMessages.get(Integer.parseInt(args[1])-1);
+						for (Player p : Bukkit.getOnlinePlayers()) {
+							if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+								cs.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + methods.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+							}
+						}
+						if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
+							Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + methods.addVariables(message) + (suffix_bool ? " " + suffix : "")));
+						}
+						cs.sendMessage("§2Successfully broadcasted message.");
+					} else {
+						cs.sendMessage("§cThere are only " + Main.chatMessages.size() + " messages available which you can broadcast.");
+					}
+				} catch (NumberFormatException nfe) {
+					cs.sendMessage("§cPlease enter a valid number.");
+				}
+			/*
 			 * NEXT
 			 * Skips the next message in the queue.
 			 * Only applicable if "randomizemessages" is set to "false" in the config.yml.
