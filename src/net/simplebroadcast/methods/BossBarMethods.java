@@ -90,9 +90,9 @@ public class BossBarMethods {
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 						if (Main.getBossBarConfig().getBoolean("reducehealthbar")) {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(Main.chatMessages.get(counter), p)), Main.getBossBarConfig().getInt("delay"));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(Main.bossBarMessages.get(counter), p)), Main.getBossBarConfig().getInt("delay"));
 						} else {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(Main.chatMessages.get(counter), p)));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(Main.bossBarMessages.get(counter), p)));
 						}
 					} else {
 						BarAPI.removeBar(p);
