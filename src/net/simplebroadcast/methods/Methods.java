@@ -39,7 +39,6 @@ public class Methods {
 	 * Counts the amount of operators who are online.
 	 * @return amount of online operators.
 	 */
-	@SuppressWarnings("deprecation")
 	public int opList() {
 		int ops = 0;
 		for (Player p : Bukkit.getOnlinePlayers()) {
@@ -54,12 +53,11 @@ public class Methods {
 	 * Gets a random player name.
 	 * @return name of a random player.
 	 */
-	@SuppressWarnings("deprecation")
 	public String randomPlayer() {
-		if (Bukkit.getOnlinePlayers().length > 0) {
-			int random = (int) (Math.random() * Bukkit.getOnlinePlayers().length);
-			String randomPlayer = Bukkit.getServer().getOnlinePlayers()[random].getName();
-			return randomPlayer;
+		if (Bukkit.getOnlinePlayers().size() > 0) {
+			int random = (int) (Math.random() * Bukkit.getOnlinePlayers().size());
+			Player randomPlayer = (Player) Bukkit.getServer().getOnlinePlayers().toArray()[random];
+			return randomPlayer.getName();
 		} else {
 			String noPlayer = "UNKNOWN";
 			return noPlayer;
@@ -157,7 +155,7 @@ public class Methods {
 	 */
 	public String addVariables(String message) {
 		message = message.replace("%sq%", "'").
-				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().length + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
+				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().size() + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
 				replace("%unique%", Bukkit.getServer().getOfflinePlayers().length + "").replace("%year%", Calendar.getInstance().get(Calendar.YEAR) + "").
 				replace("%month%", Calendar.getInstance().get(Calendar.MONTH) + 1 + "").replace("%day%", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "").
 				replace("%hour_of_day%", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "").replace("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "").
@@ -194,7 +192,6 @@ public class Methods {
 			return;
 		}
 		MessageRunnable.setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
-			@SuppressWarnings("deprecation")
 			@Override
 			public void run() {
 				/*

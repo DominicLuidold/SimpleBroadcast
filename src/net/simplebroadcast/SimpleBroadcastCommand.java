@@ -126,7 +126,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						MessageRunnable.setRunning(1);
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
-					if (Bukkit.getOnlinePlayers().length >= 1) {
+					if (Bukkit.getOnlinePlayers().size() >= 1) {
 						methods.broadcast();
 						if (!(MessageRunnable.getRunning() == 3))
 							MessageRunnable.setRunning(1);

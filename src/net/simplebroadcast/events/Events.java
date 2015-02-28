@@ -47,7 +47,7 @@ public class Events implements Listener {
 		 * Checks if server was empty before the player joined and starts the broadcast if it's not running yet.
 		 */
 		if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers")) {
-			if (Bukkit.getOnlinePlayers().length == 1 && MessageRunnable.getRunning() == 0) {
+			if (Bukkit.getOnlinePlayers().size() == 1 && MessageRunnable.getRunning() == 0) {
 				methods.broadcast();
 				MessageRunnable.setRunning(1);
 			}
@@ -62,7 +62,7 @@ public class Events implements Listener {
 		/*
 		 * Checks if server is empty after the player left and stops the broadcast if it's running.
 		 */
-	if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().length == 1) {
+	if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().size() == 1) {
 			Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());
 			MessageRunnable.setRunning(0);
 		}

@@ -47,11 +47,10 @@ public class BossBarMethods {
 					}
 					final String message = ChatColor.translateAlternateColorCodes('&', Main.bossBarMessages.get(msg));
 					msg = 0;
-					final Player[] onlinePlayers = Bukkit.getServer().getOnlinePlayers();
 					Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
 						@Override
 						public void run() {					
-							for (Player p : onlinePlayers) {
+							for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 								if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 									if (Main.getBossBarConfig().getBoolean("reducehealthbar")) {
 										BarAPI.setMessage(p, methods.addVariablesP(message, p), Main.getBossBarConfig().getInt("delay"));

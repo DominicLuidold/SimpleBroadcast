@@ -190,7 +190,7 @@ public class Main extends JavaPlugin {
 			if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 				methods.broadcast();
 			} else {
-				if (Bukkit.getOnlinePlayers().length >= 1) {
+				if (Bukkit.getOnlinePlayers().size() >= 1) {
 					methods.broadcast();
 				} else {
 					MessageRunnable.setRunning(0);
