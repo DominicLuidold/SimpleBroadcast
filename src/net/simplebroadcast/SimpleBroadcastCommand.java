@@ -144,17 +144,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				int messageID = 1;
-				Main.getPlugin().reloadConfig();
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e---------");
-				for (String message : Main.getPlugin().getConfig().getStringList("messages")) {
+				for (int messageID = 0; messageID < Main.chatMessages.size(); messageID++) {
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + messageID + ".§f " + (prefix_bool ? prefix + " " : "") + methods.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + (prefix_bool ? prefix + " " : "") + methods.addVariablesP(Main.chatMessages.get(messageID), p) + (suffix_bool ? " " + suffix : "")));
 					} else {
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + messageID + ".§f " + (prefix_bool ? prefix + " " : "") + methods.addVariables(message) + (suffix_bool ? " " + suffix : "")));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + (prefix_bool ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID)) + (suffix_bool ? " " + suffix : "")));
 					}
-					messageID++;
 				}
 			/*
 			 * NOW
@@ -505,16 +502,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				int message_number = 1;
 				cs.sendMessage("§e------------- §fBoss bar messages: SimpleBroadcast §e-------------");
-				for (String message : Main.getBossBarConfig().getStringList("messages")) {
+				for (int messageID = 0; messageID < Main.bossBarMessages.size(); messageID++) {
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f " + methods.addVariablesP(message, p)));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addVariablesP(Main.bossBarMessages.get(messageID), p)));
 					} else {
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + message_number + ".§f " + methods.addVariables(message)));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addVariables(Main.bossBarMessages.get(messageID))));
 					}
-					message_number++;
 				}
 			/* 
 			 * NEXT
