@@ -50,6 +50,12 @@ public class Main extends JavaPlugin {
 			plugin.saveResource("bossbar.yml", false);
 		}
 		plugin.saveResource("readme.txt", true);
+		
+		/*
+		 * Loads all messages
+		 */
+		loadChatMessages();
+		loadBossBarMessages();
 
 		/*
 		 * Checks if the plugin shall be enabled and logs it if not.
@@ -181,7 +187,6 @@ public class Main extends JavaPlugin {
 		 * Starts the chat broadcast task.
 		 */
 		if (plugin.getConfig().getBoolean("enabled")) {
-			loadChatMessages();
 			if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 				methods.broadcast();
 			} else {
