@@ -1,5 +1,6 @@
 package net.simplebroadcast;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -13,6 +14,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class SimpleBroadcastCommand implements CommandExecutor {
@@ -338,7 +341,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 							}
 							if (!ignorePlayers.contains(uuidCheck)) {
 								ignorePlayers.add(uuidCheck);
-								if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && Main.getBossBarConfig().getBoolean("enabled")) {
+								if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && Main.getBossBarConfig().getBoolean("enabled") && Bukkit.getServer().getPlayer(args[1]) != null) {
 									BarAPI.removeBar(Bukkit.getPlayer(args[1]));
 								}
 								cs.sendMessage("[Simple§cBroadcast]§f The player §7" + args[1] + "§f now doesn't receive any messages.");
@@ -350,12 +353,13 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						/*
 						 * Saves the ignore file.
 						 */
-						Main.getIgnoreConfig().set("players", ignorePlayers);
+						File ignore = new File (Main.getPlugin().getDataFolder(), "ignore.yml");
+						FileConfiguration ignoreConfig = YamlConfiguration.loadConfiguration(ignore);
+						ignoreConfig.set("players", ignorePlayers);
 						try {
-							Main.getIgnoreConfig().save(Main.getIgnoreConfig().getCurrentPath());
+							ignoreConfig.save(ignore);
 						} catch (IOException e) {
-							Main.logWarning("Couldn't save the ignore.yml. Error: ");
-							Main.logWarning(e.getMessage());
+							Main.logWarning("Couldn't save the ignore.yml. Error!");
 						}
 					}
 				});
