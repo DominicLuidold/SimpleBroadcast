@@ -260,7 +260,7 @@ public class Main extends JavaPlugin {
 	 * @param message logged message
 	 */
 	public static void logInfo(String message) {
-		Bukkit.getLogger().info(message);
+		Bukkit.getLogger().info("[SimpleBroadcast] " + message);
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class Main extends JavaPlugin {
 	 * @param message logged message
 	 */
 	public static void logWarning(String message) {
-		Bukkit.getLogger().warning(message);
+		Bukkit.getLogger().warning("[SimpleBroadcast] " + message);
 	}
 
 	/**
