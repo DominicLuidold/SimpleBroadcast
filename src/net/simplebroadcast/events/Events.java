@@ -59,9 +59,9 @@ public class Events implements Listener {
 	 */
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		/*
-		 * Checks if server is empty after the player left and stops the broadcast if it's running.
-		 */
+	/*
+	 * Checks if server is empty after the player left and stops the broadcast if it's running.
+	 */
 	if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().size() == 1) {
 			Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());
 			MessageRunnable.setRunning(0);
