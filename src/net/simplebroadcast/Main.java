@@ -21,20 +21,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
-	
+
 	public static Main plugin;
 	private Methods methods = new Methods();
 	private BossBarMethods bossBarMethods = new BossBarMethods();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();
 	public static HashMap<Integer, String> chatMessages = new HashMap<Integer, String>();
 	public static HashMap<Integer, String> bossBarMessages = new HashMap<Integer, String>();
-	
+
 	@Override
 	public void onDisable() {
 		Bukkit.getScheduler().cancelTask(BossBarMethods.getBarTask());
 		Bukkit.getScheduler().cancelTask(MessageRunnable.getMessageTask());
 	}
-	
+
 	@Override
 	public void onEnable() {
 		plugin = this;
@@ -50,7 +50,7 @@ public class Main extends JavaPlugin {
 			plugin.saveResource("bossbar.yml", false);
 		}
 		plugin.saveResource("readme.txt", true);
-		
+
 		/*
 		 * Loads all messages
 		 */
