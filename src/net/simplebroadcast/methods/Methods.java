@@ -104,7 +104,7 @@ public class Methods {
 	 * @param cs CommandSender
 	 */
 	public void bossBarHelpList(int i, CommandSender cs) {
-		cs.sendMessage("§e--------- §fHelp: SimpleBroadcast (" + i + "/3) §e---------");
+		cs.sendMessage("§e--------- §fHelp: SimpleBroadcast (" + i + "/1) §e---------");
 		switch (i) {
 			case 1: {
 				cs.sendMessage("§6/sb bossbar start:§f Starts the boss bar broadcast.");
