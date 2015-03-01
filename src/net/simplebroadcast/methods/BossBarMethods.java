@@ -70,7 +70,7 @@ public class BossBarMethods {
 					if (counter < Main.bossBarMessages.size()) {
 						broadcast();
 					} else {
-						counter = 0;
+						setBarCounter(0);
 						broadcast();
 					}
 				}

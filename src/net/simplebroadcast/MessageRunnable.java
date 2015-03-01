@@ -25,7 +25,7 @@ public class MessageRunnable implements Runnable {
 		if (counter < Main.chatMessages.size()) {
 			broadCast();
 		} else {
-			counter = 0;
+			setCounter(0);
 			broadCast();
 		}
 	}
