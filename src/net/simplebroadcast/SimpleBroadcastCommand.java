@@ -537,6 +537,28 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					BossBarMethods.setBarCounter(1);
 					cs.sendMessage("§2Successfully skipped message 1.");
 				}
+			/*
+			 * HELP
+			 * Shows the boss bar help pages.
+			 */
+			} else if (args[1].equalsIgnoreCase("help")) {
+				if (!cs.hasPermission("simplebroadcast.bossbar.help")) {
+					cs.sendMessage(err_need_Perm);
+					return true;
+				}
+				if (args.length == 1 || args.length == 2) {
+					methods.bossBarHelpList(1, cs);
+				} else {
+					try {
+						if (Integer.parseInt(args[2]) > 0 && Integer.parseInt(args[2]) <= 1) {
+							methods.bossBarHelpList(Integer.parseInt(args[2]), cs);
+						} else {
+							cs.sendMessage("§cThere is only 1 page available.");
+						}
+					} catch (NumberFormatException nfe) {
+						cs.sendMessage("§cPlease enter a valid number.");
+					}
+				}
 			} else {
 				if (!cs.hasPermission("simplebroadcast.bossbar.help")) {
 					cs.sendMessage(err_need_Perm);
