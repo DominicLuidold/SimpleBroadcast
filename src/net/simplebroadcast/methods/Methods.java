@@ -107,7 +107,11 @@ public class Methods {
 		cs.sendMessage("§e--------- §fHelp: SimpleBroadcast (" + i + "/3) §e---------");
 		switch (i) {
 			case 1: {
-				//TODO: Add missing commands.
+				cs.sendMessage("§6/sb bossbar start:§f Starts the boss bar broadcast.");
+				cs.sendMessage("§6/sb bossbar stop:§f Stops the boss bar broadcast.");
+				cs.sendMessage("§6/sb bossbar list:§f Shows you all boss bar messages.");
+				cs.sendMessage("§6/sb bossbar next:§f Skips the next message.");
+				cs.sendMessage("§6/sb bossbar help:§f Shows you the boss bar help pages.");
 				cs.sendMessage("§6Instead of \"" + (cs instanceof Player ? "/" : "") + "simplebroadcast\" you can use \"/sb <command>\".");
 				break;
 			}
