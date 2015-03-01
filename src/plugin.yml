@@ -21,6 +21,9 @@ permissions:
             simplebroadcast.reload: true
             simplebroadcast.bossbar.start: true
             simplebroadcast.bossbar.stop: true
+            simplebroadcast.bossbar.list: true
+            simplebroadcast.bossbar.next: true
+            simplebroadcast.bossbar.help: true
             simplebroadcast.list: true
             simplebroadcast.now: true
             simplebroadcast.next: true
@@ -43,6 +46,12 @@ permissions:
         description: Allows you to start the boss bar broadcasting.
     simplebroadcast.bossbar.stop:
         description: Allows you to stop the boss bar broadcasting.
+    simplebroadcast.bossbar.list:
+        description: Allows you to see all boss bar messages.
+    simplebroadcast.bossbar.next:
+        description: Allows you to skip the next message.
+    simplebroadcast.bossbar.help:
+        description: Allows you to see the boss bar help pages.
     simplebroadcast.list:
         description: Allows you to see all messages.
     simplebroadcast.now:
