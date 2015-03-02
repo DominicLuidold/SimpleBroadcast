@@ -48,15 +48,10 @@
         <configuration>
           <artifactSet>
             <includes>
-              <include>org.mcstats.*:*</include>
               <include>net.gravitydevelopment.updater</include>
             </includes>
           </artifactSet>
           <relocations>
-            <relocation>
-              <pattern>org.mcstats</pattern>
-              <shadedPattern>net.simplebroadcast</shadedPattern>
-            </relocation>
             <relocation>
               <pattern>net.gravitydevelopment</pattern>
               <shadedPattern>net.simplebroadcast</shadedPattern>
