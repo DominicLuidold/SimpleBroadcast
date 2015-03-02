@@ -444,6 +444,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				}
 			}
 		}
+		/*
+		 * Boss bar commands. 
+		 */
 		if (args.length >= 2 && args[0].equalsIgnoreCase("bossbar")) {
 			if (!Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 				if (!cs.hasPermission("simplebroadcast.bossbar.help")) {
@@ -559,6 +562,10 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						cs.sendMessage("§cPlease enter a valid number.");
 					}
 				}
+			/*
+			 * UNKNOWN COMMAND
+			 * Shows the "Unknown command" message.
+			 */
 			} else {
 				if (!cs.hasPermission("simplebroadcast.bossbar.help")) {
 					cs.sendMessage(err_need_Perm);
