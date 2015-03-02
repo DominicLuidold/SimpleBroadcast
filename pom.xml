@@ -33,27 +33,45 @@
     <dependency>
       <groupId>net.gravitydevelopment.updater</groupId>
       <artifactId>updater</artifactId>
-      <version>2.1</version>
+      <version>2.3</version>
     </dependency>
   </dependencies>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <artifactSet>
+            <includes>
+              <include>org.mcstats.*:*</include>
+              <include>net.gravitydevelopment.updater</include>
+            </includes>
+          </artifactSet>
+          <relocations>
+            <relocation>
+              <pattern>org.mcstats</pattern>
+              <shadedPattern>net.simplebroadcast</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>net.gravitydevelopment</pattern>
+              <shadedPattern>net.simplebroadcast</shadedPattern>
+            </relocation>
+          </relocations>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
         </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
