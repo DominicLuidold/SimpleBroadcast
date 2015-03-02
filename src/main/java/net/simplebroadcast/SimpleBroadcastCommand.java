@@ -218,7 +218,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (args.length < 1) {
+				if (args.length <= 1) {
 					cs.sendMessage("§cPlease enter a message which you want to add.");
 					return true;
 				}
@@ -241,7 +241,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (args.length < 1) {
+				if (args.length <= 1) {
 					cs.sendMessage("§cPlease enter the number of a message.");
 					return true;
 				}
@@ -269,7 +269,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (args.length < 1) {
+				if (args.length <= 1) {
 					cs.sendMessage("§cPlease enter a message which you want to broadcast.");
 					return true;
 				}
@@ -299,7 +299,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (args.length < 1) {
+				if (args.length <= 1) {
 					cs.sendMessage("§cPlease enter a message which you want to broadcast.");
 					return true;
 				}
