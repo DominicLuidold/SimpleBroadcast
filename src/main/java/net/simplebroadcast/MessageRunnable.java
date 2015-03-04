@@ -51,7 +51,7 @@ public class MessageRunnable implements Runnable {
 				public void run() {
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 						if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
 						}
 					}
 				}

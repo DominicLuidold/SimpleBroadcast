@@ -172,7 +172,7 @@ public class Methods {
 	 * @param p player object (for getting the current world/biome/..)
 	 * @return message with the replaced variables.
 	 */
-	public String addVariablesP(String message, Player p) {
+	public String addPlayerVariables(String message, Player p) {
 		message = addVariables(message.replace("%player%", p.getName()).replace("%biome%", p.getLocation().getBlock().getBiome().toString()).replace("%world%", p.getWorld().getName()));
 		return message;
 	}
@@ -227,7 +227,7 @@ public class Methods {
 				}
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!Main.ignoredPlayers.contains(getUUID(p.getName()))) {
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
 					}
 				}
 				/*

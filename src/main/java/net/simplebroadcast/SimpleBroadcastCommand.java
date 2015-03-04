@@ -149,7 +149,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				for (int messageID = 0; messageID < Main.chatMessages.size(); messageID++) {
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + (prefix_bool ? prefix + " " : "") + methods.addVariablesP(Main.chatMessages.get(messageID), p) + (suffix_bool ? " " + suffix : "")));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(Main.chatMessages.get(messageID), p) + (suffix_bool ? " " + suffix : "")));
 					} else {
 						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + (prefix_bool ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID)) + (suffix_bool ? " " + suffix : "")));
 					}
@@ -175,7 +175,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						String message = Main.chatMessages.get(Integer.parseInt(args[1])-1);
 						for (Player p : Bukkit.getOnlinePlayers()) {
 							if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
-								cs.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + methods.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
+								cs.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
 							}
 						}
 						if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
@@ -284,7 +284,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					message.append(" " + ChatColor.translateAlternateColorCodes('&', suffix));
 				}
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.sendMessage(methods.addVariablesP(message.toString(), p));
+					p.sendMessage(methods.addPlayerVariables(message.toString(), p));
 				}
 				if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
 					Bukkit.getConsoleSender().sendMessage(methods.addVariables(message.toString()));
@@ -308,7 +308,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					message.append(" ").append(ChatColor.translateAlternateColorCodes('&', args[i]));
 				}
 				for (Player p : Bukkit.getOnlinePlayers()) {
-					p.sendMessage(methods.addVariablesP(message.toString().substring(1), p));
+					p.sendMessage(methods.addPlayerVariables(message.toString().substring(1), p));
 				}
 				if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
 					Bukkit.getConsoleSender().sendMessage(methods.addVariables(message.toString().substring(1)));
@@ -510,7 +510,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				for (int messageID = 0; messageID < Main.bossBarMessages.size(); messageID++) {
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addVariablesP(Main.bossBarMessages.get(messageID), p)));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addPlayerVariables(Main.bossBarMessages.get(messageID), p)));
 					} else {
 						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addVariables(Main.bossBarMessages.get(messageID))));
 					}
