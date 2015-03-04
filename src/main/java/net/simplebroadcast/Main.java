@@ -85,7 +85,7 @@ public class Main extends JavaPlugin {
 		 * - Bossbar
 		 */		
 		try {
-			Metrics metrics = new net.simplebroadcast.utils.Metrics(plugin);
+			Metrics metrics = new Metrics(plugin);
 			Graph enabledFeatures = metrics.createGraph("Enabled Features");
 			if (plugin.getConfig().getBoolean("prefix.enabled")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Prefix") {
