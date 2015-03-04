@@ -46,45 +46,9 @@ Sollten weiterhin Unklarheiten, Fragen oder Probleme bestehen, kann man jederzei
 oder via E-Mail (contact@simplebroadcast.net) Kontakt aufnehmen und nach Hilfe fragen. Solltest du einen Fehler entdeckt haben,
 so melde diesen bitte auf GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
 
-###################
-######Español######
-###################
-
-!!OUTDATED!!
-
-Estimado usuario de SimpleBroadcast,
-
-muchas gracias por utilizar este plugin. En este "readme.txt" probablemente puedes encontrar ayuda si tienes algunos problemas o quieres configurarlo.
-Primero que todo, asegurese que los mensajes "prefix" y "suffix" esten entre apostrofes ('...') para que los colores y variables funcionen bien.
-Ademas quiero decirte que si quieres usar un apostrofe ('), no lo hagas. Para que el plugin funcione debes usar la variable (%sq%).
-Finalmente te recomiendo no ignorar los mensajes de actualizaciones si se muestran en la consola o dentro del juego.
-Las actualizaciones son buenas porque añaden cosas que probablemente te gusten, o simplemente, arreglar algunos errores.
-
-Y eso es todo lo que quería decirte. Gracias por leer este texto y si tienes problemas, no dudes en contactarme en la pagina "BukkitDev".
-
-###################
-#######Dutch#######
-###################
-
-!!OUTDATED!!
-
-Hallo lieve SimpleBroadcast gebruiker,
-
-Bedankt dat je mijn plugin gebruikt. In deze "readme.txt" kan je waarschijnlijk
-antwoord krijgen op de problemen die je hebt.
-
-Als eerste, wees zeker dat de prefix, suffix en de berichten tussen ('...') staan zodat de
-kleur codes en variabelen kunnen werken. Dan wil ik nog zeggen dat als je single quotes gebruikt
-schrijf het dan niet maar gebruikt (%sq%). Als laatste raad ik aan de update berichten niet te negeren
-als die verschijnen. Een update is altijd goed omdat er nieuwe dingen worden toegevoegd die je waarschijnlijk
-goed vindt zoals bug fixes.
-
-Ja, dat was alles wat ik wou zeggen. Bedankt voor het lezen en als je problemen hebt, twijfel dan niet om me
-te vragen op de BukkitDev pagina.
-
 ##################
 ##More languages##
 ##################
 
-If you want to translate this into another language please contact me via one of the mentioned ways.
-Wenn du den Text in eine andere Sprache übersetzen möchtest, so kontaktiere mich bitte mit einer der genannten Möglichkeiten.
+- If you want to translate this into another language please contact me via one of the mentioned ways.
+- Wenn du den Text in eine andere Sprache übersetzen möchtest, so kontaktiere mich bitte mit einer der genannten Möglichkeiten.
