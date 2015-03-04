@@ -18,7 +18,7 @@ In this readme some very important things get approached which you should regard
 - If an update is available it's recommended to install it. It's guaranteed that it works perfectly fine with every Minecraft version
   (there may be some version dependent functions). Furthermore there are often bug fixes as well as enhancements/new functions included.
 
-If there are still any obscurities, questions ore problems you're always able to contact me on Twitter (@SBPlugin), on BukkitDev (KingDome24)
+If there are still any obscurities, questions or problems you're always able to contact me on Twitter (@SBPlugin), on BukkitDev (KingDome24)
 or via email (contact@simplebroadcast.net) to ask for help. If you find any issues, please report them on GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
 
 ###################
