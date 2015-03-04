@@ -204,7 +204,7 @@ public class Main extends JavaPlugin {
 		/*
 		 * Starts the boss bar broadcast task.
 		 */
-		if (getBossBarConfig().getBoolean("enabled") && BossBarMethods.getBarRunning() != 0 && BossBarMethods.getBarRunning() != 3) {
+		if (getConfig().getBoolean("enabled") && getBossBarConfig().getBoolean("enabled") && BossBarMethods.getBarRunning() != 0 && BossBarMethods.getBarRunning() != 3) {
 			bossBarMethods.barBroadcast();
 		}
 
