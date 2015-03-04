@@ -111,11 +111,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					return true;
 				}
 				Bukkit.getServer().getScheduler().cancelTask(BossBarMethods.getBarTask());
-				Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());
-				
+				Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());				
 				Main.getPlugin().reloadConfig();
 				Main.loadChatMessages();
 				Main.loadBossBarMessages();
+				MessageRunnable.setCounter(0);
+				BossBarMethods.setBarCounter(0);
 				BossBarMethods.setBarRunning(1);
 				bossBarMethods.barBroadcast();
 				
@@ -389,6 +390,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 						ignoreConfig.set("players", ignorePlayers);
 						try {
 							ignoreConfig.save(ignore);
+							Main.loadIgnoredPlayers();
 						} catch (IOException e) {
 							Main.logWarning("Couldn't save the ignore.yml. Error!");
 						}
