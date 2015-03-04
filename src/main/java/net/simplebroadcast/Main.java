@@ -2,6 +2,7 @@ package net.simplebroadcast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class Main extends JavaPlugin {
 	private Methods methods = new Methods();
 	private BossBarMethods bossBarMethods = new BossBarMethods();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();
+	public static List<String> ignoredPlayers = new ArrayList<String>();
 	public static HashMap<Integer, String> chatMessages = new HashMap<Integer, String>();
 	public static HashMap<Integer, String> bossBarMessages = new HashMap<Integer, String>();
 
@@ -52,10 +54,11 @@ public class Main extends JavaPlugin {
 		plugin.saveResource("readme.txt", true);
 
 		/*
-		 * Loads all messages
+		 * Loads all messages and ignored players
 		 */
 		loadChatMessages();
 		loadBossBarMessages();
+		loadIgnoredPlayers();
 
 		/*
 		 * Checks if the plugin shall be enabled and logs it if not.
@@ -297,6 +300,16 @@ public class Main extends JavaPlugin {
 		for (String message : getBossBarConfig().getStringList("messages")) {
 			bossBarMessages.put(messageID, message);
 			messageID++;
+		}
+	}
+
+	/**
+	 * Loads all UUIDs of the players into a StringList
+	 */
+	public static void loadIgnoredPlayers() {
+		ignoredPlayers.clear();
+		for (String uuid : getIgnoreConfig().getStringList("players")) {
+			ignoredPlayers.add(uuid);
 		}
 	}
 

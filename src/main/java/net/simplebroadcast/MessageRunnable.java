@@ -1,7 +1,5 @@
 package net.simplebroadcast;
 
-import java.util.List;
-
 import net.simplebroadcast.methods.Methods;
 
 import org.bukkit.Bukkit;
@@ -33,10 +31,6 @@ public class MessageRunnable implements Runnable {
 	private void broadCast() {
 		final String message = Main.chatMessages.get(counter);
 		/*
-		 * Loads the ignore.yml.
-		 */
-		final List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
-		/*
 		 * Starts broadcasting the messages.
 		 * If message starts with "/" it's handled as a command.
 		 */
@@ -56,7 +50,7 @@ public class MessageRunnable implements Runnable {
 				@Override
 				public void run() {
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+						if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 						}
 					}

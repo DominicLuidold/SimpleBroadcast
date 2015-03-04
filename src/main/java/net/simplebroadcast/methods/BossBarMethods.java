@@ -1,6 +1,5 @@
 package net.simplebroadcast.methods;
 
-import java.util.List;
 import java.util.Random;
 
 import me.confuser.barapi.BarAPI;
@@ -34,7 +33,6 @@ public class BossBarMethods {
 			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
-					final List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
 					/*
 					 * Gets and broadcasts the messages in a random order.
 					 */
@@ -51,7 +49,7 @@ public class BossBarMethods {
 						@Override
 						public void run() {					
 							for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-								if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+								if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 									if (Main.getBossBarConfig().getBoolean("reducehealthbar")) {
 										BarAPI.setMessage(p, methods.addVariablesP(message, p), Main.getBossBarConfig().getInt("delay"));
 									} else {
@@ -79,7 +77,6 @@ public class BossBarMethods {
 	}
 
 	private void broadcast() {
-		final List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
 		/*
 		 * Broadcasts the messages.
 		 */
@@ -87,7 +84,7 @@ public class BossBarMethods {
 			@Override
 			public void run() {
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-					if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+					if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 						if (Main.getBossBarConfig().getBoolean("reducehealthbar")) {
 							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addVariablesP(Main.bossBarMessages.get(counter), p)), Main.getBossBarConfig().getInt("delay"));
 						} else {

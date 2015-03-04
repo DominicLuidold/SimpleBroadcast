@@ -166,7 +166,6 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("§cPlease enter a message number.");
 					return true;
 				}
-				List<String> ignoredPlayers = Main.getIgnoreConfig().getStringList("players");
 				/*
 				 * Broadcasts the message.
 				 */
@@ -174,7 +173,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < Main.chatMessages.size()) {
 						String message = Main.chatMessages.get(Integer.parseInt(args[1])-1);
 						for (Player p : Bukkit.getOnlinePlayers()) {
-							if (!ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+							if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 								cs.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + methods.addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 							}
 						}

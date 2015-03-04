@@ -1,12 +1,10 @@
 package net.simplebroadcast.methods;
 
-import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -18,8 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Methods {
@@ -199,12 +195,6 @@ public class Methods {
 			@Override
 			public void run() {
 				/*
-				 * Loads the ignore.yml file.
-				 */
-				File file = new File(Main.getPlugin().getDataFolder(), "ignore.yml");
-				FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-				List<String> ignoredPlayers = cfg.getStringList("players");
-				/*
 				 * Gets and broadcasts the messages in a random order.
 				 */
 				int msg = (int) (Math.random() * Main.chatMessages.size());
@@ -236,7 +226,7 @@ public class Methods {
 					return;
 				}
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-					if (!ignoredPlayers.contains(getUUID(p.getName()))) {
+					if (!Main.ignoredPlayers.contains(getUUID(p.getName()))) {
 						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariablesP(message, p) + (suffix_bool ? " " + suffix : "")));
 					}
 				}
