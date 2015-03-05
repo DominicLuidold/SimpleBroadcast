@@ -13,8 +13,8 @@ import net.simplebroadcast.events.Events;
 import net.simplebroadcast.methods.BossBarMethods;
 import net.simplebroadcast.methods.Methods;
 import net.simplebroadcast.methods.UpdatingMethods;
-import net.simplebroadcast.utils.Metrics;
-import net.simplebroadcast.utils.Metrics.Graph;
+import org.mcstats.Metrics;
+import org.mcstats.Metrics.Graph;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
