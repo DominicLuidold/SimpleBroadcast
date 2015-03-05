@@ -19,7 +19,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class SimpleBroadcastCommand implements CommandExecutor {
-	
+
 	private Methods methods = new Methods();
 	private BossBarMethods bossBarMethods = new BossBarMethods();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();

@@ -14,7 +14,7 @@ import net.simplebroadcast.methods.Methods;
 import net.simplebroadcast.methods.UpdatingMethods;
 
 public class Events implements Listener {
-	
+
 	private Methods methods = new Methods();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();
 

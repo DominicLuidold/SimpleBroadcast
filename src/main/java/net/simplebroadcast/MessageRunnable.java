@@ -8,7 +8,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public class MessageRunnable implements Runnable {
-	
+
 	private static int running = 1;
 	private static int messageTask;
 	public static int counter = 0;
