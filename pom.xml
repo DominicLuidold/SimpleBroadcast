@@ -10,6 +10,10 @@
     <system>GitHub</system>
     <url>https://github.com/SimpleBroadcast/SimpleBroadcast/issues</url>
   </issueManagement>
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://jenkins.simplebroadcast.net</url>
+  </ciManagement>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
