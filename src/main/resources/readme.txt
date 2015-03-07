@@ -9,7 +9,7 @@ In this readme some very important things get approached which you should regard
 
 - The prefix, suffix as well as all messages have to be surrounded by single quotes ('...') in order that
   the colour codes and also the variables can work properly.
-- It's not possible to write out single quotes (') within a message. As a replacement the variable %sq% is available
+- It's not possible to write out single quotes (') within a message. As a replacement the variable "%sq%" is available
   which finally gets replaced by a single quote again.
 - Since v1.9 the option "pluginmetrics" is no longer available. If you still want to decide if PluginMetrics is allowed
   to send stats you can do that in the "PluginMetrics" folder in your plugin directory.
@@ -35,7 +35,7 @@ In dieser Datei werden einige, wichtige Dinge angesprochen, die man bei der Verw
 - Es ist nicht möglich, einzelne Anführungszeichen (') in Nachrichten auszuschreiben. Als Ersatz steht die Variable "%sq%"
   zur Verfügung, die schlussendlich wieder in ein Anführungszeichen umgewandelt wird.
 - Seit v1.9 steht die Option "pluginmetrics" nicht mehr direkt zur Verfügung. Wer dennoch darüber bestimmen will, ob PluginMetrics
-  Statistiken senden darf, kann dies im globalen "PluginMetrics" - Ordner im Plugin-Verzeichnis tun.
+  Statistiken senden darf, kann dies im globalen "PluginMetrics" - Ordner, im Plugin-Verzeichnis, tun.
 - Sollte die Bossbar verwendet werden, ist zu beachten, dass Nachrichten nicht länger als 64 Zeichen lang sein dürfen, da sie ansonsten
   automatisch von BarAPI gekürzt werden, um einen Absturz des Minecraft-Clients zu verhindern.
 - Sollte ein Update vorhanden sein, so ist es sehr empfehlenswert, dieses zu installieren. Es wird garantiert, dass es mit allen Minecraft
