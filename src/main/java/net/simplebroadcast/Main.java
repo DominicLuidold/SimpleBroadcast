@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.simplebroadcast.utils.UUIDFetcher;
+import net.simplebroadcast.broadcasts.BossBarBroadcast;
+import net.simplebroadcast.broadcasts.ChatBroadcast;
 import net.simplebroadcast.events.Events;
-import net.simplebroadcast.methods.BossBarMethods;
-import net.simplebroadcast.methods.Methods;
 import net.simplebroadcast.methods.UpdatingMethods;
+
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,17 +24,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
 
 	public static Main plugin;
-	private Methods methods = new Methods();
-	private BossBarMethods bossBarMethods = new BossBarMethods();
+	private ChatBroadcast chatBroadcast = new ChatBroadcast();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();
+	private BossBarBroadcast bossBarBroadcast = new BossBarBroadcast();
 	public static List<String> ignoredPlayers = new ArrayList<String>();
 	public static HashMap<Integer, String> chatMessages = new HashMap<Integer, String>();
 	public static HashMap<Integer, String> bossBarMessages = new HashMap<Integer, String>();
 
 	@Override
 	public void onDisable() {
-		Bukkit.getScheduler().cancelTask(BossBarMethods.getBarTask());
-		Bukkit.getScheduler().cancelTask(MessageRunnable.getMessageTask());
+		Bukkit.getScheduler().cancelTask(BossBarBroadcast.getBarTask());
+		Bukkit.getScheduler().cancelTask(ChatBroadcast.getMessageTask());
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class Main extends JavaPlugin {
 		 */
 		if (!plugin.getConfig().getBoolean("enabled")) {
 			logInfo("Messages don't get broadcasted as set in the config.");
-			Bukkit.getScheduler().cancelTask(MessageRunnable.getMessageTask());
-			MessageRunnable.setRunning(3);
+			Bukkit.getScheduler().cancelTask(ChatBroadcast.getMessageTask());
+			ChatBroadcast.setRunning(3);
 		}
 
 		/*
@@ -182,8 +182,8 @@ public class Main extends JavaPlugin {
 		if (getBossBarConfig().getBoolean("enabled") && getServer().getPluginManager().isPluginEnabled("BarAPI")) {
 			logInfo("BarAPI integration successfully enabled.");
 		} else {
-			getServer().getScheduler().cancelTask(BossBarMethods.getBarTask());
-			BossBarMethods.setBarRunning(3);
+			getServer().getScheduler().cancelTask(BossBarBroadcast.getBarTask());
+			BossBarBroadcast.setBarRunning(3);
 		}
 
 		/*
@@ -191,12 +191,12 @@ public class Main extends JavaPlugin {
 		 */
 		if (plugin.getConfig().getBoolean("enabled")) {
 			if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
-				methods.broadcast();
+				chatBroadcast.chatBroadcast();
 			} else {
 				if (Bukkit.getOnlinePlayers().size() >= 1) {
-					methods.broadcast();
+					chatBroadcast.chatBroadcast();
 				} else {
-					MessageRunnable.setRunning(0);
+					ChatBroadcast.setRunning(0);
 				}
 			}
 		}
@@ -204,8 +204,8 @@ public class Main extends JavaPlugin {
 		/*
 		 * Starts the boss bar broadcast task.
 		 */
-		if (getConfig().getBoolean("enabled") && getBossBarConfig().getBoolean("enabled") && BossBarMethods.getBarRunning() != 0 && BossBarMethods.getBarRunning() != 3) {
-			bossBarMethods.barBroadcast();
+		if (getConfig().getBoolean("enabled") && getBossBarConfig().getBoolean("enabled") && BossBarBroadcast.getBarRunning() != 0 && BossBarBroadcast.getBarRunning() != 3) {
+			bossBarBroadcast.barBroadcast();
 		}
 
 		/*

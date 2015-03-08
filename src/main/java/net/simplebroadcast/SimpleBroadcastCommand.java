@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.util.List;
 
 import me.confuser.barapi.BarAPI;
-import net.simplebroadcast.methods.BossBarMethods;
+import net.simplebroadcast.broadcasts.BossBarBroadcast;
+import net.simplebroadcast.broadcasts.ChatBroadcast;
 import net.simplebroadcast.methods.Methods;
 import net.simplebroadcast.methods.UpdatingMethods;
 
@@ -21,7 +22,8 @@ import org.bukkit.entity.Player;
 public class SimpleBroadcastCommand implements CommandExecutor {
 
 	private Methods methods = new Methods();
-	private BossBarMethods bossBarMethods = new BossBarMethods();
+	private ChatBroadcast chatBroadcast = new ChatBroadcast();
+	private BossBarBroadcast bossBarMethods = new BossBarBroadcast();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();
 	private String err_need_Perm = "§cYou do not have access to that command.";
 	private boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
@@ -57,9 +59,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 			} else {
 				cs.sendMessage("§6Update:§f Checking for updates is disabled.");
 			}
-			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && Main.getBossBarConfig().getBoolean("enabled") && BossBarMethods.getBarRunning() == 1) {
+			if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && Main.getBossBarConfig().getBoolean("enabled") && BossBarBroadcast.getBarRunning() == 1) {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled and broadcasts.");
-			} else if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && Main.getBossBarConfig().getBoolean("enabled") && BossBarMethods.getBarRunning() == 0) {
+			} else if (Bukkit.getPluginManager().isPluginEnabled("BarAPI") && Main.getBossBarConfig().getBoolean("enabled") && BossBarBroadcast.getBarRunning() == 0) {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is enabled.");
 			} else {
 				cs.sendMessage("§6Boss bar broadcast:§f The boss bar integration is disabled.");
@@ -74,11 +76,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (MessageRunnable.getRunning() == 0) {
-					methods.broadcast();
+				if (ChatBroadcast.getRunning() == 0) {
+					chatBroadcast.chatBroadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Started broadcast.");
-					MessageRunnable.setRunning(1);
-				} else if (MessageRunnable.getRunning() == 3) {
+					ChatBroadcast.setRunning(1);
+				} else if (ChatBroadcast.getRunning() == 3) {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is disabled (as set in the config).");
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already started!");
@@ -92,11 +94,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (MessageRunnable.getRunning() == 1) {
-					Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());
+				if (ChatBroadcast.getRunning() == 1) {
+					Bukkit.getServer().getScheduler().cancelTask(ChatBroadcast.getMessageTask());
 					cs.sendMessage("[Simple§cBroadcast]§r Cancelled broadcast.");
-					MessageRunnable.setRunning(0);
-				} else if (MessageRunnable.getRunning() == 3) {
+					ChatBroadcast.setRunning(0);
+				} else if (ChatBroadcast.getRunning() == 3) {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already disabled (as set in the config)!");
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Broadcast is already cancelled!");
@@ -110,30 +112,30 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				Bukkit.getServer().getScheduler().cancelTask(BossBarMethods.getBarTask());
-				Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());				
+				Bukkit.getServer().getScheduler().cancelTask(BossBarBroadcast.getBarTask());
+				Bukkit.getServer().getScheduler().cancelTask(ChatBroadcast.getMessageTask());				
 				Main.getPlugin().reloadConfig();
 				Main.loadChatMessages();
 				Main.loadBossBarMessages();
-				MessageRunnable.setCounter(0);
-				BossBarMethods.setBarCounter(0);
-				BossBarMethods.setBarRunning(1);
+				ChatBroadcast.setCounter(0);
+				BossBarBroadcast.setBarCounter(0);
+				BossBarBroadcast.setBarRunning(1);
 				bossBarMethods.barBroadcast();
 				
 				if (!Main.getPlugin().getConfig().getBoolean("requiresonlineplayers")) {
-					methods.broadcast();
+					chatBroadcast.chatBroadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
-					if (MessageRunnable.getRunning() != 3)
-						MessageRunnable.setRunning(1);
+					if (ChatBroadcast.getRunning() != 3)
+						ChatBroadcast.setRunning(1);
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
 					if (Bukkit.getOnlinePlayers().size() >= 1) {
-						methods.broadcast();
-						if (!(MessageRunnable.getRunning() == 3))
-							MessageRunnable.setRunning(1);
+						chatBroadcast.chatBroadcast();
+						if (!(ChatBroadcast.getRunning() == 3))
+							ChatBroadcast.setRunning(1);
 					} else {
-						if (MessageRunnable.getRunning() != 3)
-							MessageRunnable.setRunning(0);
+						if (ChatBroadcast.getRunning() != 3)
+							ChatBroadcast.setRunning(0);
 					}
 				}
 			/*
@@ -202,12 +204,12 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("§cSkipping messages only works if \"randomizemessages\" is set to \"false\" in the config.yml");
 					return true;
 				}
-				if (MessageRunnable.getCounter() < Main.chatMessages.size()) {
-					cs.sendMessage("§2Successfully skipped message " + (MessageRunnable.getCounter()+1) + ".");
-					MessageRunnable.setCounter(MessageRunnable.getCounter()+1);
+				if (ChatBroadcast.getCounter() < Main.chatMessages.size()) {
+					cs.sendMessage("§2Successfully skipped message " + (ChatBroadcast.getCounter()+1) + ".");
+					ChatBroadcast.setCounter(ChatBroadcast.getCounter()+1);
 				} else {
 					cs.sendMessage("§2Successfully skipped message 1.");
-					MessageRunnable.setCounter(1);
+					ChatBroadcast.setCounter(1);
 				}
 			/*
 			 * ADD
@@ -467,11 +469,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (BossBarMethods.getBarRunning() == 0) {
-					BossBarMethods.setBarRunning(1);
+				if (BossBarBroadcast.getBarRunning() == 0) {
+					BossBarBroadcast.setBarRunning(1);
 					bossBarMethods.barBroadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Started boss bar broadcast.");
-				} else if (BossBarMethods.getBarRunning() == 3) {
+				} else if (BossBarBroadcast.getBarRunning() == 3) {
 					cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is disabled (as set in the bossbar.yml)!");
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already started!");
@@ -485,14 +487,14 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (BossBarMethods.getBarRunning() == 1) {
-					Bukkit.getScheduler().cancelTask(BossBarMethods.getBarTask());
-					BossBarMethods.setBarRunning(0);
+				if (BossBarBroadcast.getBarRunning() == 1) {
+					Bukkit.getScheduler().cancelTask(BossBarBroadcast.getBarTask());
+					BossBarBroadcast.setBarRunning(0);
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 						BarAPI.removeBar(p);
 					}
 					cs.sendMessage("[Simple§cBroadcast]§r Cancelled boss bar broadcast.");
-				} else if (BossBarMethods.getBarRunning() == 3) {
+				} else if (BossBarBroadcast.getBarRunning() == 3) {
 					cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already disabled (as set in the bossbar.yml)!");
 				} else {
 					cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is already cancelled!");
@@ -525,7 +527,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				if (BossBarMethods.getBarRunning() == 3) {
+				if (BossBarBroadcast.getBarRunning() == 3) {
 					cs.sendMessage("[Simple§cBroadcast]§r Boss bar broadcast is disabled (as set in the bossbar.yml)!");
 					cs.sendMessage("[Simple§cBroadcast]§r Please enable it to use this command.");
 					return true;
@@ -534,11 +536,11 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 					cs.sendMessage("§cSkipping messages only works if \"randomizemessages\" is set to \"false\" in the bossbar.yml.");
 					return true;
 				}
-				if (BossBarMethods.getBarCounter() < Main.getBossBarConfig().getStringList("messages").size()) {
-					cs.sendMessage("§2Successfully skipped message " + (BossBarMethods.getBarCounter()+1) + ".");
-					BossBarMethods.setBarCounter(BossBarMethods.getBarCounter()+1);
+				if (BossBarBroadcast.getBarCounter() < Main.getBossBarConfig().getStringList("messages").size()) {
+					cs.sendMessage("§2Successfully skipped message " + (BossBarBroadcast.getBarCounter()+1) + ".");
+					BossBarBroadcast.setBarCounter(BossBarBroadcast.getBarCounter()+1);
 				} else {
-					BossBarMethods.setBarCounter(1);
+					BossBarBroadcast.setBarCounter(1);
 					cs.sendMessage("§2Successfully skipped message 1.");
 				}
 			/*

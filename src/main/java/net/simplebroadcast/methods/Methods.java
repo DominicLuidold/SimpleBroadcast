@@ -8,20 +8,15 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.UUID;
 
-import net.simplebroadcast.Main;
-import net.simplebroadcast.MessageRunnable;
 import net.simplebroadcast.utils.UUIDFetcher;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public class Methods {
 
 	private String uuid;
-	private int previousMessage;
 
 	/**
 	 * Executes a command.
@@ -175,69 +170,5 @@ public class Methods {
 	public String addPlayerVariables(String message, Player p) {
 		message = addVariables(message.replace("%player%", p.getName()).replace("%biome%", p.getLocation().getBlock().getBiome().toString()).replace("%world%", p.getWorld().getName()));
 		return message;
-	}
-
-	/**
-	 * Global broadcast function. 
-	 */
-	public void broadcast() {
-		if (MessageRunnable.getRunning() == 3) {
-			return;
-		}
-		/*
-		 * Decides if the messages shall be broadcasted in a random order or not.
-		 */
-		if (!Main.getPlugin().getConfig().getBoolean("randomizemessages")) {
-			MessageRunnable.setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new MessageRunnable(), 0L, Main.getPlugin().getConfig().getInt("delay") * 20L));
-			return;
-		}
-		MessageRunnable.setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
-			@Override
-			public void run() {
-				/*
-				 * Gets and broadcasts the messages in a random order.
-				 */
-				int msg = (int) (Math.random() * Main.chatMessages.size());
-				if (msg != previousMessage) {
-					previousMessage = msg;
-				} else {
-					msg += (previousMessage < Main.chatMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
-					previousMessage = msg;
-				}
-				String message = Main.chatMessages.get(msg);
-				msg = 0;
-				String prefix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("prefix.prefix")));
-				String suffix = ChatColor.translateAlternateColorCodes('&', addVariables(Main.getPlugin().getConfig().getString("suffix.suffix")));
-				boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
-				boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
-				/*
-				 * Starts broadcasting the messages.
-				 * If message starts with "/" it's handled as a command.
-				 */
-				if (message.startsWith("/")) {
-					if (message.contains("%n/")) {
-						for (String c_msg : message.substring(1).split("%n/")) {
-							performCommand(c_msg);
-						}
-					} else {
-						message = message.substring(1);
-						performCommand(message);
-					}
-					return;
-				}
-				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-					if (!Main.ignoredPlayers.contains(getUUID(p.getName()))) {
-						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
-					}
-				}
-				/*
-				 * Checks if messages shall be broadcasted in the console.
-				 */
-				if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
-					ConsoleCommandSender console = Bukkit.getConsoleSender();
-					console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + addVariables(message) + (suffix_bool ? " " + suffix : "")));
-				}
-			}
-		}, 0L, Main.getPlugin().getConfig().getInt("delay") * 20L));
 	}
 }

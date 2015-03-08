@@ -9,13 +9,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import net.simplebroadcast.Main;
-import net.simplebroadcast.MessageRunnable;
-import net.simplebroadcast.methods.Methods;
 import net.simplebroadcast.methods.UpdatingMethods;
+import net.simplebroadcast.broadcasts.ChatBroadcast;
 
 public class Events implements Listener {
 
-	private Methods methods = new Methods();
+	private ChatBroadcast chatBroadcast = new ChatBroadcast();
 	private UpdatingMethods updatingMethods = new UpdatingMethods();
 
 	/*
@@ -47,9 +46,9 @@ public class Events implements Listener {
 		 * Checks if server was empty before the player joined and starts the broadcast if it's not running yet.
 		 */
 		if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers")) {
-			if (Bukkit.getOnlinePlayers().size() == 1 && MessageRunnable.getRunning() == 0) {
-				methods.broadcast();
-				MessageRunnable.setRunning(1);
+			if (Bukkit.getOnlinePlayers().size() == 1 && ChatBroadcast.getRunning() == 0) {
+				chatBroadcast.chatBroadcast();
+				ChatBroadcast.setRunning(1);
 			}
 		}
 	}
@@ -63,8 +62,8 @@ public class Events implements Listener {
 	 * Checks if server is empty after the player left and stops the broadcast if it's running.
 	 */
 	if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().size() == 1) {
-			Bukkit.getServer().getScheduler().cancelTask(MessageRunnable.getMessageTask());
-			MessageRunnable.setRunning(0);
+			Bukkit.getServer().getScheduler().cancelTask(ChatBroadcast.getMessageTask());
+			ChatBroadcast.setRunning(0);
 		}
 	}
 

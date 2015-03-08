@@ -1,21 +1,20 @@
-package net.simplebroadcast.methods;
-
-import java.util.Random;
+package net.simplebroadcast.broadcasts;
 
 import me.confuser.barapi.BarAPI;
 import net.simplebroadcast.Main;
+import net.simplebroadcast.methods.Methods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class BossBarMethods {
+public class BossBarBroadcast {
 
 	private int msg;
-	private int previousMessage;
-	private static int counter = 0;
-	private static int barRunning = 1;
 	private static int barTask;
+	private int previousMessage;
+	private static int barCounter = 0;
+	private static int barRunning = 1;
 	private Methods methods = new Methods();
 
 	public void barBroadcast() {
@@ -30,13 +29,13 @@ public class BossBarMethods {
 			return;
 		}
 		if (Main.getBossBarConfig().getBoolean("randomizemessages")) {
-			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+			setBarTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
 					/*
 					 * Gets and broadcasts the messages in a random order.
 					 */
-					msg = new Random().nextInt(Main.bossBarMessages.size());
+					msg = (int) (Math.random() * Main.bossBarMessages.size());
 					if (msg != previousMessage) {
 						previousMessage = msg;
 					} else {
@@ -60,19 +59,19 @@ public class BossBarMethods {
 						}
 					});
 				}
-			}, 0L, Main.getBossBarConfig().getInt("delay") * 20L);
+			}, 0L, Main.getBossBarConfig().getInt("delay") * 20L));
 		} else {
-			barTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+			setBarTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
 				@Override
 				public void run() {
-					if (counter < Main.bossBarMessages.size()) {
+					if (barCounter < Main.bossBarMessages.size()) {
 						broadcast();
 					} else {
 						setBarCounter(0);
 						broadcast();
 					}
 				}
-			}, 0L, Main.getBossBarConfig().getInt("delay") * 20L);
+			}, 0L, Main.getBossBarConfig().getInt("delay") * 20L));
 		}
 	}
 
@@ -86,15 +85,15 @@ public class BossBarMethods {
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 						if (Main.getBossBarConfig().getBoolean("reducehealthbar")) {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(counter), p)), Main.getBossBarConfig().getInt("delay"));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(barCounter), p)), Main.getBossBarConfig().getInt("delay"));
 						} else {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(counter), p)));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(barCounter), p)));
 						}
 					} else {
 						BarAPI.removeBar(p);
 					}
 				}
-				counter++;
+				barCounter++;
 			}
 		});
 	}
@@ -120,15 +119,15 @@ public class BossBarMethods {
 	 * @return the counter
 	 */
 	public static int getBarCounter() {
-		return counter;
+		return barCounter;
 	}
 
 	/**
 	 * Sets the counter
 	 * @param counter new counter
 	 */
-	public static void setBarCounter(int counter) {
-		BossBarMethods.counter = counter;
+	public static void setBarCounter(int barCounter) {
+		BossBarBroadcast.barCounter = barCounter;
 	}
 
 	/**
@@ -136,7 +135,7 @@ public class BossBarMethods {
 	 * @param running the new Integer
 	 */
 	public static void setBarRunning(int barRunning) {
-		BossBarMethods.barRunning = barRunning;
+		BossBarBroadcast.barRunning = barRunning;
 	}
 
 	/**
@@ -144,6 +143,6 @@ public class BossBarMethods {
 	 * @param barTask the new task id
 	 */
 	public static void setBarTask(int barTask) {
-		BossBarMethods.barTask = barTask;
+		BossBarBroadcast.barTask = barTask;
 	}
 }
