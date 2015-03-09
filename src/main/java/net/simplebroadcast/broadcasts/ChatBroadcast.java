@@ -56,6 +56,10 @@ public class ChatBroadcast {
 						}
 						return;
 					}
+					if (message.startsWith("JSON:")) {
+						JsonMessage.sendJSONText(message.replace("JSON:", ""));
+						return;
+					}
 					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 						if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
@@ -102,30 +106,35 @@ public class ChatBroadcast {
 				methods.performCommand(command);
 				counter++;
 			}
-		} else {
-			final boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
-			final boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
-			final String prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
-			final String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
-			Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
-				@Override
-				public void run() {
-					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
-						}
+			return;
+		}
+		if (message.startsWith("JSON:")) {
+			JsonMessage.sendJSONText(message.replace("JSON:", ""));
+			counter++;
+			return;
+		}
+		final boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
+		final boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
+		final String prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
+		final String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
+		Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
+			@Override
+			public void run() {
+				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+					if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+						p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
 					}
 				}
-			});
-			/*
-			 * Checks if messages shall be broadcasted in the console.
-			 */
-			if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
-				ConsoleCommandSender console = Bukkit.getConsoleSender();
-				console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 			}
-			counter++;
+		});
+		/*
+		 * Checks if messages shall be broadcasted in the console.
+		 */
+		if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
+			ConsoleCommandSender console = Bukkit.getConsoleSender();
+			console.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addVariables(message) + (suffix_bool ? " " + suffix : "")));
 		}
+		counter++;
 	}
 
 	/**
