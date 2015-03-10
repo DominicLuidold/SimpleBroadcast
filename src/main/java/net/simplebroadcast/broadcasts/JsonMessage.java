@@ -29,11 +29,27 @@ public class JsonMessage {
 		String path = Bukkit.getServer().getClass().getPackage().getName();
 		VERSION = path.substring(path.lastIndexOf(".") + 1, path.length());
 		try {
+			String serverVersion = Bukkit.getVersion();
+			serverVersion = serverVersion.substring(serverVersion.indexOf("(MC: ") + 5, serverVersion.length());
+			serverVersion = serverVersion.substring(0, serverVersion.lastIndexOf(")"));
+			serverVersion = serverVersion.replace(".", "");
 			CLASS_CRAFT_PLAYER = Class.forName("org.bukkit.craftbukkit." + VERSION + ".entity.CraftPlayer");
 			CLASS_PACKET_PLAY_OUT_CHAT = Class.forName("net.minecraft.server." + VERSION + ".PacketPlayOutChat");
-			CLASS_CHAT_SERIALIZER = Class.forName("net.minecraft.server." + VERSION + ".ChatSerializer");
 			CLASS_I_CHAT_BASE_COMPONENT = Class.forName("net.minecraft.server." + VERSION + ".IChatBaseComponent");
 			CLASS_PACKET = Class.forName("net.minecraft.server." + VERSION + ".Packet");
+			if (Integer.parseInt(serverVersion) >= 183) {
+				CLASS_CHAT_SERIALIZER = Class.forName("net.minecraft.server." + VERSION + ".ChatSerializer");
+			} else {
+				for (Class<?> clazz : CLASS_I_CHAT_BASE_COMPONENT.getDeclaredClasses()) {
+					if (clazz.getSimpleName().equals("ChatSerializer")) {
+						CLASS_CHAT_SERIALIZER = clazz;
+						break;
+					}
+				}
+			}
+			if (CLASS_CHAT_SERIALIZER == null) {
+				nmsFailed = true;
+			}
 		} catch (ClassNotFoundException e) {
 			nmsFailed = true;
 		}
