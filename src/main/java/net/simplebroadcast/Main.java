@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import net.simplebroadcast.utils.UUIDFetcher;
 import net.simplebroadcast.broadcasts.BossBarBroadcast;
 import net.simplebroadcast.broadcasts.ChatBroadcast;
 import net.simplebroadcast.events.Events;
 import net.simplebroadcast.methods.UpdatingMethods;
+import net.simplebroadcast.utils.UUIDFetcher;
 
-import org.mcstats.Metrics;
-import org.mcstats.Metrics.Graph;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
+import org.mcstats.Metrics.Graph;
 
 public class Main extends JavaPlugin {
 

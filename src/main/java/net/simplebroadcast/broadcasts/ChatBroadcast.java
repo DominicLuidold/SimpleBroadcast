@@ -1,12 +1,12 @@
 package net.simplebroadcast.broadcasts;
 
+import net.simplebroadcast.Main;
+import net.simplebroadcast.methods.Methods;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-
-import net.simplebroadcast.Main;
-import net.simplebroadcast.methods.Methods;
 
 public class ChatBroadcast {
 	

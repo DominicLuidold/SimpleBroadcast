@@ -1,7 +1,7 @@
 package net.simplebroadcast.methods;
 
-import net.simplebroadcast.Main;
 import net.gravitydevelopment.updater.Updater;
+import net.simplebroadcast.Main;
 
 public class UpdatingMethods {
 

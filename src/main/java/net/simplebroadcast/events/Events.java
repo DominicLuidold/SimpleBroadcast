@@ -1,5 +1,9 @@
 package net.simplebroadcast.events;
 
+import net.simplebroadcast.Main;
+import net.simplebroadcast.broadcasts.ChatBroadcast;
+import net.simplebroadcast.methods.UpdatingMethods;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,10 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import net.simplebroadcast.Main;
-import net.simplebroadcast.methods.UpdatingMethods;
-import net.simplebroadcast.broadcasts.ChatBroadcast;
 
 public class Events implements Listener {
 
