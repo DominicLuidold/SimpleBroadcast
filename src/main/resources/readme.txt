@@ -47,8 +47,33 @@ oder via E-Mail (contact@simplebroadcast.net) Kontakt aufnehmen und nach Hilfe f
 so melde diesen bitte auf GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
 
 ##################
+#####Español######
+##################
+
+Estimado usuario SimpleBroadcast,
+
+Primero que todos: Gracias por utilizar mi plugin.
+En este readme incluye cosas a considerar al utilizar el plugin:
+
+- El prefijo, sufijo, así como todos los mensajes tienen que ser rodeado por comillas simples ('...') con el fin
+  de que los códigos de color y también las variables puedan funcionar adecuadamente.
+- No es posible escribir comillas simples (') dentro de un mensaje. Como reemplazo está disponible la variable "%sq%"
+  que finalmente es reemplazada por una sola comilla de nuevo.
+- Desde v1.9 la opción de "pluginmetrics" ya no está disponible. Si aún desea que decidir si se permite PluginMetrics
+  para enviar estadísticas se puede hacer en la carpeta de "PluginMetrics" en tu directorio de plugins.
+- Si está utilizando la boss bar hay que considerar que los mensajes no deben tener más de 64 caracteres.
+  De lo contrario, son automáticamente cortados por BarAPI para evitar un accidente con el cliente de Minecraft.
+- Si hay una actualización disponible se recomienda instalarla. Está garantizado que funciona perfectamente bien con cada versión de Minecraft
+  (Puede haber algunas funciones dependientes de la versión). Además a menudo hay correcciones de errores, así como mejoras / nuevas funciones incluidas.
+
+Si todavía hay algún dudas, preguntas o problemas, siempre te puedes poner en contacto conmigo en Twitter (@SBPlugin), en BukkitDev (KingDome24)
+o por correo electrónico (contact@simplebroadcast.net) para pedir ayuda. Si encuentra algún problema,
+por favor informalo en GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
+
+##################
 ##More languages##
 ##################
 
 - If you want to translate this into another language please contact me via one of the mentioned ways.
 - Wenn du den Text in eine andere Sprache übersetzen möchtest, so kontaktiere mich bitte mit einer der genannten Möglichkeiten.
+- Si quieres traducir el texto a una otra lengua, me contactas por favor con una de las posibilidades mencionada. 
