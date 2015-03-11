@@ -37,7 +37,7 @@ public class JsonMessage {
 			CLASS_PACKET_PLAY_OUT_CHAT = Class.forName("net.minecraft.server." + VERSION + ".PacketPlayOutChat");
 			CLASS_I_CHAT_BASE_COMPONENT = Class.forName("net.minecraft.server." + VERSION + ".IChatBaseComponent");
 			CLASS_PACKET = Class.forName("net.minecraft.server." + VERSION + ".Packet");
-			if (Integer.parseInt(serverVersion) >= 183) {
+			if (Integer.parseInt(serverVersion) <= 183) {
 				CLASS_CHAT_SERIALIZER = Class.forName("net.minecraft.server." + VERSION + ".ChatSerializer");
 			} else {
 				for (Class<?> clazz : CLASS_I_CHAT_BASE_COMPONENT.getDeclaredClasses()) {
