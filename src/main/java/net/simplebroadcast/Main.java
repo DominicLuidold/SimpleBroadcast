@@ -24,9 +24,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
 
 	public static Main plugin;
-	private ChatBroadcast chatBroadcast = new ChatBroadcast();
-	private UpdatingMethods updatingMethods = new UpdatingMethods();
-	private BossBarBroadcast bossBarBroadcast = new BossBarBroadcast();
 	public static List<String> ignoredPlayers = new ArrayList<String>();
 	public static HashMap<Integer, String> chatMessages = new HashMap<Integer, String>();
 	public static HashMap<Integer, String> bossBarMessages = new HashMap<Integer, String>();
@@ -164,6 +161,7 @@ public class Main extends JavaPlugin {
 			Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 				@Override
 				public void run() {
+					UpdatingMethods updatingMethods = new UpdatingMethods();
 					updatingMethods.update();
 				}
 			});
@@ -190,6 +188,7 @@ public class Main extends JavaPlugin {
 		 * Starts the chat broadcast task.
 		 */
 		if (plugin.getConfig().getBoolean("enabled")) {
+			ChatBroadcast chatBroadcast = new ChatBroadcast();
 			if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 				chatBroadcast.chatBroadcast();
 			} else {
@@ -205,6 +204,7 @@ public class Main extends JavaPlugin {
 		 * Starts the boss bar broadcast task.
 		 */
 		if (getConfig().getBoolean("enabled") && getBossBarConfig().getBoolean("enabled") && BossBarBroadcast.getBarRunning() != 0 && BossBarBroadcast.getBarRunning() != 3) {
+			BossBarBroadcast bossBarBroadcast = new BossBarBroadcast();
 			bossBarBroadcast.barBroadcast();
 		}
 

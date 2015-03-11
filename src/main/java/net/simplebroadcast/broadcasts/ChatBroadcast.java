@@ -16,6 +16,10 @@ public class ChatBroadcast {
 	private static int counter = 0;
 	private static int running = 1;
 	private Methods methods = new Methods();
+	private boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
+	private boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
+	private String prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
+	private String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 	
 	public void chatBroadcast() {
 		if (getRunning() == 3) {
@@ -37,10 +41,6 @@ public class ChatBroadcast {
 					}
 					String message = Main.chatMessages.get(msg);
 					msg = 0;
-					boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
-					boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
-					String prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
-					String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 					/*
 					 * Starts broadcasting the messages.
 					 * If message starts with "/" it's handled as a command.
@@ -113,10 +113,6 @@ public class ChatBroadcast {
 			counter++;
 			return;
 		}
-		final boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
-		final boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
-		final String prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
-		final String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 		Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
 			@Override
 			public void run() {
