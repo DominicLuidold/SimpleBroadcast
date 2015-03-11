@@ -27,5 +27,5 @@ sendmessagestoconsole: false
 messages:
 - 'Thank you for using SimpleBroadcast!'
 - 'Plugin by &oKingDome24.'
-- 'If you have questions please visit the BukkitDev page!'
-- 'You do not like to edit the config manually? Use "/sb add" or "/sb remove" instead!'
+- 'If you have any questions please visit the website or BukkitDev.'
+- 'JSON:{text:"You want a text with a nice effect? Use JSON messages!",hoverEvent:{action:show_text,value:[{text:"You will like them!",color:blue}]}}'
