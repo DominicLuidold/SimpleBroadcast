@@ -32,6 +32,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 	private String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 
 	public boolean onCommand(final CommandSender cs, Command cmd, String label, final String[] args) {
+		/*
+		 * Chat commands.
+		 */
 		if (args.length == 0) {
 			/*
 			 * SB
