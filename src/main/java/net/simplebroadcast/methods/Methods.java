@@ -156,7 +156,7 @@ public class Methods {
 				replace("%hour_of_day%", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "").replace("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "").
 				replace("%minute%", Calendar.getInstance().get(Calendar.MINUTE) + "").replace("%second%", Calendar.getInstance().get(Calendar.SECOND) + "").
 				replace("%motd%", Bukkit.getServer().getMotd()).replace("%player%", "UNKNOWN").replace("%biome%", "UNKNOWN").
-				replace("%world%", "UNKNOWN").replace("%online_ops%", opList() + "").replace("%randomplayer%", randomPlayer()).
+				replace("%world%", "UNKNOWN").replace("%online_ops%", opList() + "").replace("%random_player%", randomPlayer()).
 				replace("%raquo%", "\u00BB").replace("%laquo%", "\u00AB").replace("%bullet%", "\u2219");
 		return message;
 	}
