@@ -124,7 +124,9 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 				BossBarBroadcast.setBarCounter(0);
 				BossBarBroadcast.setBarRunning(1);
 				bossBarMethods.barBroadcast();
-				
+				if (Main.getPlugin().getConfig().getBoolean("enabled") && ChatBroadcast.getRunning() == 3) {
+					ChatBroadcast.setRunning(1);
+				}
 				if (!Main.getPlugin().getConfig().getBoolean("requiresonlineplayers")) {
 					chatBroadcast.chatBroadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
