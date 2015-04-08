@@ -46,6 +46,29 @@ Sollten weiterhin Unklarheiten, Fragen oder Probleme bestehen, kann man jederzei
 oder via E-Mail (contact@simplebroadcast.net) Kontakt aufnehmen und nach Hilfe fragen. Solltest du einen Fehler entdeckt haben,
 so melde diesen bitte auf GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
 
+###################
+#####Italiano######
+###################
+
+Gentile utente SimpleBroadcast,
+
+prima di tutto: Grazie per aver scelto il mio plugin.
+In questo readme alcune cose molto importanti vengono avvicinati, che si dovrebbe considerare durante l'uzo del plugin:
+
+- Il prefisso, suffisso così come tutti i messaggi devono essere circondati da virgolette singole ('...') in modo che
+  i codici di colore e anche le variabili possono funzionare correttamente.
+- Non è possibile scrivere virgolette singole (') all'interno di un messaggio. In sostituzione la variabile "%sq%" è disponibile
+  che alla fine viene sostituito da una sola (') di nuovo.
+- Dal momento che i "v1.9 pluginmetrics" opzione non è più disponibile. Se si vuole ancora decidere se PluginMetrics è permesso
+  di inviare le statistiche che si possono fare che nella cartella "PluginMetrics" nella vostra cartella dei plugin.
+- Se si sta utilizzando la Boss Bar si deve considerare che i messaggi non devono essere più lunghi di 64 caratteri. In caso contrario, essi sono automaticamente
+  andando ad ottenere tagliato da BarAPI per evitare un crash del client Minecraft.
+- Se  è un aggiornamento disponibile si consiglia di installarlo. E 'garantito che funziona perfettamente bene con ogni versione Minecraft
+  (Ci possono essere alcune funzioni dipendenti versione). Inoltre ci sono spesso correzioni di bug e miglioramenti / nuove funzioni incluse.
+
+Domande o problemi siete sempre in grado di contattare me su Twitter (SBPlugin), su BukkitDev (KingDome24) (Inglese e tedesco)
+o via e-mail (contact@simplebroadcast.net) per chiedere aiuto. Se trovate eventuali problemi, si prega di riferire su GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
+
 ##################
 #####Español######
 ##################
@@ -71,9 +94,34 @@ o por correo electrónico (contact@simplebroadcast.net) para pedir ayuda. Si enc
 por favor informalo en GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
 
 ##################
+####Português#####
+##################
+
+Caro usuário SimpleBroadcast,
+
+Primeiro de tudo: Obrigado por usar o meu plugin.
+Neste readme algumas coisas muito importantes que você deve considerar ao usar o plugin:
+
+- O prefixo, sufixo, bem como todas as mensagens têm de ser cercado por aspas simples ('...'), a fim de que os códigos de cores e também as variáveis ​​pode funcionar corretamente.
+- Não é possível escrever aspas simples (') dentro de uma mensagem. Como substituto da variável "%sq%" está disponível
+  que, finalmente, é substituído por uma única (') de novo.
+- Desde v1.9 a opção "pluginmetrics" não está mais disponível. Se você ainda quer decidir se PluginMetrics é permitido
+  para enviar estatísticas você pode fazer isso na pasta "PluginMetrics" em seu diretório plugin.
+- Se você estiver usando a barra de chefe que você tem que considerar que as mensagens não deve ser maior que 64 caracteres.
+  Caso contrário, eles são automaticamente vai ser cortado por BarAPI para evitar um acidente cliente Minecraft.
+- Se uma atualização estiver disponível é recomendado para instalá-lo. É garantido que ele funciona perfeitamente bem com cada versão Minecraft
+  (Pode haver alguma versão funções dependentes). Além disso, há muitas vezes, correções de bugs, bem como melhorias / novas funções incluídas.
+
+Ou problemas você é sempre capaz de entrar em contato comigo no Twitter (SBPlugin), em BukkitDev (KingDome24)
+ou via e-mail (contact@simplebroadcast.net) para pedir ajuda (Inglês/Alemao).
+Se você encontrar quaisquer problemas, por favor informe-los no GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
+
+##################
 ##More languages##
 ##################
 
 - If you want to translate this into another language please contact me via one of the mentioned ways.
 - Wenn du den Text in eine andere Sprache übersetzen möchtest, so kontaktiere mich bitte mit einer der genannten Möglichkeiten.
-- Si quieres traducir el texto a una otra lengua, me contactas por favor con una de las posibilidades mencionada. 
+- Ti piacerebbe tradurlo in un'altra lingua? Entrare in contatto!
+- Si quieres traducir el texto a una otra lengua, me contactas por favor con una de las posibilidades mencionada.
+- Gostaria de traduzi-lo em outro idioma? Entrar em contato!
