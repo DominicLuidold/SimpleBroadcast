@@ -22,6 +22,24 @@ If there are still any obscurities, questions or problems you're always able to 
 or via email (contact@simplebroadcast.net) to ask for help. If you find any issues, please report them on GitHub (https://github.com/SimpleBroadcast/SimpleBroadcast/issues).
 
 ###################
+#####Français######
+###################
+
+Tout d'abord, merci à tous d'utiliser mon plugin.
+Dans ce document, il y a des points relativement importants que vous devriez lire sur l'utilisation du plugin :,
+
+- Le préfix, suffixe tout comme tous les autres messages doivent être encadrés par '....' afin que le code de couleur et autre variable fonctionne correctement.
+- Ce n'est pas possible d'écrire un simple apostrophe (') dans le message. La variable de remplacement est "%sq%" qui sera finalement remplacé par (') au final.
+- Depuis la v1.9 l'option "pluginmetrics" n'est plus disponible. Si vous voulez toujours autoriser ou non PluginMetrics à envoyer des stats,
+  cela est possible via le dossier "PluginMetrics" dans le répertoire de votre plugin.
+- Si vous utilisez la barre de Boss, les messages ne doivent pas dépasser les 64 caractères sinon ils seront automatiquement coupés par BarAPI afin d'éviter le client Minecraft de Crash.
+- Si une mise à jour est disponible, il est recommandé de l'installer. Il est garantit qu'elle fonctionnera sans souci avec toutes les versions de Minecraft
+  (sauf pour quelques options selon la version). De plus, il y a souvent des correctifs de bugs tout comme des améliorations et nouvelles fonctionnalités implantées.
+
+Si vous avez des questions ou soucis lors de l'utilisation du plugin, n'hésitez pas à me contacter via Twitter (@SBPlugin), ou via BukkitDev (KingDome24)
+ou encore par email (contact@simplebroadcast.net). Si vous trouvez des bugs, merci de les signaler sur le GitHub : https://github.com/SimpleBroadcast/SimpleBroadcast/issues
+
+###################
 ######Deutsch######
 ###################
 
@@ -121,6 +139,7 @@ Se você encontrar quaisquer problemas, por favor informe-los no GitHub (https:/
 ##################
 
 - If you want to translate this into another language please contact me via one of the mentioned ways.
+- Si vous voulez traduire ce texte, contactez-moi s'il vous plaît avec les possibilités mentionné.
 - Wenn du den Text in eine andere Sprache übersetzen möchtest, so kontaktiere mich bitte mit einer der genannten Möglichkeiten.
 - Ti piacerebbe tradurlo in un'altra lingua? Entrare in contatto!
 - Si quieres traducir el texto a una otra lengua, me contactas por favor con una de las posibilidades mencionada.
