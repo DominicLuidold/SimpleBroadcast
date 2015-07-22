@@ -69,7 +69,7 @@ public class Main extends JavaPlugin {
 		/*
 		 * Initializes the main command.
 		 */
-		plugin.getCommand("simplebroadcast").setExecutor(new SimpleBroadcastCommand());
+		plugin.getCommand("simplebroadcast").setExecutor(new Commands());
 
 		/*
 		 * Connects to mcstats.org and sends data (see list below).

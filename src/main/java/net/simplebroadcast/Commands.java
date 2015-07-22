@@ -19,7 +19,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-public class SimpleBroadcastCommand implements CommandExecutor {
+public class Commands implements CommandExecutor {
 
 	private Methods methods = new Methods();
 	private ChatBroadcast chatBroadcast = new ChatBroadcast();
