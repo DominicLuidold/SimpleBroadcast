@@ -461,7 +461,7 @@ public class Commands implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				cs.sendMessage("§cTo use the boss bar, please download the BarAPI.");
+				cs.sendMessage("§cTo use the boss bar, please download BarAPI.");
 				cs.sendMessage("§chttp://dev.bukkit.org/bukkit-plugins/bar-api");
 				return true;
 			}
@@ -513,7 +513,7 @@ public class Commands implements CommandExecutor {
 					cs.sendMessage(err_need_Perm);
 					return true;
 				}
-				cs.sendMessage("§e------------- §fBoss bar messages: SimpleBroadcast §e-------------");
+				cs.sendMessage("§e--------- §fBoss bar messages: SimpleBroadcast §e---------");
 				for (int messageID = 0; messageID < Main.bossBarMessages.size(); messageID++) {
 					if (cs instanceof Player) {
 						Player p = (Player) cs;

@@ -67,7 +67,7 @@ public class Methods {
 				cs.sendMessage("§6/simplebroadcast:§f Shows you information about the plugin.");
 				cs.sendMessage("§6/simplebroadcast start:§f Starts the broadcast.");
 				cs.sendMessage("§6/simplebroadcast stop:§f Stops the broadcast.");
-				cs.sendMessage("§6/simplebroadcast reload:§f Reloads the config.");
+				cs.sendMessage("§6/simplebroadcast reload:§f Reloads the configs.");
 				cs.sendMessage("§6/simplebroadcast bossbar help:§f Shows you the bossbar help pages.");
 				cs.sendMessage("§6/simplebroadcast list:§f Shows you all messages.");
 				break;
