@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.simplebroadcast</groupId>
   <artifactId>SimpleBroadcast</artifactId>
-  <version>1.9-alpha-2</version>
+  <version>1.9-alpha-3</version>
   <name>SimpleBroadcast</name>
   <description>SimpleBroadcast is the easy way for Minecraft servers to broadcast predefined messages with various options.</description>
   <url>https://SimpleBroadcast.net</url>
