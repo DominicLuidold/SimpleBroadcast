@@ -12,6 +12,7 @@ import net.simplebroadcast.Main;
 import net.simplebroadcast.methods.Methods;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class JsonMessage {
@@ -67,13 +68,13 @@ public class JsonMessage {
 						Object entityPlayer = CLASS_CRAFT_PLAYER.getMethod("getHandle").invoke(p);
 						Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);					
 						Method sendPacketMethod = playerConnection.getClass().getMethod("sendPacket", CLASS_PACKET);
-						Object iChatBaseComponent = CLASS_CHAT_SERIALIZER.getMethod("a", String.class).invoke(playerConnection, jsonMessage);
+						Object iChatBaseComponent = CLASS_CHAT_SERIALIZER.getMethod("a", String.class).invoke(playerConnection, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(jsonMessage, p)));
 						Object packetPlayOutChat = CLASS_PACKET_PLAY_OUT_CHAT.getConstructor(CLASS_I_CHAT_BASE_COMPONENT).newInstance(iChatBaseComponent);
 						sendPacketMethod.invoke(playerConnection, packetPlayOutChat);
 					}
 				}
 				if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
-					Bukkit.getConsoleSender().sendMessage(jsonMessage.replace("{text:\"", "").replaceAll("\",.*", ""));
+					Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', methods.addVariables(jsonMessage.replace("{text:\"", "").replaceAll("\",.*", ""))));
 				}
 			} catch (Exception e) {
 				for (Player p : Bukkit.getOnlinePlayers()) {
