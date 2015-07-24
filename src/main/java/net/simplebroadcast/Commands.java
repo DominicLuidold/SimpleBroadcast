@@ -155,15 +155,15 @@ public class Commands implements CommandExecutor {
 				}
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e---------");
 				for (int messageID = 0; messageID < Main.chatMessages.size(); messageID++) {
-					special_message = true;
-					if (Main.chatMessages.get(messageID).startsWith("/") || Main.chatMessages.get(messageID).startsWith("JSON:")) {
-						special_message = false;
+					special_message = false;
+					if (Main.chatMessages.get(messageID).startsWith("/")) {
+						special_message = true;
 					}
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && special_message) ? prefix + " " : "") + methods.addPlayerVariables(Main.chatMessages.get(messageID), p) + ((suffix_bool && special_message) ? " " + suffix : "")));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addPlayerVariables(Main.chatMessages.get(messageID), p) + ((suffix_bool && !special_message) ? " " + suffix : "")));
 					} else {
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && special_message) ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID)) + ((suffix_bool && special_message) ? " " + suffix : "")));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID)) + ((suffix_bool && !special_message) ? " " + suffix : "")));
 					}
 				}
 			/*
