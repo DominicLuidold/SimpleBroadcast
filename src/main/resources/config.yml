@@ -28,4 +28,4 @@ messages:
 - 'Thank you for using SimpleBroadcast!'
 - 'Plugin by &oKingDome24.'
 - 'If you have any questions please visit the website or BukkitDev.'
-- 'JSON:{text:"You want a text with awesome effects? Use JSON messages!",hoverEvent:{action:show_text,value:[{text:"You will like them!",color:blue}]}}'
+- 'JSON:{text:"You want a text with awesome effects? Use JSON messages!","color":"yellow",hoverEvent:{action:show_text,value:[{text:"You will like them!",color:blue}]}}'
