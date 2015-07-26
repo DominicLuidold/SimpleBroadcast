@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 public class Methods {
 
 	private String uuid;
+	private HashMap<Integer, Player> visiblePlayers = new HashMap<Integer, Player>();
 
 	/**
 	 * Executes a command.
@@ -28,12 +30,13 @@ public class Methods {
 
 	/**
 	 * Counts the amount of operators who are online.
+	 * If VanishNoPacket is installed the plugin regards this and removes the player from the counter.
 	 * @return amount of online operators.
 	 */
 	public int opList() {
 		int ops = 0;
 		for (Player p : Bukkit.getOnlinePlayers()) {
-			if (p.isOp()) {
+			if (p.isOp() && !checkIfVanished(p)) {
 				ops++;
 			}
 		}
@@ -41,18 +44,59 @@ public class Methods {
 	}
 
 	/**
+	 * Counts the amount of players who are online.
+	 * If VanishNoPacket is installed the plugin regards this and removes the player from the counter.
+	 * @return amount of online players.
+	 */
+	public int onlinePlayers() {
+		int online_players = Bukkit.getServer().getOnlinePlayers().size();
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			if (checkIfVanished(p)) {
+				online_players--;
+			}
+		}
+		return online_players;
+	}
+
+	/**
 	 * Gets a random player name.
 	 * @return name of a random player.
 	 */
 	public String randomPlayer() {
+		String noPlayer = "UNKNOWN";
 		if (Bukkit.getOnlinePlayers().size() > 0) {
-			int random = (int) (Math.random() * Bukkit.getOnlinePlayers().size());
-			Player randomPlayer = (Player) Bukkit.getServer().getOnlinePlayers().toArray()[random];
+			int playerID = 0;
+			visiblePlayers.clear();
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				if (!checkIfVanished(p)) {
+					visiblePlayers.put(playerID, p);
+					playerID++;
+				}
+			}
+			if (playerID < 1) {
+				return noPlayer;
+			}
+			int random = (int) (Math.random() * playerID);
+			Player randomPlayer = (Player) visiblePlayers.values().toArray()[random];
 			return randomPlayer.getName();
-		} else {
-			String noPlayer = "UNKNOWN";
+		} else {			
 			return noPlayer;
 		}
+	}
+
+	/**
+	 * Checks if the player is invisible/hidden.
+	 * @param p player
+	 * @return visibility status
+	 */
+	public boolean checkIfVanished(Player p) {
+		if (!Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket")) {
+			return false;
+		}
+		if (p.getMetadata("vanished").get(0).asBoolean()) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -150,7 +194,7 @@ public class Methods {
 	 */
 	public String addVariables(String message) {
 		message = message.replace("%sq%", "'").
-				replace("%n", "\n").replace("%online%", Bukkit.getServer().getOnlinePlayers().size() + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
+				replace("%n", "\n").replace("%online%", onlinePlayers() + "").replace("%max_online%", Bukkit.getServer().getMaxPlayers() + "").
 				replace("%unique%", Bukkit.getServer().getOfflinePlayers().length + "").replace("%year%", Calendar.getInstance().get(Calendar.YEAR) + "").
 				replace("%month%", Calendar.getInstance().get(Calendar.MONTH) + 1 + "").replace("%day%", Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "").
 				replace("%hour_of_day%", Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + "").replace("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "").
