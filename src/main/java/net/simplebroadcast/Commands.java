@@ -7,6 +7,7 @@ import java.util.List;
 import me.confuser.barapi.BarAPI;
 import net.simplebroadcast.broadcasts.BossBarBroadcast;
 import net.simplebroadcast.broadcasts.ChatBroadcast;
+import net.simplebroadcast.broadcasts.JsonMessage;
 import net.simplebroadcast.methods.Methods;
 import net.simplebroadcast.methods.UpdatingMethods;
 
@@ -161,9 +162,17 @@ public class Commands implements CommandExecutor {
 					}
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addPlayerVariables(Main.chatMessages.get(messageID), p) + ((suffix_bool && !special_message) ? " " + suffix : "")));
+						if (Main.chatMessages.get(messageID).startsWith("JSON:")) {
+							JsonMessage.sendPlayerJSONText(Main.chatMessages.get(messageID).replace("JSON:", ""), p);
+						} else {
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addPlayerVariables(Main.chatMessages.get(messageID), p) + ((suffix_bool && !special_message) ? " " + suffix : "")));
+						}
 					} else {
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID)) + ((suffix_bool && !special_message) ? " " + suffix : "")));
+						if (Main.chatMessages.get(messageID).startsWith("JSON:")) {
+							cs.sendMessage(Main.chatMessages.get(messageID).replace("JSON:{text:\"", "").replaceAll("\",.*", ""));
+						} else {
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID)) + ((suffix_bool && !special_message) ? " " + suffix : "")));
+						}
 					}
 				}
 			/*
