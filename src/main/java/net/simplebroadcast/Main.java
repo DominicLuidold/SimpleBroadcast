@@ -41,14 +41,14 @@ public class Main extends JavaPlugin {
 		/*
 		 * Saves all config files and the readme
 		 */
-		plugin.saveDefaultConfig();
+		saveDefaultConfig();
 		if (!new File(getDataFolder(), "ignore.yml").exists()) {
-			plugin.saveResource("ignore.yml", false);
+			saveResource("ignore.yml", false);
 		}
 		if (!new File(getDataFolder(), "bossbar.yml").exists()) {
-			plugin.saveResource("bossbar.yml", false);
+			saveResource("bossbar.yml", false);
 		}
-		plugin.saveResource("readme.txt", true);
+		saveResource("readme.txt", true);
 
 		/*
 		 * Loads all messages and ignored players
@@ -60,7 +60,7 @@ public class Main extends JavaPlugin {
 		/*
 		 * Checks if the plugin shall be enabled and logs it if not.
 		 */
-		if (!plugin.getConfig().getBoolean("enabled")) {
+		if (!getConfig().getBoolean("enabled")) {
 			logInfo("Messages don't get broadcasted as set in the config.");
 			Bukkit.getScheduler().cancelTask(ChatBroadcast.getMessageTask());
 			ChatBroadcast.setRunning(3);
@@ -69,7 +69,7 @@ public class Main extends JavaPlugin {
 		/*
 		 * Initializes the main command.
 		 */
-		plugin.getCommand("simplebroadcast").setExecutor(new Commands());
+		getCommand("simplebroadcast").setExecutor(new Commands());
 
 		/*
 		 * Connects to mcstats.org and sends data (see list below).
@@ -80,11 +80,12 @@ public class Main extends JavaPlugin {
 		 * - Online players required
 		 * - Console messages
 		 * - Bossbar
+		 * - Reduce health bar
 		 */		
 		try {
 			Metrics metrics = new Metrics(plugin);
 			Graph enabledFeatures = metrics.createGraph("Enabled Features");
-			if (plugin.getConfig().getBoolean("prefix.enabled")) {
+			if (getConfig().getBoolean("prefix.enabled")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Prefix") {
 					@Override
 					public int getValue() {
@@ -92,7 +93,7 @@ public class Main extends JavaPlugin {
 					}
 				});
 			}
-			if (plugin.getConfig().getBoolean("suffix.enabled")) {
+			if (getConfig().getBoolean("suffix.enabled")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Suffix") {
 					@Override
 					public int getValue() {
@@ -100,7 +101,7 @@ public class Main extends JavaPlugin {
 					}
 				});
 			}
-			if (plugin.getConfig().getBoolean("checkforupdates")) {
+			if (getConfig().getBoolean("checkforupdates")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Update checker") {
 					@Override
 					public int getValue() {
@@ -108,7 +109,7 @@ public class Main extends JavaPlugin {
 					}
 				});
 			}
-			if (plugin.getConfig().getBoolean("randomizemessages")) {
+			if (getConfig().getBoolean("randomizemessages")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Message randomizer") {
 					@Override
 					public int getValue() {
@@ -116,7 +117,7 @@ public class Main extends JavaPlugin {
 					}
 				});
 			}
-			if (plugin.getConfig().getBoolean("requiresonlineplayers")) {
+			if (getConfig().getBoolean("requiresonlineplayers")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Online players required") {
 					@Override
 					public int getValue() {
@@ -124,7 +125,7 @@ public class Main extends JavaPlugin {
 					}
 				});
 			}
-			if (plugin.getConfig().getBoolean("sendmessagestoconsole")) {
+			if (getConfig().getBoolean("sendmessagestoconsole")) {
 				enabledFeatures.addPlotter(new Metrics.Plotter("Console messages") {
 					@Override
 					public int getValue() {
@@ -157,7 +158,7 @@ public class Main extends JavaPlugin {
 		 * Checks if any updates are available.
 		 * (Asynchronous task)
 		 */
-		if (plugin.getConfig().getBoolean("enabled") && plugin.getConfig().getBoolean("checkforupdates")) {
+		if (getConfig().getBoolean("enabled") && plugin.getConfig().getBoolean("checkforupdates")) {
 			Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
 				@Override
 				public void run() {
@@ -170,7 +171,7 @@ public class Main extends JavaPlugin {
 		/*
 		 * Registers the events.
 		 */
-		if (plugin.getConfig().getBoolean("enabled")) {
+		if (getConfig().getBoolean("enabled")) {
 			getServer().getPluginManager().registerEvents(new Events(), plugin);
 		}
 
@@ -187,7 +188,7 @@ public class Main extends JavaPlugin {
 		/*
 		 * Starts the chat broadcast task.
 		 */
-		if (plugin.getConfig().getBoolean("enabled")) {
+		if (getConfig().getBoolean("enabled")) {
 			ChatBroadcast chatBroadcast = new ChatBroadcast();
 			if (!plugin.getConfig().getBoolean("requiresonlineplayers")) {
 				chatBroadcast.chatBroadcast();
