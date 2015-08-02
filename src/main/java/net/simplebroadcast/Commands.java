@@ -129,6 +129,11 @@ public class Commands implements CommandExecutor {
 				if (Main.getPlugin().getConfig().getBoolean("enabled") && ChatBroadcast.getRunning() == 3) {
 					ChatBroadcast.setRunning(1);
 				}
+				if (!Main.getPlugin().getConfig().getBoolean("enabled")) {
+					ChatBroadcast.setRunning(3);
+					BossBarBroadcast.setBarRunning(3);
+					Bukkit.getScheduler().cancelAllTasks();
+				}
 				if (!Main.getPlugin().getConfig().getBoolean("requiresonlineplayers")) {
 					chatBroadcast.chatBroadcast();
 					cs.sendMessage("[Simple§cBroadcast]§r Reloaded the config(s) successfully.");
