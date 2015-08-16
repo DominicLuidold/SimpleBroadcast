@@ -3,14 +3,18 @@ SimpleBroadcast
 
 SimpleBroadcast is the easy way for Minecraft servers to broadcast predefined messages with various options.
 
+##Important information about v2.X.X
+This branch is used for the in development version 2.X.X. There may exist critical bugs/errors until the first release.
+If you want to access the old stable 1.X.X branch please have a look at it here: [1.X.X](https://github.com/SimpleBroadcast/SimpleBroadcast/tree/1.X.X)
+
 ###Supported server softwares
 
 Software | Status
 --- | ---
-Bukkit | Supported
-Spigot | Supported
-Sponge | *Not tested*
-Glowstone | Supported *with restrictions*
+Bukkit | *N/A*
+Spigot | *N/A*
+Sponge | *N/A*
+Glowstone | *N/A*
 
 ###Gitter chatroom###
 
