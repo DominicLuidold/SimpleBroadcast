@@ -1,24 +1,34 @@
 SimpleBroadcast
 ===============
 
-SimpleBroadcast is the easy way for Minecraft servers to broadcast predefined messages with various options.
+SimpleBroadcast ist the easy way for every Minecraft server to broadcast messages to its players. The plugin provides several options which can be configured individually to match the requirements of different server types. Due to the usage of the latest versions of [Spigot](https://spigotmc.org) and other softwares the plugin ensures the best experiences.
 
-##Important information about v2.X.X
-This branch is used for the in development version 2.X.X. There may exist critical bugs/errors until the first release.
-If you want to access the old stable 1.X.X branch please have a look at it here: [1.X.X](https://github.com/SimpleBroadcast/SimpleBroadcast/tree/1.X.X)
+Version notes
+-------------
 
-###Supported server softwares
+This is (currently) the **unstable** tree of SimpleBroadcast. Until a first official release there may occur critical bugs or errors. Use it at your own risk!
 
-Software | Status
---- | ---
-Bukkit | *N/A*
-Spigot | *N/A*
-Sponge | *N/A*
-Glowstone | *N/A*
+If you wish to access the (currently) **stable 1.X.X** branch, please see here: [SB 1.X.X](https://github.com/SimpleBroadcast/SimpleBroadcast/tree/1.X.X)
 
-###Gitter chatroom###
+Supported server softwares
+--------------------------
 
-Having any problems with configuration/usage of SimpleBroadcast?
-Don't hesitate to join the Gitter chatroom to have a talk with the developer.
+| Software | Status |
+| -------- | ------ |
+| Bukkit | *N/A* |
+| Spigot | *N/A* |
+| Sponge | *N/A* |
+| Glowstone | *N/A* |
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SimpleBroadcast/SimpleBroadcast?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+Gitter chatroom
+---------------
+
+You are experiencing any problems with SimpleBroadcast? You have got a question or want to submit a suggestion? Don't hesitate to join the Gitter chatroom to have a talk with the developers.
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SimpleBroadcast/SimpleBroadcast)
+
+License
+-------
+
+This plugin is distributed under the terms of GNU General Public License (Version 3).
+For detailed information refer to LICENSE in this folder.
