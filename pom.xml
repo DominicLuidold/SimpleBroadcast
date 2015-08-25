@@ -6,7 +6,7 @@
 
   <groupId>net.simplebroadcast</groupId>
   <artifactId>SimpleBroadcast</artifactId>
-  <version>1.9-beta-1</version>
+  <version>1.9</version>
   <name>SimpleBroadcast</name>
   <url>https://SimpleBroadcast.net</url>
   <description>SimpleBroadcast is the easy way for Minecraft servers to broadcast predefined messages with various options.</description>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.8.7-R0.1-SNAPSHOT</version>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>me.confuser</groupId>
