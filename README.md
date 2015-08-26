@@ -18,7 +18,7 @@ Supported server softwares
 | Bukkit | Supported  |
 | Spigot | Supported  |
 | Sponge | Not tested |
-| Glowstone | Supported *with restrictions* |
+| Glowstone | *Not supported* |
 
 Gitter chatroom
 ---------------
