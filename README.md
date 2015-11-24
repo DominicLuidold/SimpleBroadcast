@@ -1,7 +1,7 @@
 SimpleBroadcast
 ===============
 
-SimpleBroadcast ist the easy way for every Minecraft server to broadcast messages to its players. The plugin provides several options which can be configured individually to match the requirements of different server types. Due to the usage of the latest versions of [Spigot](https://spigotmc.org) and other softwares the plugin ensures the best experiences.
+SimpleBroadcast is the easy way for every Minecraft server to broadcast messages to its players. The plugin provides several options which can be configured individually to match the requirements of different server types. Due to the usage of the latest versions of [Spigot](https://spigotmc.org) and other softwares the plugin ensures the best experiences.
 
 Version notes
 -------------
@@ -17,7 +17,7 @@ Supported server softwares
 | -------- | ------ |
 | Bukkit | Supported  |
 | Spigot | Supported  |
-| Sponge | Not tested |
+| Sponge | *Not supported* |
 | Glowstone | *Not supported* |
 
 Gitter chatroom
