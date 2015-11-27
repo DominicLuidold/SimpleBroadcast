@@ -43,7 +43,7 @@ public class ChatBroadcast {
 						msg += (previousMessage < Main.chatMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
 						previousMessage = msg;
 					}
-					String message = Main.chatMessages.get(msg);
+					String message = Main.chatMessages.get(msg).toString();
 					msg = 0;
 					/*
 					 * Starts broadcasting the messages.
@@ -94,7 +94,7 @@ public class ChatBroadcast {
 	}
 	
 	private void broadcast() {
-		final String message = Main.chatMessages.get(counter);
+		final String message = Main.chatMessages.get(counter).toString();
 		/*
 		 * Starts broadcasting the messages.
 		 * If message starts with "/" it's handled as a command.

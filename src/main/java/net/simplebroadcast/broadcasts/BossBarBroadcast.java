@@ -42,7 +42,7 @@ public class BossBarBroadcast {
 						msg += (previousMessage < Main.bossBarMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
 						previousMessage = msg;
 					}
-					final String message = ChatColor.translateAlternateColorCodes('&', Main.bossBarMessages.get(msg));
+					final String message = ChatColor.translateAlternateColorCodes('&', Main.bossBarMessages.get(msg).toString());
 					msg = 0;
 					Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
 						@Override
@@ -85,9 +85,9 @@ public class BossBarBroadcast {
 				for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 					if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 						if (Main.getBossBarConfig().getBoolean("reducehealthbar")) {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(barCounter), p)), Main.getBossBarConfig().getInt("delay"));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(barCounter).toString(), p)), Main.getBossBarConfig().getInt("delay"));
 						} else {
-							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(barCounter), p)));
+							BarAPI.setMessage(p, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(Main.bossBarMessages.get(barCounter).toString(), p)));
 						}
 					} else {
 						BarAPI.removeBar(p);

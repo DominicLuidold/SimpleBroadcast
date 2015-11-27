@@ -166,21 +166,21 @@ public class Commands implements CommandExecutor {
 				cs.sendMessage("§e--------- §fMessages: SimpleBroadcast §e---------");
 				for (int messageID = 0; messageID < Main.chatMessages.size(); messageID++) {
 					special_message = false;
-					if (Main.chatMessages.get(messageID).startsWith("/")) {
+					if (Main.chatMessages.get(messageID).toString().startsWith("/")) {
 						special_message = true;
 					}
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						if (Main.chatMessages.get(messageID).startsWith("JSON:")) {
-							JsonMessage.sendPlayerJSONText(Main.chatMessages.get(messageID).replace("JSON:", ""), p);
+						if (Main.chatMessages.get(messageID).toString().startsWith("JSON:")) {
+							JsonMessage.sendPlayerJSONText(Main.chatMessages.get(messageID).toString().replace("JSON:", ""), p);
 						} else {
-							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addPlayerVariables(Main.chatMessages.get(messageID), p) + ((suffix_bool && !special_message) ? " " + suffix : "")));
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addPlayerVariables(Main.chatMessages.get(messageID).toString(), p) + ((suffix_bool && !special_message) ? " " + suffix : "")));
 						}
 					} else {
-						if (Main.chatMessages.get(messageID).startsWith("JSON:")) {
-							cs.sendMessage(Main.chatMessages.get(messageID).replace("JSON:{text:\"", "").replaceAll("\",.*", ""));
+						if (Main.chatMessages.get(messageID).toString().startsWith("JSON:")) {
+							cs.sendMessage(Main.chatMessages.get(messageID).toString().replace("JSON:{text:\"", "").replaceAll("\",.*", ""));
 						} else {
-							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID)) + ((suffix_bool && !special_message) ? " " + suffix : "")));
+							cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + ((prefix_bool && !special_message) ? prefix + " " : "") + methods.addVariables(Main.chatMessages.get(messageID).toString()) + ((suffix_bool && !special_message) ? " " + suffix : "")));
 						}
 					}
 				}
@@ -202,7 +202,7 @@ public class Commands implements CommandExecutor {
 				 */
 				try {
 					if (Integer.parseInt(args[1])-1 > -1 && Integer.parseInt(args[1])-1 < Main.chatMessages.size()) {
-						String message = Main.chatMessages.get(Integer.parseInt(args[1])-1);
+						String message = Main.chatMessages.get(Integer.parseInt(args[1])-1).toString();
 						for (Player p : Bukkit.getOnlinePlayers()) {
 							if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
 								cs.sendMessage(ChatColor.translateAlternateColorCodes('&', (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
@@ -540,9 +540,9 @@ public class Commands implements CommandExecutor {
 				for (int messageID = 0; messageID < Main.bossBarMessages.size(); messageID++) {
 					if (cs instanceof Player) {
 						Player p = (Player) cs;
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addPlayerVariables(Main.bossBarMessages.get(messageID), p)));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addPlayerVariables(Main.bossBarMessages.get(messageID).toString(), p)));
 					} else {
-						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addVariables(Main.bossBarMessages.get(messageID))));
+						cs.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + methods.addVariables(Main.bossBarMessages.get(messageID).toString())));
 					}
 				}
 			/* 
