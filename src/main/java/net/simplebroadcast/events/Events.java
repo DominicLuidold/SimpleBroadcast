@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -64,19 +63,6 @@ public class Events implements Listener {
 	if (Main.getPlugin().getConfig().getBoolean("requiresonlineplayers") && Bukkit.getServer().getOnlinePlayers().size() == 1) {
 			Bukkit.getServer().getScheduler().cancelTask(ChatBroadcast.getMessageTask());
 			ChatBroadcast.setRunning(0);
-		}
-	}
-
-	/*
-	 * AsyncPlayerChatEvent
-	 */
-	@EventHandler
-	public void onEasteregg(AsyncPlayerChatEvent event) {
-		/*
-		 * Broadcasts the easter egg message to every player if someone types "SimpleBroadcast" in the chat.
-		 */
-		if (event.getMessage().toLowerCase().contains("simplebroadcast")) {
-			Bukkit.broadcastMessage("[Simple§cBroadcast]§r He, he.. Thank you for using SimpleBroadcast! :D");
 		}
 	}
 }
