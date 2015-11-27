@@ -16,12 +16,16 @@ public class ChatBroadcast {
 	private static int counter = 0;
 	private static int running = 1;
 	private Methods methods = new Methods();
-	private boolean prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
-	private boolean suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
-	private String prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
-	private String suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
+	private boolean prefix_bool;
+	private boolean suffix_bool;
+	private String prefix;
+	private String suffix;
 	
 	public void chatBroadcast() {
+		prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
+		suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
+		prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
+		suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 		if (getRunning() == 3) {
 			return;
 		}

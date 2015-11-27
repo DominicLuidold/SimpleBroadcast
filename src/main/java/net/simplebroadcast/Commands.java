@@ -120,6 +120,10 @@ public class Commands implements CommandExecutor {
 				Bukkit.getServer().getScheduler().cancelTask(BossBarBroadcast.getBarTask());
 				Bukkit.getServer().getScheduler().cancelTask(ChatBroadcast.getMessageTask());				
 				Main.getPlugin().reloadConfig();
+				prefix_bool = Main.getPlugin().getConfig().getBoolean("prefix.enabled");
+				suffix_bool = Main.getPlugin().getConfig().getBoolean("suffix.enabled");
+				prefix = methods.addVariables(Main.getPlugin().getConfig().getString("prefix.prefix"));
+				suffix = methods.addVariables(Main.getPlugin().getConfig().getString("suffix.suffix"));
 				Main.loadChatMessages();
 				Main.loadBossBarMessages();
 				ChatBroadcast.setCounter(0);
