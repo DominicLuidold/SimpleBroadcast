@@ -3,20 +3,113 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
+  
+  <!-- General settings -->
   <groupId>net.simplebroadcast</groupId>
   <artifactId>SimpleBroadcast</artifactId>
   <version>2.0-alpha-1</version>
   <name>SimpleBroadcast</name>
   <url>https://SimpleBroadcast.net</url>
   <description>SimpleBroadcast is the easy way for Minecraft servers to broadcast predefined messages with various options.</description>
-
+  
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/SimpleBroadcast/SimpleBroadcast/issues</url>
   </issueManagement>
-
+  
+  <ciManagement>
+  	<system>Jenkins</system>
+  	<url>https://jenkins.SimpleBroadcast.net</url>
+  </ciManagement>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+  <!-- Repositories -->
+  <repositories>
+    <!-- Spigot Repository -->
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <!-- Gravity Repository -->
+    <repository>
+      <id>gravity-repo</id>
+      <url>http://repo.gravitydevelopment.net</url>
+    </repository>
+    <!-- Metrics Repository -->
+    <repository>
+      <id>Plugin Metrics</id>
+      <url>https://repo.mcstats.org/content/repositories/public</url>
+    </repository>
+  </repositories>
+  
+  <!-- Dependencies -->
+  <dependencies>
+    <!-- Spigot API -->
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Updater -->
+    <dependency>
+      <groupId>net.gravitydevelopment.updater</groupId>
+      <artifactId>updater</artifactId>
+      <version>2.3</version>
+    </dependency>
+    <!-- Metrics -->
+    <dependency>
+      <groupId>org.mcstats.bukkit</groupId>
+      <artifactId>metrics</artifactId>
+      <version>R7</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  
+  <!-- Build settings -->
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Maven shade plugin -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.2</version>
+        <!-- Configuration -->
+        <configuration>
+          <artifactSet>
+            <!-- Includes -->
+            <includes>
+              <include>org.mcstats.*:*</include>
+              <include>net.gravitydevelopment.updater</include>
+            </includes>
+          </artifactSet>
+          <relocations>
+            <!-- Relocation of Metrics -->
+            <relocation>
+              <pattern>org.mcstats</pattern>
+              <shadedPattern>net.simplebroadcast.util</shadedPattern>
+            </relocation>            
+            <!-- Relocation of Updater -->
+            <relocation>
+              <pattern>net.gravitydevelopment</pattern>
+              <shadedPattern>net.simplebroadcast.util</shadedPattern>
+            </relocation>
+          </relocations>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+        </configuration>
+        <!-- Execution -->
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
