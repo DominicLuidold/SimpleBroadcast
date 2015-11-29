@@ -31,6 +31,7 @@ public class ChatBroadcast {
 		}
 		if (Main.getPlugin().getConfig().getBoolean("randomizemessages")) {
 			setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+				String message = Main.chatMessages.get(msg).toString();
 				@Override
 				public void run() {
 					/*
@@ -43,7 +44,6 @@ public class ChatBroadcast {
 						msg += (previousMessage < Main.chatMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
 						previousMessage = msg;
 					}
-					String message = Main.chatMessages.get(msg).toString();
 					msg = 0;
 					/*
 					 * Starts broadcasting the messages.
@@ -64,11 +64,16 @@ public class ChatBroadcast {
 						JsonMessage.sendJSONText(message.replace("JSON:", ""));
 						return;
 					}
-					for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-						if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
-							p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
+					Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
+						@Override
+						public void run() {
+							for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+								if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+									p.sendMessage(ChatColor.translateAlternateColorCodes('&', "§f" + (prefix_bool ? prefix + " " : "") + methods.addPlayerVariables(message, p) + (suffix_bool ? " " + suffix : "")));
+								}
+							}
 						}
-					}
+					});
 					/*
 					 * Checks if messages shall be broadcasted in the console.
 					 */

@@ -60,30 +60,35 @@ public class JsonMessage {
 	 * Sends the JSON message to all players.
 	 * @param jsonMessage the JSON string
 	 */
-	public static void sendJSONText(String jsonMessage) {			
+	public static void sendJSONText(final String jsonMessage) {			
 		if (!nmsFailed) {
-			try {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
-						Object entityPlayer = CLASS_CRAFT_PLAYER.getMethod("getHandle").invoke(p);
-						Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);					
-						Method sendPacketMethod = playerConnection.getClass().getMethod("sendPacket", CLASS_PACKET);
-						Object iChatBaseComponent = CLASS_CHAT_SERIALIZER.getMethod("a", String.class).invoke(playerConnection, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(jsonMessage, p)));
-						Object packetPlayOutChat = CLASS_PACKET_PLAY_OUT_CHAT.getConstructor(CLASS_I_CHAT_BASE_COMPONENT).newInstance(iChatBaseComponent);
-						sendPacketMethod.invoke(playerConnection, packetPlayOutChat);
+			Bukkit.getScheduler().runTaskAsynchronously(Main.getPlugin(), new Runnable() {
+				@Override
+				public void run() {
+					try {
+						for (Player p : Bukkit.getOnlinePlayers()) {
+							if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+								Object entityPlayer = CLASS_CRAFT_PLAYER.getMethod("getHandle").invoke(p);
+								Object playerConnection = entityPlayer.getClass().getField("playerConnection").get(entityPlayer);					
+								Method sendPacketMethod = playerConnection.getClass().getMethod("sendPacket", CLASS_PACKET);
+								Object iChatBaseComponent = CLASS_CHAT_SERIALIZER.getMethod("a", String.class).invoke(playerConnection, ChatColor.translateAlternateColorCodes('&', methods.addPlayerVariables(jsonMessage, p)));
+								Object packetPlayOutChat = CLASS_PACKET_PLAY_OUT_CHAT.getConstructor(CLASS_I_CHAT_BASE_COMPONENT).newInstance(iChatBaseComponent);
+								sendPacketMethod.invoke(playerConnection, packetPlayOutChat);
+							}
+						}
+						if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
+							Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', methods.addVariables(jsonMessage.replace("{text:\"", "").replaceAll("\",.*", ""))));
+						}
+					} catch (Exception e) {
+						for (Player p : Bukkit.getOnlinePlayers()) {
+							if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
+								p.sendMessage("§c[SimpleBroadcast] Warning: JSON message isn't formatted correctly or another error occured. Please contact your admin if you see this message.");
+							}
+						}
+						Main.logWarning("Warning: JSON message isn't formatted correctly or another error occured. Please check the JSON messages.");
 					}
 				}
-				if (Main.getPlugin().getConfig().getBoolean("sendmessagestoconsole")) {
-					Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', methods.addVariables(jsonMessage.replace("{text:\"", "").replaceAll("\",.*", ""))));
-				}
-			} catch (Exception e) {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					if (!Main.ignoredPlayers.contains(methods.getUUID(p.getName()))) {
-						p.sendMessage("§c[SimpleBroadcast] Warning: JSON message isn't formatted correctly or another error occured. Please contact your admin if you see this message.");
-					}
-				}
-				Main.logWarning("Warning: JSON message isn't formatted correctly or another error occured. Please check the JSON messages.");
-			}
+			});
 		}
 	}
 
