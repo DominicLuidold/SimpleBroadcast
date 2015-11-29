@@ -1,6 +1,6 @@
 name: SimpleBroadcast
 main: net.simplebroadcast.Main
-version: 1.9
+version: 1.9.1
 author: KingDome24
 softdepend: [BarAPI]
 description: Sends automatically defined messages to the ingame chat with various configuration options.
