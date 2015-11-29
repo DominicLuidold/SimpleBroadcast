@@ -1,0 +1,12 @@
+name: SimpleBroadcast
+main: net.simplebroadcast.Main
+version: 2.0
+author: KingDome24
+softdepend: [BarAPI]
+description: TODO
+website: https://SimpleBroadcast.net
+
+commands:
+  simplebroadcast:
+    description: TODO
+    aliases: [sb]
