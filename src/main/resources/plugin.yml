@@ -8,5 +8,5 @@ website: https://SimpleBroadcast.net
 
 commands:
   simplebroadcast:
-    description: TODO
+    description: Main command of SimpleBroadcast which allows to control and use all its features.
     aliases: [sb]

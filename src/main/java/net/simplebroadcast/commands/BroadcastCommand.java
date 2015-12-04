@@ -6,10 +6,10 @@ import org.bukkit.command.CommandSender;
 
 import net.simplebroadcast.Main;
 
-public class SimpleBroadcastCommand implements CommandExecutor {
-	
-	private String noAccessToCommand = "§cYou do not have access to this command.";
+public class BroadcastCommand implements CommandExecutor {
 
+	private String noAccessToCommand = "§cYou do not have access to this command.";
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (args.length == 0) {
@@ -22,7 +22,7 @@ public class SimpleBroadcastCommand implements CommandExecutor {
 			sender.sendMessage("§6Version:§f " + Main.getInstance().getDescription().getVersion());
 			sender.sendMessage("§6Website:§f " + Main.getInstance().getDescription().getWebsite());
 		} else if (args.length > 0) {
-			//TODO
+			// TODO
 		}
 		return false;
 	}

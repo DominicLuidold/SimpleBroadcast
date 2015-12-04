@@ -1,0 +1,46 @@
+# This is the config.yml of SimpleBroadcast (by KingDome24).
+# In this file you are able to configure your chat broadcast as well as general plugin settings.
+# If you require any help please visit https://www.SimpleBroadcast.net.
+# Please make sure that all your messages are inside of single quotes!
+# The update checking and downloading as well as the usage of MySQL requires an active Internet connection.
+
+####################
+# General settings #
+####################
+general:
+  updater:
+    checkForUpdates: true
+    auto-download: true
+
+###########################
+# Chat broadcast settings #
+###########################
+chat:
+  enabled: true
+  delay: 60
+  prefix:
+    enabled: true
+    value: '&d[Broadcast]&7'
+  suffix:
+    enabled: false
+    value: '&d[v2.0]'
+  randomizeMessages: false
+  requireOnlinePlayers: false
+  showMessagesInConsole: false
+  messages:
+    default:
+    - ''
+    some.permission.node:
+    - ''
+
+###################################
+#          MySQL settings         #
+# Also used for boss bar messages #
+###################################
+mysql:
+  use: false
+  host: localhost
+  port: 3306
+  user: username
+  password: password
+  database: minecraft

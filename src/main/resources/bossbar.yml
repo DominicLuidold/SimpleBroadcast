@@ -1,0 +1,19 @@
+# This is the bossbar.yml of SimpleBroadcast (by KingDome24).
+# In this file you are able to configure your boss bar broadcast settings.
+# BarAPI originally created by confuserr.
+# Messages get cut if they are longer than 64 characters!
+# If you want to use the boss bar please download BarAPI (http://bit.ly/BarAPI).
+
+###############################
+# Boss bar broadcast settings #
+###############################
+bossbar:
+  enabled: false
+  delay: 60
+  reduceHealthBar: true
+  randomizeMessages: false
+  messages:
+    default:
+    - ''
+    some.permission.node:
+    - ''

@@ -12,16 +12,19 @@
   <url>https://SimpleBroadcast.net</url>
   <description>SimpleBroadcast is the easy way for Minecraft servers to broadcast predefined messages with various options.</description>
   
+  <!-- Issue management -->
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/SimpleBroadcast/SimpleBroadcast/issues</url>
   </issueManagement>
   
+  <!-- CI management -->
   <ciManagement>
   	<system>Jenkins</system>
   	<url>https://jenkins.SimpleBroadcast.net</url>
   </ciManagement>
   
+  <!-- Project properties -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -42,6 +45,11 @@
     <repository>
       <id>Plugin Metrics</id>
       <url>https://repo.mcstats.org/content/repositories/public</url>
+    </repository>
+    <!-- Confuser Repository -->
+    <repository>
+      <id>confuser-repo</id>
+      <url>http://ci.frostcast.net/plugin/repository/everything</url>
     </repository>
   </repositories>
   
@@ -64,8 +72,14 @@
     <dependency>
       <groupId>org.mcstats.bukkit</groupId>
       <artifactId>metrics</artifactId>
-      <version>R7</version>
+      <version>R8-SNAPSHOT</version>
       <scope>compile</scope>
+    </dependency>
+    <!-- BarAPI -->
+    <dependency>
+      <groupId>me.confuser</groupId>
+      <artifactId>BarAPI</artifactId>
+      <version>3.3</version>
     </dependency>
   </dependencies>
   
@@ -91,7 +105,7 @@
             <relocation>
               <pattern>org.mcstats</pattern>
               <shadedPattern>net.simplebroadcast.util</shadedPattern>
-            </relocation>            
+            </relocation>
             <!-- Relocation of Updater -->
             <relocation>
               <pattern>net.gravitydevelopment</pattern>
