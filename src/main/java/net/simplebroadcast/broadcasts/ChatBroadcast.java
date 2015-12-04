@@ -31,7 +31,6 @@ public class ChatBroadcast {
 		}
 		if (Main.getPlugin().getConfig().getBoolean("randomizemessages")) {
 			setMessageTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
-				String message = Main.chatMessages.get(msg).toString();
 				@Override
 				public void run() {
 					/*
@@ -44,6 +43,7 @@ public class ChatBroadcast {
 						msg += (previousMessage < Main.chatMessages.size() - 1) ? 1 : ((previousMessage > 1) ? -1 : 0);
 						previousMessage = msg;
 					}
+					final String message = Main.chatMessages.get(msg).toString();
 					msg = 0;
 					/*
 					 * Starts broadcasting the messages.
@@ -55,8 +55,7 @@ public class ChatBroadcast {
 								methods.performCommand(c_msg);
 							}
 						} else {
-							message = message.substring(1);
-							methods.performCommand(message);
+							methods.performCommand(message.substring(1));
 						}
 						return;
 					}
