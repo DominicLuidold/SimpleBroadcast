@@ -14,7 +14,7 @@ prefix:
   
 suffix:
   enabled: false
-  suffix: '&d[v1.9]'
+  suffix: '&d[v1.9.2]'
 
 checkforupdates: true
 
