@@ -36,6 +36,7 @@ chat:
 ###################################
 #          MySQL settings         #
 # Also used for boss bar messages #
+#  and the ignore list function   #
 ###################################
 mysql:
   use: false
