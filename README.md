@@ -1,6 +1,8 @@
 SimpleBroadcast
 ===============
 
+[![Build Status](https://travis-ci.org/SimpleBroadcast/SimpleBroadcast.svg?branch=master)](https://travis-ci.org/SimpleBroadcast/SimpleBroadcast)
+
 SimpleBroadcast is the easy way for every Minecraft server to broadcast messages to its players. The plugin provides several options which can be configured individually to match the requirements of different server types. Due to the usage of the latest versions of [Spigot](https://spigotmc.org) and other softwares the plugin ensures the best experiences.
 
 Version notes
