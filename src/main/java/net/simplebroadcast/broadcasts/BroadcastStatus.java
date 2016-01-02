@@ -5,6 +5,10 @@ package net.simplebroadcast.broadcasts;
  */
 public enum BroadcastStatus {
 	/**
+	 * Broadcast is ready to start.
+	 */
+	READY, 
+	/**
 	 * Broadcast is running.
 	 */
 	RUNNING, 
