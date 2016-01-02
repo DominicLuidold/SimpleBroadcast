@@ -75,19 +75,29 @@
       <version>R8-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
-    <!-- BarAPI -->
+    <!-- BarAPI 
     <dependency>
       <groupId>me.confuser</groupId>
       <artifactId>BarAPI</artifactId>
       <version>3.3</version>
-    </dependency>
+    </dependency>-->
   </dependencies>
   
   <!-- Build settings -->
   <build>
     <plugins>
+      <!-- Maven compiler plugin -->
       <plugin>
-        <!-- Maven shade plugin -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <!-- Maven shade plugin -->
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.4.2</version>
