@@ -3,7 +3,6 @@ package net.simplebroadcast.util;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
@@ -84,7 +83,7 @@ public class MetricsUtil {
 			}
 			metrics.start();
 		} catch (IOException e) {
-			Bukkit.getLogger().log(Level.WARNING, "An error occured while generating stats for mcstats.org");
+			Main.getInstance().getLogger().log(Level.WARNING, "An error occured while generating stats for mcstats.org");
 		}
 	}
 }
