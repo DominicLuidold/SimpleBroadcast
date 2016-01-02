@@ -5,13 +5,15 @@ import org.bukkit.Bukkit;
 import net.simplebroadcast.Main;
 
 public class Broadcast {
-
+	
 	/**
-	 * Current status of chat and boss bar broadcast.
+	 * Status of chat and boss bar broadcast.
 	 */
-	private BroadcastStatus chatBroadcastStatus, bossBarBroadcastStatus;
-
+	private static BroadcastStatus chatBroadcastStatus = BroadcastStatus.STOPPED;
+	private static BroadcastStatus bossBarBroadcastStatus = BroadcastStatus.STOPPED;
+	
 	/*
+	 * (non-Javadoc)
 	 * @see net.simplebroadcast.broadcasts.BossBarBroadcast
 	 * @see net.simplebroadcast.broadcasts.ChatBroadcast
 	 */
@@ -24,20 +26,23 @@ public class Broadcast {
 	public void broadcast() {
 		updateBroadcastStatus();
 		/* Chat broadcast */
-		if (getChatBroadcastStatus() == BroadcastStatus.STOPPED) {
+		if (getChatBroadcastStatus() == BroadcastStatus.READY) {
+			chatBroadcast.setMessageCounter(0);
 			if (!Main.getInstance().getConfig().getBoolean("chat.randomizeMessages")) {
 				chatBroadcast.broadcast();
 			} else {
 				chatBroadcast.randomBroadcast();
 			}
+			setChatBroadcastStatus(BroadcastStatus.RUNNING);
 		}
 		/* Boss bar broadcast */
-		if (getBossBarBroadcastStatus() == BroadcastStatus.STOPPED) {
+		if (getBossBarBroadcastStatus() == BroadcastStatus.READY) {
 			if (!Main.getInstance().getBossBarConfig().getBoolean("randomizeMessages")) {
 				bossBarBroadcast.broadcast(Main.getInstance().getBossBarConfig().getBoolean("bossbar.reduceHealthBar"));
 			} else {
 				bossBarBroadcast.randomBroadcast(Main.getInstance().getBossBarConfig().getBoolean("bossbar.reduceHealthBar"));
 			}
+			setBossBarBroadcastStatus(BroadcastStatus.RUNNING);
 		}
 	}
 	
@@ -46,22 +51,22 @@ public class Broadcast {
 	 */
 	private void updateBroadcastStatus() {
 		/* Chat broadcast */
-		if (Main.getInstance().getConfig().getBoolean("chat.enabled") && getChatBroadcastStatus() != BroadcastStatus.STOPPED) {
+		if (Main.getInstance().getConfig().getBoolean("chat.enabled") && (getChatBroadcastStatus() == BroadcastStatus.STOPPED || getChatBroadcastStatus() == BroadcastStatus.WAITING)) {
 			if (!Main.getInstance().getConfig().getBoolean("chat.requireOnlinePlayers")) {
-				setChatBroadcastStatus(BroadcastStatus.RUNNING);
-			} else if (Main.getInstance().getConfig().getBoolean("chat.requireOnlinePlayers") && Bukkit.getOnlinePlayers().size() >= 1) {
-				setChatBroadcastStatus(BroadcastStatus.RUNNING);
+				setChatBroadcastStatus(BroadcastStatus.READY);
+			} else if (Main.getInstance().getConfig().getBoolean("chat.requireOnlinePlayers") && Bukkit.getOnlinePlayers().size() > 0) {
+				setChatBroadcastStatus(BroadcastStatus.READY);
 			} else {
 				setChatBroadcastStatus(BroadcastStatus.WAITING);
 			}
-		} else {
+		} else if (!Main.getInstance().getConfig().getBoolean("chat.enabled")) {
 			setChatBroadcastStatus(BroadcastStatus.DISABLED);
 		}
 		/* Boss bar broadcast */
 		if (!Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 			setBossBarBroadcastStatus(BroadcastStatus.NOT_AVAILABLE);
-		} else if (Main.getInstance().getBossBarConfig().getBoolean("bossbar.enabled") && getBossBarBroadcastStatus() != BroadcastStatus.STOPPED) {
-			setBossBarBroadcastStatus(BroadcastStatus.RUNNING);
+		} else if (Main.getInstance().getBossBarConfig().getBoolean("bossbar.enabled") && getBossBarBroadcastStatus() == BroadcastStatus.STOPPED) {
+			setBossBarBroadcastStatus(BroadcastStatus.READY);
 		} else if (!Main.getInstance().getBossBarConfig().getBoolean("bossbar.enabled")) {
 			setBossBarBroadcastStatus(BroadcastStatus.DISABLED);
 		}
@@ -71,7 +76,7 @@ public class Broadcast {
 	 * Stops chat broadcast.
 	 */
 	public void cancelChatBroadcast() {
-		Bukkit.getScheduler().cancelTask(chatBroadcast.getSchedulerTask());
+		Bukkit.getScheduler().cancelTask(ChatBroadcast.getSchedulerTask());
 		setChatBroadcastStatus(BroadcastStatus.STOPPED);
 	}
 	
@@ -79,43 +84,43 @@ public class Broadcast {
 	 * Stops boss bar broadcast.
 	 */
 	public void cancelBossBarBroadcast() {
-		Bukkit.getScheduler().cancelTask(bossBarBroadcast.getSchedulerTask());
+		Bukkit.getScheduler().cancelTask(BossBarBroadcast.getSchedulerTask());
 		setBossBarBroadcastStatus(BroadcastStatus.STOPPED);
 	}
-
+	
 	/**
 	 * Returns current status of chat broadcast.
 	 * 
 	 * @return the chatBroadcastStatus
 	 */
-	public BroadcastStatus getChatBroadcastStatus() {
+	public static BroadcastStatus getChatBroadcastStatus() {
 		return chatBroadcastStatus;
 	}
-
+	
 	/**
 	 * Sets new status of chat broadcast.
 	 * 
 	 * @param status the chatBroadcastStatus to set
 	 */
-	public void setChatBroadcastStatus(BroadcastStatus status) {
-		this.chatBroadcastStatus = status;
+	public static void setChatBroadcastStatus(BroadcastStatus status) {
+		Broadcast.chatBroadcastStatus = status;
 	}
-
+	
 	/**
 	 * Returns current status of boss bar broadcast.
 	 * 
 	 * @return the bossBarBroadcastStatus
 	 */
-	public BroadcastStatus getBossBarBroadcastStatus() {
+	public static BroadcastStatus getBossBarBroadcastStatus() {
 		return bossBarBroadcastStatus;
 	}
-
+	
 	/**
 	 * Sets new status of boss bar broadcast.
 	 * 
 	 * @param status the bossBarBroadcastStatus to set
 	 */
-	public void setBossBarBroadcastStatus(BroadcastStatus status) {
-		this.bossBarBroadcastStatus = status;
+	public static void setBossBarBroadcastStatus(BroadcastStatus status) {
+		Broadcast.bossBarBroadcastStatus = status;
 	}
 }
