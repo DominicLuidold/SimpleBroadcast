@@ -9,19 +9,20 @@ public class MessageManager {
 	/**
 	 * Prefix and suffix (configured in config).
 	 */
-	private String chatPrefix, chatSuffix;
+	private static String chatPrefix;
+	private static String chatSuffix;
 	
 	/**
 	 * HashMaps which contain chat and boss bar messages.
 	 */
-	private HashMap<Integer, String> chatMessages = new HashMap<Integer, String>();
-	private HashMap<Integer, String> bossBarMessages = new HashMap<Integer, String>();
+	private static HashMap<Integer, String> chatMessages = new HashMap<Integer, String>();
+	private static HashMap<Integer, String> bossBarMessages = new HashMap<Integer, String>();
 	
 	/**
 	 * HashMaps which contain all permissions required for each chat and boss bar message.
 	 */
-	private HashMap<Integer, String> chatMessagePermissions = new HashMap<Integer, String>();
-	private HashMap<Integer, String> bossBarMessagePermissions = new HashMap<Integer, String>();
+	private static HashMap<Integer, String> chatMessagePermissions = new HashMap<Integer, String>();
+	private static HashMap<Integer, String> bossBarMessagePermissions = new HashMap<Integer, String>();
 	
 	/**
 	 * Loads all needed values.
@@ -37,22 +38,30 @@ public class MessageManager {
 	 * Loads and sets chat prefix.
 	 */
 	private void loadChatPrefix() {
-		setChatPrefix(Main.getInstance().getConfig().getString("chat.prefix.value"));
+		if (Main.getInstance().getConfig().getBoolean("chat.prefix.enabled")) {
+			setChatPrefix(Main.getInstance().getConfig().getString("chat.prefix.value") + " ");
+		} else {
+			setChatPrefix("");
+		}
 	}
 	
 	/**
 	 * Loads and sets chat suffix.
 	 */
 	private void loadChatSuffix() {
-		setChatSuffix(Main.getInstance().getConfig().getString("chat.suffix.value"));
+		if (Main.getInstance().getConfig().getBoolean("chat.suffix.enabled")) {
+			setChatSuffix(" " + Main.getInstance().getConfig().getString("chat.suffix.value"));
+		} else {
+			setChatSuffix("");
+		}
 	}
 	
 	/**
 	 * Loads chat messages into HashMap.
 	 */
 	private void loadChatMessages() {
-		chatMessages.clear();
-		chatMessagePermissions.clear();
+		getChatMessages().clear();
+		getChatMessagePermissions().clear();
 		/* Messages from config */
 		if (!Main.getInstance().getConfig().getBoolean("mysql.use")) {
 			int index = 0;
@@ -90,23 +99,23 @@ public class MessageManager {
 			// TODO
 		}
 	}
-
+	
 	/**
-	 * Returns chat prefix.
+	 * Sets chat prefix.
 	 * 
 	 * @return the chatPrefix
 	 */
-	public String getChatPrefix() {
+	public static String getChatPrefix() {
 		return chatPrefix;
 	}
-
+	
 	/**
 	 * Sets chat prefix.
 	 * 
 	 * @param chatPrefix the chatPrefix to set
 	 */
-	public void setChatPrefix(String chatPrefix) {
-		this.chatPrefix = chatPrefix;
+	public static void setChatPrefix(String chatPrefix) {
+		MessageManager.chatPrefix = chatPrefix;
 	}
 	
 	/**
@@ -114,52 +123,52 @@ public class MessageManager {
 	 * 
 	 * @return the chatSuffix
 	 */
-	public String getChatSuffix() {
+	public static String getChatSuffix() {
 		return chatSuffix;
 	}
-
+	
 	/**
 	 * Sets chat suffix.
 	 * 
 	 * @param chatSuffix the chatSuffix to set
 	 */
-	public void setChatSuffix(String chatSuffix) {
-		this.chatSuffix = chatSuffix;
+	public static void setChatSuffix(String chatSuffix) {
+		MessageManager.chatSuffix = chatSuffix;
 	}
-
+	
 	/**
 	 * Returns HashMap which contains all chat messages.
 	 * 
 	 * @return the chatMessages
 	 */
-	public HashMap<Integer, String> getChatMessages() {
+	public static HashMap<Integer, String> getChatMessages() {
 		return chatMessages;
 	}
-
+	
 	/**
 	 * Returns HashMap which contains all permissions required for each chat message.
 	 * 
 	 * @return the chatMessagePermissions
 	 */
-	public HashMap<Integer, String> getChatMessagePermissions() {
+	public static HashMap<Integer, String> getChatMessagePermissions() {
 		return chatMessagePermissions;
 	}
-
+	
 	/**
 	 * Returns HashMap which contains all boss bar messages.
 	 * 
 	 * @return the bossBarMessages
 	 */
-	public HashMap<Integer, String> getBossBarMessages() {
+	public static HashMap<Integer, String> getBossBarMessages() {
 		return bossBarMessages;
 	}
-
+	
 	/**
 	 * Returns HashMap which contains all permissions required for each boss bar message.
 	 * 
 	 * @return the bossBarMessagePermissions
 	 */
-	public HashMap<Integer, String> getBossBarMessagePermissions() {
+	public static HashMap<Integer, String> getBossBarMessagePermissions() {
 		return bossBarMessagePermissions;
 	}
 }
