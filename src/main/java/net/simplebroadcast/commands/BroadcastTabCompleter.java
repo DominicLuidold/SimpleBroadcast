@@ -19,20 +19,28 @@ public class BroadcastTabCompleter implements TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		List<String> list = new ArrayList<String>();
-		/* List of all available commands. */
+		/* List of all available broadcast types. */
 		if (args.length == 1) {
-			list.add("ignore");
-			list.add("list");
-			list.add("start");
-			list.add("stop");
+			list.add("chat");
 		}
-		/* Adds player names to list if user executes ignore command. */
-		if (args[0].equalsIgnoreCase("ignore")) {
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				list.add(player.getName());
+		/* List of all available commands. */
+		if (args.length > 1) {
+			/* List of all available chat broadcast commands. */
+			if (args[0].equalsIgnoreCase("chat") && args.length < 3) {
+				list.add("ignore");
+				list.add("list");
+				list.add("next");
+				list.add("start");
+				list.add("stop");
+			}
+			/* Adds player names to list if user executes ignore command. */
+			if (args[1].equalsIgnoreCase("ignore")) {
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					list.add(player.getName());
+				}
 			}
 		}
-		/* Removes incongruous suggestions. */
+		/* Removes incongruous tab completions. */
 		Iterator<String> iterator = list.iterator();
 		while (iterator.hasNext()) {
 			String command = iterator.next().toLowerCase();

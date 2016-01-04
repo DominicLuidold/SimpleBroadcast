@@ -27,7 +27,7 @@ public class Broadcast {
 		updateBroadcastStatus();
 		/* Chat broadcast */
 		if (getChatBroadcastStatus() == BroadcastStatus.READY) {
-			chatBroadcast.setMessageCounter(0);
+			ChatBroadcast.setMessageCounter(0);
 			if (!Main.getInstance().getConfig().getBoolean("chat.randomizeMessages")) {
 				chatBroadcast.broadcast();
 			} else {

@@ -19,7 +19,7 @@ public class ChatBroadcast {
 	/**
 	 * TODO Comment
 	 */
-	private int messageCounter = 0;
+	private static int messageCounter = 0;
 	
 	/**
 	 * TODO Comment
@@ -40,9 +40,9 @@ public class ChatBroadcast {
 				/* Broadcasts message to every player online on the server. */
 				for (Player player : Bukkit.getOnlinePlayers()) {
 					/* Checks if player has required permission to view the message and doesn't ignore it. */
-					if (player.hasPermission(permission) && !IgnoreManager.getChatIgnoreList().contains(player.getUniqueId().toString())) {
+					if ((permission.equals("default") || player.hasPermission(permission)) && !IgnoreManager.getChatIgnoreList().contains(player.getUniqueId().toString())) {
 						player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + message + suffix));
-					}
+					}						
 				}
 				/* Sends message to console (if activated in config). */
 				if (Main.getInstance().getConfig().getBoolean("chat.showMessagesInConsole")) {
@@ -96,7 +96,7 @@ public class ChatBroadcast {
 	 * 
 	 * @return the messageCounter
 	 */
-	public int getMessageCounter() {
+	public static int getMessageCounter() {
 		return messageCounter;
 	}
 	
@@ -105,7 +105,7 @@ public class ChatBroadcast {
 	 * 
 	 * @param messageCounter the messageCounter to set
 	 */
-	public void setMessageCounter(int messageCounter) {
-		this.messageCounter = messageCounter;
+	public static void setMessageCounter(int messageCounter) {
+		ChatBroadcast.messageCounter = messageCounter;
 	}
 }

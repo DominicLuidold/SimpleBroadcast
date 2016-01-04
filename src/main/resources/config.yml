@@ -29,9 +29,9 @@ chat:
   showMessagesInConsole: false
   messages:
     default:
-    - ''
+    - ""
     some.permission.node:
-    - ''
+    - ""
 
 ###################################
 #          MySQL settings         #
