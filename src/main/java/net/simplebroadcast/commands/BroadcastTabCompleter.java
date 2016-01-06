@@ -30,6 +30,7 @@ public class BroadcastTabCompleter implements TabCompleter {
 				list.add("ignore");
 				list.add("list");
 				list.add("next");
+				list.add("now");
 				list.add("start");
 				list.add("stop");
 			}

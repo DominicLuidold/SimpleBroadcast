@@ -42,7 +42,7 @@ public class ChatBroadcast {
 					/* Checks if player has required permission to view the message and doesn't ignore it. */
 					if ((permission.equals("default") || player.hasPermission(permission)) && !IgnoreManager.getChatIgnoreList().contains(player.getUniqueId().toString())) {
 						player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + message + suffix));
-					}						
+					}
 				}
 				/* Sends message to console (if activated in config). */
 				if (Main.getInstance().getConfig().getBoolean("chat.showMessagesInConsole")) {
@@ -71,6 +71,29 @@ public class ChatBroadcast {
 				// TODO
 			}
 		}, 0L, Main.getInstance().getConfig().getInt("chat.delay") * 20L));
+	}
+	
+	/**
+	 * TODO Comment
+	 * 
+	 * @param messageID
+	 */
+	public void broadcastExistingMessage(int messageID) {
+		String prefix = MessageManager.getChatPrefix();
+		String suffix = MessageManager.getChatSuffix();
+		String message = MessageManager.getChatMessages().get(messageID).toString();
+		String permission = MessageManager.getChatMessagePermissions().get(messageID).toString();
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			/* Checks if player has required permission to view the message and doesn't ignore it. */
+			if ((permission.equals("default") || player.hasPermission(permission)) && !IgnoreManager.getChatIgnoreList().contains(player.getUniqueId().toString())) {
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + message + suffix));
+			}
+		}
+		/* Sends message to console (if activated in config). */
+		if (Main.getInstance().getConfig().getBoolean("chat.showMessagesInConsole")) {
+			ConsoleCommandSender console = Bukkit.getConsoleSender();
+			console.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + message + suffix));
+		}
 	}
 	
 	/**

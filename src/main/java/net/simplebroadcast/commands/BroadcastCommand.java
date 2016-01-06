@@ -1,5 +1,7 @@
 package net.simplebroadcast.commands;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -22,6 +24,7 @@ public class BroadcastCommand implements CommandExecutor {
 	 * @see net.simpleboradcast.util.IgnoreManager
 	 */
 	private Broadcast broadcast = new Broadcast();
+	private ChatBroadcast chatBroadcast = new ChatBroadcast();
 	private IgnoreManager ignoreManager = new IgnoreManager();
 	
 	/**
@@ -94,6 +97,36 @@ public class BroadcastCommand implements CommandExecutor {
 					String message = MessageManager.getChatMessages().get(messageID).toString();
 					sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + prefix + message + suffix));
 				}
+			/* Now - command */
+			} else if (args[1].equalsIgnoreCase("now")) {
+				/* Checks if command sender has the required permission to broadcast existing messages. */
+				if (!sender.hasPermission("simplebroadcast.chat.now")) {
+					sender.sendMessage(noAccessToCommand);
+					return true;
+				}
+				/* Checks if length of arguments is correct. */
+				if (args.length < 3) {
+					sender.sendMessage("§c[SimpleBroadcast] Pleaser enter a message number.");
+					return true;
+				}
+				/* Checks if length of arguments is correct. */
+				if (args.length > 3) {
+					sender.sendMessage("§c[SimpleBroadcast] Pleaser enter only one message number.");
+					return true;
+				}
+				try {
+					int messageID = Integer.parseInt(args[2]) - 1;
+					HashMap<Integer, String> chatMessages = MessageManager.getChatMessages();
+					if (messageID > -1 && messageID < chatMessages.size()) {
+						chatBroadcast.broadcastExistingMessage(messageID);
+						sender.sendMessage("§2[SimpleBroadcast] Successfully broadcasted message #" + args[2] + ".");
+					} else {
+						sender.sendMessage("§c[SimpleBroadcast] Please choose a number between 1 and " + chatMessages.size() + ".");
+					}
+				} catch(NumberFormatException nfe) {
+					sender.sendMessage("§c[SimpleBroadcast] Please enter a valid number.");
+					return true;
+				}
 			/* Next - command */
 			} else if (args[1].equalsIgnoreCase("next")) {
 				/* Checks if command sender has the required permission to skip broadcast messages. */
@@ -111,10 +144,10 @@ public class BroadcastCommand implements CommandExecutor {
 				/* Skips message based on message counter. */
 				if (messageCounter < MessageManager.getChatMessages().size()) {
 					ChatBroadcast.setMessageCounter(messageCounter + 1);
-					sender.sendMessage("§2[SimpleBroadcast] Successfully skipped message " + (messageCounter + 1) + ".");
+					sender.sendMessage("§2[SimpleBroadcast] Successfully skipped message #" + (messageCounter + 1) + ".");
 				} else {
 					ChatBroadcast.setMessageCounter(1);
-					sender.sendMessage("§2[SimpleBroadcast] Successfully skipped message 1.");
+					sender.sendMessage("§2[SimpleBroadcast] Successfully skipped message #1.");
 				}
 			/* Ignore - command */
 			} else if (args[1].equalsIgnoreCase("ignore")) {
@@ -137,6 +170,7 @@ public class BroadcastCommand implements CommandExecutor {
 				Player player = Bukkit.getServer().getPlayerExact(args[2]);
 				/* Checks if player is online. */
 				if (player == null) {
+					// TODO Rewrite message
 					sender.sendMessage("§c[SimpleBroadcast] You can only add players who are currently online.");
 					return true;
 				}
