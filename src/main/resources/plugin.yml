@@ -1,6 +1,6 @@
 name: SimpleBroadcast
 main: net.simplebroadcast.Main
-version: 2.0
+version: 2.0 Alpha 1
 author: KingDome24
 softdepend: [BarAPI]
 description: TODO
