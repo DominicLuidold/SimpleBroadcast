@@ -93,6 +93,11 @@ public class BroadcastCommand implements CommandExecutor {
 				String suffix = MessageManager.getChatSuffix();
 				/* Shows all chat broadcast messages to command sender. */
 				sender.sendMessage("§e--------- §fChat broadcast messages: §e---------");
+				/* Checks if any messages are configured. */
+				if (MessageManager.getChatMessages().size() < 1) {
+					sender.sendMessage("No messages configured.");
+					return true;
+				}
 				for (int messageID = 0; messageID < MessageManager.getChatMessages().size(); messageID++) {
 					String message = MessageManager.getChatMessages().get(messageID).toString();
 					sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "§6" + (messageID+1) + ".§f " + prefix + message + suffix));

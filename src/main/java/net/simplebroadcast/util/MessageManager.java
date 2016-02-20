@@ -67,6 +67,9 @@ public class MessageManager {
 			int index = 0;
 			for (String permission : Main.getInstance().getConfig().getConfigurationSection("chat.messages").getKeys(true)) {
 				for (String message : Main.getInstance().getConfig().getStringList("chat.messages." + permission)) {
+					if (message.isEmpty()) {
+						return;
+					}
 					getChatMessages().put(index, message);
 					getChatMessagePermissions().put(index, permission);
 					index++;
@@ -89,6 +92,9 @@ public class MessageManager {
 			int index = 0;
 			for (String permission : Main.getInstance().getBossBarConfig().getConfigurationSection("bossbar.messages").getKeys(true)) {
 				for (String message : Main.getInstance().getBossBarConfig().getStringList("bossbar.messages." + permission)) {
+					if (message.isEmpty()) {
+						return;
+					}
 					getBossBarMessages().put(index, message);
 					getBossBarMessagePermissions().put(index, permission);
 					index++;

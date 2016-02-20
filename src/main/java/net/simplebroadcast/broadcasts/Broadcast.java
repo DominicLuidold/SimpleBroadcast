@@ -3,6 +3,7 @@ package net.simplebroadcast.broadcasts;
 import org.bukkit.Bukkit;
 
 import net.simplebroadcast.Main;
+import net.simplebroadcast.util.MessageManager;
 
 public class Broadcast {
 	
@@ -51,7 +52,9 @@ public class Broadcast {
 	 */
 	private void updateBroadcastStatus() {
 		/* Chat broadcast */
-		if (Main.getInstance().getConfig().getBoolean("chat.enabled") && (getChatBroadcastStatus() == BroadcastStatus.STOPPED || getChatBroadcastStatus() == BroadcastStatus.WAITING)) {
+		if (MessageManager.getChatMessages().size() < 1 || !Main.getInstance().getConfig().getBoolean("chat.enabled")) {
+			setChatBroadcastStatus(BroadcastStatus.DISABLED);
+		} else if (Main.getInstance().getConfig().getBoolean("chat.enabled") && (getChatBroadcastStatus() == BroadcastStatus.STOPPED || getChatBroadcastStatus() == BroadcastStatus.WAITING)) {
 			if (!Main.getInstance().getConfig().getBoolean("chat.requireOnlinePlayers")) {
 				setChatBroadcastStatus(BroadcastStatus.READY);
 			} else if (Main.getInstance().getConfig().getBoolean("chat.requireOnlinePlayers") && Bukkit.getOnlinePlayers().size() > 0) {
@@ -59,16 +62,14 @@ public class Broadcast {
 			} else {
 				setChatBroadcastStatus(BroadcastStatus.WAITING);
 			}
-		} else if (!Main.getInstance().getConfig().getBoolean("chat.enabled")) {
-			setChatBroadcastStatus(BroadcastStatus.DISABLED);
 		}
 		/* Boss bar broadcast */
-		if (!Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+		if (MessageManager.getBossBarMessages().size() < 1 || !Main.getInstance().getBossBarConfig().getBoolean("bossbar.enabled")) {
+			setBossBarBroadcastStatus(BroadcastStatus.DISABLED);
+		} else if (!Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 			setBossBarBroadcastStatus(BroadcastStatus.NOT_AVAILABLE);
 		} else if (Main.getInstance().getBossBarConfig().getBoolean("bossbar.enabled") && getBossBarBroadcastStatus() == BroadcastStatus.STOPPED) {
 			setBossBarBroadcastStatus(BroadcastStatus.READY);
-		} else if (!Main.getInstance().getBossBarConfig().getBoolean("bossbar.enabled")) {
-			setBossBarBroadcastStatus(BroadcastStatus.DISABLED);
 		}
 	}
 	
