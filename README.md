@@ -15,17 +15,17 @@ Supported server softwares
 
 | Software | Status |
 | -------- | ------ |
-| Bukkit | Supported  |
-| Spigot | Supported  |
+| Bukkit | Supported |
+| Spigot | Supported |
 | Sponge | *Not supported* |
 | Glowstone | *Not supported* |
 
-Gitter chatroom
----------------
+Discord chatroom
+----------------
 
-You are experiencing any problems with SimpleBroadcast? You have got a question or want to submit a suggestion? Don't hesitate to join the Gitter chatroom to have a talk with the developers.
+You are experiencing any problems with SimpleBroadcast? You have got a question or want to submit a suggestion? Don't hesitate to join the Discord chatroom to have a talk with the developers.
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SimpleBroadcast/SimpleBroadcast)
+[![Discord](https://simplebroadcast.net/inc/imgs/Discord-Logo.svg)](https://discord.gg/0k3BW60JcV25tBW7)
 
 License
 -------
